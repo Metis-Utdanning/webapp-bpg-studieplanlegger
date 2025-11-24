@@ -24,34 +24,45 @@
 
 ---
 
-## 🎯 Kritisk innsikt: FORDYPNING
+## 🎯 Kritisk innsikt: FORDYPNING og FORUTSETNINGER
 
 **VIKTIG ENDRING:**
 
 ### ❌ GAMMEL (feil) forståelse:
 - Fordypning = 560 timer totalt fra 2+ fagområder (280t per område)
 - Teller timer og fagområder
+- Alle nivå 2-fag bygger på nivå 1
 
 ### ✅ NY (korrekt) forståelse:
-- **Fordypning = 2 fag fra SAMME fagområde (med samme læreplankode)**
+- **Fordypning = 2 fag fra SAMME fagområde** (definert i UDIR Tabell 5 og 6)
 - **Krav: 2 fordypninger totalt over VG2+VG3**
+- **Fagområde ≠ Læreplankode** (fagområde er gruppering fra UDIR-tabellene)
+- **Kun noen nivå 2-fag bygger på nivå 1** (kun de med eksplisitt "(bygger på X)" i UDIR-tabellene)
 
-**Eksempel:**
+**Eksempel - Fordypning:**
 ```
 VG2:
-- Matematikk R1 (læreplankode: MAT03-02)
-- Fysikk 1 (læreplankode: FYS01-01)
-- Kjemi 1 (læreplankode: KJE01-01)
-- Biologi 1 (læreplankode: BIO01-01)
+- Matematikk R1 (fagområde: Matematikk)
+- Fysikk 1 (fagområde: Fysikk)
+- Psykologi 1 (fagområde: Psykologi)
+- Biologi 1 (fagområde: Biologi)
 
 VG3:
-- Matematikk R2 (læreplankode: MAT03-02)  ← SAMME som R1
-- Fysikk 2 (læreplankode: FYS01-01)        ← SAMME som Fysikk 1
-- Kjemi 2 (læreplankode: KJE01-01)         ← SAMME som Kjemi 1
+- Matematikk R2 (fagområde: Matematikk)  ← SAMME fagområde som R1
+- Fysikk 2 (fagområde: Fysikk)           ← SAMME fagområde som Fysikk 1
+- Psykologi 2 (fagområde: Psykologi)     ← SAMME fagområde som Psykologi 1
 
 RESULTAT:
-✅ 3 fordypninger: MAT (R1+R2), FYS (1+2), KJE (1+2)
+✅ 3 fordypninger: Matematikk, Fysikk, Psykologi
 ✅ Oppfyller kravet (minst 2 fordypninger)
+```
+
+**Eksempel - Forutsetninger:**
+```
+✅ Fysikk 2 bygger på Fysikk 1 (står i UDIR-tabell)
+✅ Kjemi 2 bygger på Kjemi 1 (står i UDIR-tabell)
+❌ Biologi 2 bygger IKKE på Biologi 1 (står IKKE i UDIR-tabell) - kan tas i hvilken som helst rekkefølge!
+❌ Psykologi 2 bygger IKKE på Psykologi 1 - kan tas parallelt eller i feil rekkefølge!
 ```
 
 ---

@@ -368,56 +368,72 @@ export class ValidationService {
     };
 
     const allFag = this.getAllSelectedFagIds(state);
-    const areaTimers = {};
+    const fagomradeMap = {};
 
-    // Count timer per fagområde
-    // Exclude: Matematikk 2P (not eligible for fordypning), Spansk I+II (obligatorisk, not fordypning)
+    // NEW LOGIC (2024-11-24): 1 fordypning = 2 fag from SAME fagområde (not timer-based)
+    // Exclude: Matematikk 2P (fellesfag, not fordypning), Spansk I+II (obligatorisk, not fordypning)
     const excludedFromFordypning = ['matematikk-2p', 'spansk-i-ii', 'spansk-i-ii-vg3'];
 
+    // Group fag by fagområde
     allFag.forEach(fagId => {
       // Skip fag that don't count toward fordypning
       if (excludedFromFordypning.includes(fagId)) {
         return;
       }
 
-      const area = this.fagomradeMap[fagId];
-      if (area) {
-        areaTimers[area] = (areaTimers[area] || 0) + 140;
+      const fagomrade = this.fagomradeMap[fagId];
+      if (fagomrade) {
+        if (!fagomradeMap[fagomrade]) {
+          fagomradeMap[fagomrade] = {
+            code: fagomrade,
+            name: this.fagomradeNavn[fagomrade] || fagomrade,
+            fag: [],
+            timer: 0
+          };
+        }
+        fagomradeMap[fagomrade].fag.push(fagId);
+        fagomradeMap[fagomrade].timer += 140;
       }
     });
 
     // Build area details
-    const areas = Object.entries(areaTimers).map(([code, timer]) => ({
-      code,
-      name: this.fagomradeNavn[code] || code,
-      timer,
-      fagCount: Math.round(timer / 140),
-      meetsMinimum: timer >= krav.timerPerOmrade
+    const areas = Object.values(fagomradeMap).map(area => ({
+      code: area.code,
+      name: area.name,
+      timer: area.timer,
+      fagCount: area.fag.length,
+      fag: area.fag,
+      isFordypning: area.fag.length >= 2  // 2+ fag = 1 fordypning
     }));
 
-    // Sort by timer (descending)
-    areas.sort((a, b) => b.timer - a.timer);
+    // Sort by fagCount (descending), then by timer
+    areas.sort((a, b) => {
+      if (b.fagCount !== a.fagCount) return b.fagCount - a.fagCount;
+      return b.timer - a.timer;
+    });
 
-    // Calculate fordypning (areas meeting minimum)
-    const fordypningAreas = areas.filter(a => a.meetsMinimum);
-    const fordypningTimer = fordypningAreas
-      .slice(0, krav.minOmrader)
-      .reduce((sum, a) => sum + Math.min(a.timer, krav.timerPerOmrade), 0);
+    // Count fordypninger (fagområder with 2+ fag)
+    const fordypninger = areas.filter(a => a.isFordypning);
+    const antallFordypninger = fordypninger.length;
 
-    const isValid = fordypningTimer >= krav.minTimer && fordypningAreas.length >= krav.minOmrader;
-    const progress = Math.min(100, Math.round((fordypningTimer / krav.minTimer) * 100));
+    // Calculate total timer from all fordypninger
+    const totalFordypningTimer = fordypninger.reduce((sum, a) => sum + a.timer, 0);
+
+    // Valid if 2+ fordypninger
+    const isValid = antallFordypninger >= 2;
+    const progress = Math.min(100, Math.round((antallFordypninger / 2) * 100));
 
     return {
       areas,
-      fordypningAreas,
-      totalTimer: fordypningTimer,
-      required: krav.minTimer,
-      requiredAreas: krav.minOmrader,
-      timerPerArea: krav.timerPerOmrade,
+      fordypninger,  // fagområder with 2+ fag
+      antallFordypninger,
+      totalTimer: totalFordypningTimer,
+      required: krav.minTimer,  // Keep for legacy compatibility
+      requiredFordypninger: 2,
       isValid,
       progress,
-      missingAreas: Math.max(0, krav.minOmrader - fordypningAreas.length),
-      missingTimer: Math.max(0, krav.minTimer - fordypningTimer)
+      missingFordypninger: Math.max(0, 2 - antallFordypninger),
+      missingTimer: Math.max(0, krav.minTimer - totalFordypningTimer)  // Keep for legacy
     };
   }
 
@@ -681,11 +697,11 @@ export class ValidationService {
     // ========================================================================
     // 2. FORDYPNING CALCULATION (VG2 + VG3 combined)
     // ========================================================================
-    // Requirement: 560 timer from minimum 2 fagområder
+    // NEW LOGIC (2024-11-24): 1 fordypning = 2 fag from SAME fagområde
+    // Requirement: 2 fordypninger total (not timer-based)
     // Uses fagområde from regler.yml (not læreplankode!)
 
     const fagomraderMap = {};
-    let totalFordypningTimer = 0;
 
     // Fag excluded from fordypning calculation
     const excludedFromFordypning = ['matematikk-2p', 'spansk-i-ii', 'spansk-i-ii-vg3'];
@@ -708,11 +724,13 @@ export class ValidationService {
       const fagomrade = this.fagomradeMap[fagId];
 
       if (!fagomrade) {
+        // Skip warning for fellesfag (e.g., historie-vg3)
+        if (fag.type === 'fellesfag') {
+          return; // Silent skip
+        }
         console.warn(`⚠️ Fag ${fagId} (${fag.navn}) mangler fagområde - teller ikke mot fordypning`);
         return;
       }
-
-      totalFordypningTimer += timer;
 
       // Add to fagområde map
       if (!fagomraderMap[fagomrade]) {
@@ -726,44 +744,36 @@ export class ValidationService {
       fagomraderMap[fagomrade].fag.push(fag.navn);
     });
 
-    // Count fagområder (exception: multiple fremmedspråk = 1 fagområde)
-    let fagomraderCount = Object.keys(fagomraderMap).length;
+    // Count fordypninger (fagområder with 2+ fag)
+    let fordypninger = 0;
+    let totalFordypningTimer = 0;
 
-    // Apply foreign language exception if applicable
-    if (fagomraderMap['fremmedspråk']) {
-      const fremmedsprakFag = fagomraderMap['fremmedspråk'].fag;
-      // If there are 2+ foreign languages, they still count as 1 fagområde (already counted)
-      // No adjustment needed
-    }
+    Object.entries(fagomraderMap).forEach(([fagomrade, data]) => {
+      if (data.fag.length >= 2) {
+        fordypninger++;
+        totalFordypningTimer += data.timer;
+      }
+    });
 
-    // Check if fordypning requirement is met
-    const fordypningMet = totalFordypningTimer >= 560 && fagomraderCount >= 2;
+    // Check if fordypning requirement is met (2+ fordypninger)
+    const fordypningMet = fordypninger >= 2;
 
     result.fordypning = {
       totalTimer: totalFordypningTimer,
       fagomrader: fagomraderMap,
-      fagomraderCount: fagomraderCount,
-      requiredTimer: 560,
+      fordypninger: fordypninger,
+      requiredFordypninger: 2,
       isMet: fordypningMet
     };
 
     // Add error if fordypning not met
     if (!fordypningMet) {
-      if (totalFordypningTimer < 560) {
-        result.errors.push({
-          type: 'fordypning-insufficient-hours',
-          message: `Fordypning: Du har ${totalFordypningTimer}t, men trenger minst 560t fra programfag`,
-          missing: 560 - totalFordypningTimer
-        });
-      }
-
-      if (fagomraderCount < 2) {
-        result.errors.push({
-          type: 'fordypning-insufficient-areas',
-          message: `Fordypning: Du har fag fra ${fagomraderCount} fagområde(r), men trenger minimum 2 fagområder`,
-          suggestion: 'Velg fag fra et annet fagområde for å oppfylle fordypningskravet'
-        });
-      }
+      result.errors.push({
+        type: 'fordypning-insufficient',
+        message: `Fordypning: Du har ${fordypninger} fordypning(er), men trenger minst 2 fordypninger`,
+        details: `En fordypning = 2 fag fra samme fagområde. Du har fag fra ${Object.keys(fagomraderMap).length} fagområde(r).`,
+        suggestion: 'Velg 2 fag fra samme fagområde for å oppnå en fordypning'
+      });
 
       result.valid = false;
     }

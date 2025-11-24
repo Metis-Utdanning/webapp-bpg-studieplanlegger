@@ -879,12 +879,22 @@ export class Studieplanlegger {
       const tempState = this.createTempStateWithModalSelections(currentState);
       const oldFordypning = this.validator.getFordypningStatus(tempState);
 
-      // Convert old format to new format
+      // Convert getFordypningStatus format to validateCombinedSelections format
+      const fagomraderMap = {};
+      oldFordypning.areas?.forEach(area => {
+        fagomraderMap[area.code] = {
+          timer: area.timer,
+          fag: area.fag || [],
+          displayName: area.name
+        };
+      });
+
       fordypningData = {
         totalTimer: oldFordypning.totalTimer,
         requiredTimer: oldFordypning.required,
-        fagomrader: {},
-        fagomraderCount: oldFordypning.fordypningAreas?.length || 0,
+        fagomrader: fagomraderMap,
+        fordypninger: oldFordypning.antallFordypninger || 0,
+        requiredFordypninger: 2,
         isMet: oldFordypning.isValid
       };
     }
@@ -893,25 +903,27 @@ export class Studieplanlegger {
     let html = '';
 
     // Fordypning progress (always show for studiespesialisering)
+    // NEW LOGIC (2024-11-24): 1 fordypning = 2 fag from same fagområde, need 2 fordypninger total
     if (currentState.programomrade?.includes('studiespesialisering') && fordypningData) {
-      const progress = Math.min(100, (fordypningData.totalTimer / fordypningData.requiredTimer) * 100);
+      const antallFordypninger = fordypningData.fordypninger || 0;
+      const progress = Math.min(100, (antallFordypninger / 2) * 100);
       const progressColor = fordypningData.isMet ? '#4CAF50' : (progress > 50 ? '#ff9800' : '#d32f2f');
 
       // Show cross-trinn fordypning as fag blocks (2 side by side)
       const fagomraderBlokker = Object.entries(fordypningData.fagomrader || {})
         .map(([omrade, data], index) => {
-          const isComplete = data.timer >= 280;
+          const isFordypning = data.fag.length >= 2;  // 2+ fag = fordypning
           // Different green shades for each fordypning område
           const greenShades = ['#4CAF50', '#66BB6A', '#81C784', '#A5D6A7'];
           const color = greenShades[index % greenShades.length];
 
           return `
-            <div class="sp-fordypning-blokk ${isComplete ? 'complete' : ''}" style="border-left-color: ${color};">
-              <div class="sp-fordypning-blokk-header" style="${isComplete ? `background: ${color}20; color: ${color}; border-bottom-color: ${color};` : ''}">
-                ${isComplete ? '✓' : ''} ${data.displayName || omrade}
+            <div class="sp-fordypning-blokk ${isFordypning ? 'complete' : ''}" style="border-left-color: ${color};">
+              <div class="sp-fordypning-blokk-header" style="${isFordypning ? `background: ${color}20; color: ${color}; border-bottom-color: ${color};` : ''}">
+                ${isFordypning ? '✓' : ''} ${data.displayName || omrade} (${data.fag.length} fag)
               </div>
               <div class="sp-fordypning-blokk-fag">
-                ${data.fag.join(', ')}
+                ${data.fag.join(', ')} <span style="opacity: 0.6; font-size: 0.85em;">(${data.timer}t)</span>
               </div>
             </div>
           `;
@@ -944,7 +956,7 @@ export class Studieplanlegger {
         html += `
           <div class="sp-fordypning-status">
             <div class="sp-fordypning-header">
-              <span class="sp-fordypning-label">📊 Fordypning</span>
+              <span class="sp-fordypning-label">📊 Fordypning: ${antallFordypninger} av 2 fordypninger</span>
               <span class="sp-fordypning-progress" style="color: ${progressColor}">
                 ${fordypningData.isMet ? '✓' : '✗'}
               </span>
@@ -955,7 +967,7 @@ export class Studieplanlegger {
               </div>
             ` : `
               <div class="sp-fordypning-hint">
-                ${fordypningData.fagomraderCount < 2 ? 'Velg fag fra minst 2 fagområder' : 'Velg flere fag for fordypning'}
+                2 fag fra samme fagområde = 1 fordypning. Trenger 2 fordypninger totalt.
               </div>
             `}
           </div>
@@ -967,7 +979,7 @@ export class Studieplanlegger {
         html += `
           <div class="sp-fordypning-status">
             <div class="sp-fordypning-header">
-              <span class="sp-fordypning-label">📊 Fordypning</span>
+              <span class="sp-fordypning-label">📊 Fordypning: ${antallFordypninger} av 2 fordypninger</span>
               <span class="sp-fordypning-progress" style="color: ${progressColor}">
                 ${fordypningData.isMet ? '✓ Oppfylt' : 'Ikke oppfylt'}
               </span>
@@ -978,7 +990,7 @@ export class Studieplanlegger {
               </div>
             ` : `
               <div class="sp-fordypning-hint">
-                ${fordypningData.fagomraderCount < 2 ? 'Velg fag fra minst 2 fagområder' : 'Velg flere fag for fordypning'}
+                2 fag fra samme fagområde = 1 fordypning. Trenger 2 fordypninger totalt.
               </div>
             `}
           </div>
