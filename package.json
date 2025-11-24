@@ -1,0 +1,26 @@
+{
+  "name": "studieplanlegger",
+  "version": "1.0.0",
+  "description": "Studieplanlegger for norske VGS-elever - Bergen Private Gymnas",
+  "type": "module",
+  "scripts": {
+    "dev": "python3 -m http.server 8000",
+    "build": "node scripts/build-api.cjs",
+    "fetch": "bash scripts/fetch-curriculum.sh valgfrie",
+    "fetch:all": "bash scripts/fetch-curriculum.sh all",
+    "test": "echo \"Testing not configured yet\"",
+    "deploy": "npm run build && echo \"Deploy to GitHub Pages\""
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/fredeids-metis/studieplanlegger.git"
+  },
+  "author": "Fredrik Eidsheim <fredeids-metis.no>",
+  "license": "MIT",
+  "dependencies": {
+    "gray-matter": "^4.0.3",
+    "js-yaml": "^4.1.0",
+    "marked": "^11.0.0"
+  },
+  "devDependencies": {}
+}

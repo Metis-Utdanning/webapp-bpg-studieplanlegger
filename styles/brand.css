@@ -1,0 +1,36 @@
+/**
+ * Bergen Private Gymnas - Brand Styling
+ *
+ * This file overrides the default CSS variables in base.css
+ * to match Bergen Private Gymnas' branding.
+ *
+ * To create branding for a new school:
+ * 1. Copy this file
+ * 2. Rename it to match the school's ID (e.g., "another-school.css")
+ * 3. Adjust the color variables below
+ * 4. Reference it in the build script
+ */
+
+:root {
+  /* Primary brand colors */
+  --primary-color: #1F4739;        /* Mørkegrønn - Bergen Private Gymnas hovedfarge */
+  --primary-hover: #163529;        /* Mørkere grønn for hover states */
+  --secondary-color: #E8F5A3;      /* Lys lime/grønn - accent farge */
+
+  /* Optional: Override text colors if needed */
+  /* --text-dark: #000000; */
+  /* --text-medium: #737373; */
+  /* --text-light: #666666; */
+
+  /* Optional: Override shadows if needed */
+  /* --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.05); */
+  /* --shadow-md: 0 2px 8px rgba(0, 0, 0, 0.06); */
+  /* --shadow-lg: 0 8px 20px rgba(31, 71, 57, 0.15); */
+}
+
+/* Optional: Add school-specific custom styles here */
+/* Example:
+.school-logo {
+  background-image: url('https://example.com/logo.png');
+}
+*/

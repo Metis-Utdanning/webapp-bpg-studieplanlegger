@@ -1,0 +1,90 @@
+# Bergen Private Gymnas - Skolekonfigurasjon
+# Sist oppdatert: 2025-11-17
+
+school:
+  id: bergen-private-gymnas
+  name: "Bergen Private Gymnas"
+  shortName: "BPG"
+
+  # Kontaktinformasjon
+  contact:
+    address: "Nygårdsgaten 112"
+    postalCode: "5008"
+    city: "Bergen"
+    phone: "+47 55 30 87 00"
+    email: "post@bergenprivategymnas.no"
+    website: "https://bergenprivategymnas.no"
+
+  # Visuelle elementer
+  branding:
+    primaryColor: "#003366"      # Mørkeblå (antagelse - kan endres)
+    secondaryColor: "#FFD700"    # Gull (antagelse - kan endres)
+    logo: "assets/logo.png"      # TODO: Legg til logo
+
+  # Sosiale medier
+  social:
+    facebook: ""
+    instagram: ""
+    linkedin: ""
+
+  # Skoletype
+  schoolType: "Privat videregående skole"
+
+  # Studieprogrammer som tilbys
+  programs:
+    - id: "studiespesialisering"
+      name: "Studiespesialisering"
+      programomrade: "realfag"
+      active: true
+
+    - id: "medier-kommunikasjon"
+      name: "Medier og kommunikasjon"
+      programomrade: "medier-kommunikasjon"
+      active: true
+
+    - id: "musikk-dans-drama"
+      name: "Musikk, dans og drama"
+      programomrade: "musikk"
+      active: true
+
+  # Metadata
+  metadata:
+    established: 1966
+    studentCount: ~300    # Estimat
+    description: "Bergen Private Gymnas er en privat videregående skole i Bergen sentrum."
+
+# ========================================
+# BLOKKSKJEMA VERSJONSSTYRING
+# ========================================
+# ADMIN-KONTROLLERT: Endringer her krever rebuild og deploy av API.
+# IKKE BRUKER-SYNLIG: Kun for administrativ versjonsstyring.
+
+blokkskjema:
+  # Hvilken versjon som er aktiv (brukes i produksjon)
+  activeVersion: "v1"  # Endre til "v2" for å aktivere blokkskjema_v2.yml
+
+  # Tilgjengelige versjoner og deres filer
+  versions:
+    v1: "blokkskjema.yml"        # Original blokkskjema (LIVE)
+    v2: "blokkskjema_v2.yml"     # Eksperimentell versjon basert på faktisk fagtilbud
+
+  # Versjonsbeskrivelser (for dokumentasjon)
+  descriptions:
+    v1: "Original blokkskjema - Enkel struktur uten eksplisitt programtilgang"
+    v2: "Eksperimentell versjon - Faktisk fagtilbud fra bilde med eksplisitt programtilgang og timer"
+
+  # Dokumentasjon for versjonsstyring
+  documentation: |
+    HVORDAN BYTTE BLOKKSKJEMA-VERSJON:
+    1. Endre 'activeVersion' til ønsket versjon (v1 eller v2)
+    2. Kjør 'npm run build' i school-data repo
+    3. Commit og push endringer
+    4. GitHub Pages deployer automatisk den nye versjonen
+
+    ROLLBACK:
+    - Endre 'activeVersion' tilbake til forrige versjon
+    - Kjør build og deploy på nytt
+
+    FREMTIDIGE VERSJONER:
+    - Legg til nye versjoner under 'versions'
+    - Eksempel: v3: "blokkskjema_v3.yml"

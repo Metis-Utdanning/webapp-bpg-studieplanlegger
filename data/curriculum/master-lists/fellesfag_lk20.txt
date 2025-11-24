@@ -1,0 +1,81 @@
+# Fagnavn;Fagkode;Læreplankode;Program (valgfritt)
+#
+# Format:
+# - Kolonne 1: Fagnavn
+# - Kolonne 2: Fagkode (offisiell)
+# - Kolonne 3: Læreplankode
+# - Kolonne 4: Program (kun for program-spesifikke fag, se detaljer nederst)
+#
+# Hvis kolonne 4 er tom, er faget obligatorisk for alle programmer
+
+# ========================================
+# FELLESFAG - Obligatoriske for alle elever
+# ========================================
+
+# ========================================
+# FELLESFAG VG1 (8 fag)
+# ========================================
+Engelsk;ENG1007;ENG01-04
+Geografi;GEO1003;GEO01-02;STUDIESPESIALISERING
+Kroppsøving, vg1;KRO1017;KRO01-05;STUDIESPESIALISERING,MEDIER-KOMMUNIKASJON
+Matematikk 1P;MAT1019;MAT08-01
+Matematikk 1T;MAT1021;MAT09-01
+Naturfag;NAT1007;NAT01-04
+Norsk, vg1;NOR1260;NOR01-07
+Samfunnskunnskap;SAK1001;SAK01-01;STUDIESPESIALISERING
+
+# ========================================
+# FELLESFAG VG2 (6 fag)
+# ========================================
+Geografi;GEO1003;GEO01-02;MUSIKK-DANS-DRAMA,MEDIER-KOMMUNIKASJON
+Historie, vg2;HIS1009;HIS01-03
+Kroppsøving, vg2;KRO1018;KRO01-05;STUDIESPESIALISERING,MEDIER-KOMMUNIKASJON
+Matematikk 2P;MAT1023;MAT05-04
+Norsk, vg2;NOR1264;NOR01-07
+Samfunnskunnskap;SAK1001;SAK01-01;MUSIKK-DANS-DRAMA,MEDIER-KOMMUNIKASJON
+
+# ========================================
+# FELLESFAG VG3 (4 fag)
+# ========================================
+Historie, vg3;HIS1010;HIS01-03
+Kroppsøving, vg3;KRO1019;KRO01-05
+Norsk, vg3;NOR1267;NOR01-07
+Religion og etikk;REL1003;REL01-03
+
+# ========================================
+# FREMMEDSPRÅK (betinget obligatorisk)
+# ========================================
+# Obligatorisk for elever uten fremmedspråk i grunnskolen
+
+# --- VG1 (5 fag) ---
+Spansk II, vg1;FSP6221;FSP01-04
+Spansk I, vg1;FSP6218;FSP01-04
+Spansk I+II, vg1;FSP6224;FSP01-04
+Tysk II, vg1;FSP6241;FSP01-04
+Fransk II, vg1;FSP6151;FSP01-04
+
+# --- VG2 (5 fag) ---
+Spansk II, vg2;FSP6222;FSP01-04
+Spansk I, vg2;FSP6219;FSP01-04
+Spansk I+II, vg2;FSP6225;FSP01-04
+Tysk II, vg2;FSP6242;FSP01-04
+Fransk II, vg2;FSP6152;FSP01-04
+
+# --- VG3 (1 fag) ---
+Spansk I+II, vg3;FSP6226;FSP01-04
+
+# ========================================
+# TOTALT: 18 FELLESFAG + 11 FREMMEDSPRÅK = 29 FAG
+# ========================================
+# Merk:
+# - Fremmedspråk er betinget obligatorisk
+# - Noen fellesfag er program-spesifikke (4. kolonne angir hvilke programmer)
+# - Fag uten 4. kolonne er obligatoriske for alle programmer
+#
+# Program-spesifikke fellesfag:
+# - Geografi VG1: Kun Studiespesialisering
+# - Geografi VG2: Kun Musikk, dans og drama + Medier og kommunikasjon
+# - Kroppsøving VG1: Kun Studiespesialisering + Medier og kommunikasjon
+# - Kroppsøving VG2: Kun Studiespesialisering + Medier og kommunikasjon
+# - Samfunnskunnskap VG1: Kun Studiespesialisering
+# - Samfunnskunnskap VG2: Kun Musikk, dans og drama + Medier og kommunikasjon

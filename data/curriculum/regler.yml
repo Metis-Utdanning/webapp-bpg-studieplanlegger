@@ -1,0 +1,368 @@
+# Curriculum Validation Rules
+# Single Source of Truth for all validation logic
+# This file is converted to JSON and served via API
+
+# =============================================================================
+# EKSKLUSJONER - Fag som IKKE kan kombineres
+# =============================================================================
+eksklusjoner:
+  # Matematikk S vs R (blokkerende) - S-linja og R-linja kan ikke kombineres
+  # Men R1+R2 er OK, og S1+S2 er OK
+  - id: math-s-r-conflict
+    type: blocking
+    konfliktGrupper:
+      - [matematikk-s1, matematikk-s2]   # S-linja
+      - [matematikk-r1, matematikk-r2]   # R-linja
+    beskrivelse: "Matematikk S-linja og R-linja kan ikke føres på samme vitnemål"
+    feilmelding: "Du kan ikke kombinere Matematikk S og R på samme vitnemål"
+    forslag: "Velg enten S-linja (S1/S2) eller R-linja (R1/R2)"
+
+  # Matematikk R/S vs 2P (blokkerende) - R1/S1 erstatter 2P
+  - id: math-programfag-2p-conflict
+    type: blocking
+    konfliktGrupper:
+      - [matematikk-r1, matematikk-s1]   # Programfag som erstatter 2P
+      - [matematikk-2p]                   # Fellesfag 2P
+    beskrivelse: "Matematikk R1 eller S1 erstatter fellesfaget 2P"
+    feilmelding: "Du kan ikke kombinere R1/S1 med 2P - programfaget erstatter fellesfaget"
+    forslag: "Matematikk R1 eller S1 erstatter 2P automatisk"
+
+  # Geofag X vs 1 (blokkerende)
+  - id: geofag-x-1-conflict
+    type: blocking
+    gruppe:
+      - geofag-x
+      - geofag-1
+    beskrivelse: "Geofag X og Geofag 1 kan ikke føres på samme vitnemål"
+    feilmelding: "Geofag X og Geofag 1 kan ikke kombineres"
+    forslag: "Velg enten Geofag X eller Geofag 1"
+
+  # Teknologi X vs 1 (blokkerende)
+  - id: tof-x-1-conflict
+    type: blocking
+    gruppe:
+      - teknologi-og-forskningslare-x
+      - teknologi-og-forskningslare-1
+    beskrivelse: "Teknologi X og Teknologi 1 kan ikke føres på samme vitnemål"
+    feilmelding: "Teknologi og forskningslære X og 1 kan ikke kombineres"
+    forslag: "Velg enten X-varianten eller nivå 1"
+
+# =============================================================================
+# FORUTSETNINGER - Fag som bygger på andre fag
+# =============================================================================
+forutsetninger:
+  # Realfag
+  - fag: fysikk-2
+    krever: [fysikk-1]
+    type: warning  # Anbefaling, ikke obligatorisk
+    beskrivelse: "Fysikk 2 bygger på Fysikk 1"
+    feilmelding: "Fysikk 2 anbefales med Fysikk 1 først"
+    forslag: "Legg til Fysikk 1 i VG2"
+
+  - fag: kjemi-2
+    krever: [kjemi-1]
+    type: warning
+    beskrivelse: "Kjemi 2 bygger på Kjemi 1"
+    feilmelding: "Kjemi 2 anbefales med Kjemi 1 først"
+    forslag: "Legg til Kjemi 1 i VG2"
+
+  - fag: biologi-2
+    krever: [biologi-1]
+    type: warning
+    beskrivelse: "Biologi 2 bygger på Biologi 1"
+    feilmelding: "Biologi 2 anbefales med Biologi 1 først"
+    forslag: "Legg til Biologi 1 i VG2"
+
+  # Matematikk
+  - fag: matematikk-r2
+    krever: [matematikk-r1]
+    type: warning
+    beskrivelse: "Matematikk R2 krever R1"
+    feilmelding: "Matematikk R2 krever at du har hatt R1 i VG2"
+    forslag: "Legg til Matematikk R1 i VG2"
+
+  - fag: matematikk-s2
+    krever: [matematikk-s1]
+    type: warning
+    beskrivelse: "Matematikk S2 krever S1"
+    feilmelding: "Matematikk S2 krever at du har hatt S1 i VG2"
+    forslag: "Legg til Matematikk S1 i VG2"
+
+  # Samfunnsfag
+  - fag: markedsforing-og-ledelse-2
+    krever: [markedsforing-og-ledelse-1]
+    type: warning
+    beskrivelse: "Markedsføring 2 bygger på Markedsføring 1"
+    feilmelding: "Markedsføring og ledelse 2 anbefales med nivå 1 først"
+    forslag: "Legg til Markedsføring og ledelse 1"
+
+  - fag: entreprenorskap-og-bedriftsutvikling-2
+    krever: [entreprenorskap-og-bedriftsutvikling-1]
+    type: warning
+    beskrivelse: "Entreprenørskap 2 bygger på Entreprenørskap 1"
+    feilmelding: "Entreprenørskap 2 anbefales med nivå 1 først"
+    forslag: "Legg til Entreprenørskap 1"
+
+  - fag: psykologi-2
+    krever: [psykologi-1]
+    type: warning
+    beskrivelse: "Psykologi 2 bygger på Psykologi 1"
+    feilmelding: "Psykologi 2 anbefales med Psykologi 1 først"
+    forslag: "Legg til Psykologi 1"
+
+  - fag: rettslare-2
+    krever: [rettslare-1]
+    type: warning
+    beskrivelse: "Rettslære 2 bygger på Rettslære 1"
+    feilmelding: "Rettslære 2 anbefales med Rettslære 1 først"
+    forslag: "Legg til Rettslære 1"
+
+  - fag: historie-og-filosofi-2
+    krever: [historie-og-filosofi-1]
+    type: warning
+    beskrivelse: "Historie og filosofi 2 bygger på nivå 1"
+    feilmelding: "Historie og filosofi 2 anbefales med nivå 1 først"
+    forslag: "Legg til Historie og filosofi 1"
+
+  - fag: samfunnsokonomi-2
+    krever: [samfunnsokonomi-1]
+    type: warning
+    beskrivelse: "Samfunnsøkonomi 2 bygger på Samfunnsøkonomi 1"
+    feilmelding: "Samfunnsøkonomi 2 anbefales med nivå 1 først"
+    forslag: "Legg til Samfunnsøkonomi 1"
+
+  # Musikk
+  - fag: musikk-fordypning-2
+    krever: [musikk-fordypning-1]
+    type: warning
+    beskrivelse: "Musikk fordypning 2 bygger på nivå 1"
+    feilmelding: "Musikk fordypning 2 anbefales med nivå 1 først"
+    forslag: "Legg til Musikk fordypning 1"
+
+  # IT
+  - fag: informasjonsteknologi-2
+    krever: [informasjonsteknologi-1]
+    type: warning
+    beskrivelse: "IT 2 bygger på IT 1"
+    feilmelding: "Informasjonsteknologi 2 anbefales med nivå 1 først"
+    forslag: "Legg til Informasjonsteknologi 1"
+
+  # Geofag
+  - fag: geofag-2
+    krever: [geofag-1]
+    type: warning
+    beskrivelse: "Geofag 2 bygger på Geofag 1"
+    feilmelding: "Geofag 2 anbefales med Geofag 1 først"
+    forslag: "Legg til Geofag 1"
+
+  # Engelsk
+  - fag: engelsk-2
+    krever: [engelsk-1]
+    type: warning
+    beskrivelse: "Engelsk 2 bygger på Engelsk 1"
+    feilmelding: "Engelsk 2 anbefales med Engelsk 1 først"
+    forslag: "Legg til Engelsk 1"
+
+# =============================================================================
+# FAGOMRÅDER - For fordypningsberegning
+# =============================================================================
+fagomrader:
+  MAT:
+    navn: "Matematikk"
+    fag:
+      - matematikk-r1
+      - matematikk-r2
+      - matematikk-s1
+      - matematikk-s2
+      - matematikk-2p
+      - matematikk-x
+
+  FYS:
+    navn: "Fysikk"
+    fag:
+      - fysikk-1
+      - fysikk-2
+
+  KJE:
+    navn: "Kjemi"
+    fag:
+      - kjemi-1
+      - kjemi-2
+
+  BIO:
+    navn: "Biologi"
+    fag:
+      - biologi-1
+      - biologi-2
+
+  GEO:
+    navn: "Geofag"
+    fag:
+      - geofag-1
+      - geofag-2
+      - geofag-x
+
+  IT:
+    navn: "Informasjonsteknologi"
+    fag:
+      - informasjonsteknologi-1
+      - informasjonsteknologi-2
+
+  TOF:
+    navn: "Teknologi og forskningslære"
+    fag:
+      - teknologi-og-forskningslare-1
+      - teknologi-og-forskningslare-2
+      - teknologi-og-forskningslare-x
+
+  SOK:
+    navn: "Samfunnsøkonomi"
+    fag:
+      - samfunnsokonomi-1
+      - samfunnsokonomi-2
+
+  OKO:
+    navn: "Økonomi og ledelse"
+    fag:
+      - okonomistyring
+      - okonomi-og-ledelse
+
+  MOL:
+    navn: "Markedsføring og ledelse"
+    fag:
+      - markedsforing-og-ledelse-1
+      - markedsforing-og-ledelse-2
+
+  ENT:
+    navn: "Entreprenørskap"
+    fag:
+      - entreprenorskap-og-bedriftsutvikling-1
+      - entreprenorskap-og-bedriftsutvikling-2
+
+  POS:
+    navn: "Politikk og samfunn"
+    fag:
+      - politikk-og-menneskerettigheter
+      - sosialkunnskap
+      - sosiologi-og-sosialantropologi
+
+  PSY:
+    navn: "Psykologi"
+    fag:
+      - psykologi-1
+      - psykologi-2
+
+  RET:
+    navn: "Rettslære"
+    fag:
+      - rettslare-1
+      - rettslare-2
+
+  HIF:
+    navn: "Historie og filosofi"
+    fag:
+      - historie-og-filosofi-1
+      - historie-og-filosofi-2
+
+  ENG:
+    navn: "Engelsk"
+    fag:
+      - engelsk-1
+      - engelsk-2
+      - internasjonal-engelsk
+
+  FSP:
+    navn: "Fremmedspråk"
+    merknad: "To ulike fremmedspråk teller som ett fagområde"
+    fag:
+      - spansk-1
+      - spansk-2
+      - spansk-3
+      - tysk-1
+      - tysk-2
+      - tysk-3
+      - fransk-1
+      - fransk-2
+      - fransk-3
+
+  MUS:
+    navn: "Musikk"
+    fag:
+      - musikk-fordypning-1
+      - musikk-fordypning-2
+
+  KUN:
+    navn: "Kunst og design"
+    fag:
+      - bilde
+      - grafisk-design
+
+# =============================================================================
+# FORDYPNING - Krav per programområde
+# =============================================================================
+fordypning:
+  studiespesialisering:
+    minTimer: 560
+    minOmrader: 2
+    timerPerOmrade: 280
+    beskrivelse: "Minimum 560 timer fordypning fra 2 fagområder (280 timer hver)"
+    unntak:
+      - type: fremmedsprak
+        beskrivelse: "To ulike fremmedspråk kan telle som ett fagområde"
+
+  musikk-dans-drama:
+    minTimer: 0
+    minOmrader: 0
+    beskrivelse: "Musikk har ikke fordypningskrav på samme måte"
+
+  medier-kommunikasjon:
+    minTimer: 0
+    minOmrader: 0
+    beskrivelse: "Medier og kommunikasjon har ikke fordypningskrav"
+
+# =============================================================================
+# OBLIGATORISKE FAG - Per program og trinn
+# =============================================================================
+obligatoriskeFag:
+  alle:
+    vg3:
+      - fag: historie
+        beskrivelse: "Historie er obligatorisk fellesfag i VG3"
+        timer: 113
+
+  studiespesialisering:
+    vg2:
+      - fag: matematikk
+        type: kategori
+        alternativer: [matematikk-2p, matematikk-r1, matematikk-s1]
+        beskrivelse: "Må velge ett matematikkfag"
+
+  betinget:
+    - fag: spansk-i-ii
+      betingelse: harFremmedsprak == false
+      trinn: vg3
+      beskrivelse: "Elever uten fremmedspråk fra ungdomsskolen må ta Spansk I+II"
+      timer: 140
+
+# =============================================================================
+# SPESIALREGLER
+# =============================================================================
+spesialregler:
+  matematikkErstatter2P:
+    beskrivelse: "Matematikk R1 eller S1 erstatter fellesfaget Matematikk 2P"
+    gjelder: [matematikk-r1, matematikk-s1]
+    erstatter: matematikk-2p
+    frigjorteTimer: 84
+
+  samiskKvenskFinsk:
+    beskrivelse: "Elever med samisk/kvensk/finsk er fritatt fra fremmedspråkkrav"
+    type: fritak
+
+# =============================================================================
+# METADATA
+# =============================================================================
+metadata:
+  versjon: "1.0.0"
+  sistOppdatert: "2024-11-21"
+  kilde: "REGLER.md, TIMEFORDELING.md"
+  beskrivelse: "Maskinlesbar versjon av alle valideringsregler for curriculum"

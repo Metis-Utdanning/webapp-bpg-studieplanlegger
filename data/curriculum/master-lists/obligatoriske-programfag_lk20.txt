@@ -1,0 +1,48 @@
+# Fagnavn;Fagkode;Læreplankode
+
+# ========================================
+# OBLIGATORISKE PROGRAMFAG
+# ========================================
+# Disse fagene er obligatoriske for elever i spesifikke utdanningsprogram
+# - Musikk, dans og drama: 10 fag
+# - Medier og kommunikasjon: 6 fag
+
+# ========================================
+# MUSIKK, DANS OG DRAMA (10 fag)
+# ========================================
+
+# --- Vg1 (5 fag) ---
+Musikk, dans og drama;MDD2002;MDD01-02
+Ergonomi og bevegelse 1;MUS2010;MUS03-02
+Instrument, kor, samspill 1;MUS2012;MUS05-02
+Musikk i perspektiv 1;MUS2014;MUS06-02
+Lytting;MDD3007;MDD03-02
+
+# --- Vg2 (4 fag) ---
+Ergonomi og bevegelse 2;MUS2011;MUS03-02
+Instruksjon og ledelse;MUS2018;MUS04-02
+Instrument, kor, samspill 2;MUS2013;MUS05-02
+Musikk i perspektiv 2;MUS2016;MUS06-02
+
+# --- Vg3 (1 fag) ---
+Musikk;MDD3009;MDD05-02
+
+# ========================================
+# MEDIER OG KOMMUNIKASJON (6 fag)
+# ========================================
+
+# --- Vg1 (2 fag) ---
+Mediesamfunnet 1;MOK2008;MOK01-02
+Medieuttrykk 1;MOK2012;MOK02-02
+
+# --- Vg2 (2 fag) ---
+Mediesamfunnet 2;MOK2009;MOK01-02
+Medieuttrykk 2;MOK2013;MOK02-02
+
+# --- Vg3 (2 fag) ---
+Mediesamfunnet 3;MOK2010;MOK01-02
+Medieuttrykk 3;MOK2014;MOK02-02
+
+# ========================================
+# TOTALT: 16 OBLIGATORISKE PROGRAMFAG
+# ========================================

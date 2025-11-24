@@ -1,0 +1,220 @@
+# Bergen Private Gymnas - Timefordeling
+# Fellesfag og obligatoriske programfag per program og trinn
+# Basert på TIMEFORDELING.md
+#
+# MERK: Denne filen er SEPARAT fra blokkskjema_v2.yml
+# - Blokkskjema = valgfrie programfag (som elever velger i blokkskjema-modal)
+# - Timefordeling = faste fag som vises automatisk i studieplanleggeren
+
+# ========================================
+# FELLESFAG (obligatoriske for alle/enkelte programmer)
+# ========================================
+fellesfag:
+  vg1:
+    - id: norsk-vg1
+      title: Norsk
+      timer: 113
+      fagkode: NOR1260
+      tilgjengeligFor: [studiespesialisering, musikk-dans-drama, medier-kommunikasjon]
+    - id: engelsk
+      title: Engelsk
+      timer: 140
+      fagkode: ENG1007
+      tilgjengeligFor: [studiespesialisering, musikk-dans-drama, medier-kommunikasjon]
+    - id: naturfag
+      title: Naturfag
+      timer: 140
+      fagkode: NAT1007
+      tilgjengeligFor: [studiespesialisering, musikk-dans-drama, medier-kommunikasjon]
+    - id: geografi-vg1
+      title: Geografi
+      timer: 56
+      fagkode: GEO1003
+      tilgjengeligFor: [studiespesialisering]
+    - id: samfunnskunnskap-vg1
+      title: Samfunnskunnskap
+      timer: 84
+      fagkode: SAK1001
+      tilgjengeligFor: [studiespesialisering]
+    - id: kroppsoving-vg1
+      title: Kroppsøving
+      timer: 56
+      fagkode: KRO1017
+      tilgjengeligFor: [studiespesialisering, medier-kommunikasjon]
+
+  vg2:
+    - id: norsk-vg2
+      title: Norsk
+      timer: 112
+      fagkode: NOR1264
+      tilgjengeligFor: [studiespesialisering, musikk-dans-drama, medier-kommunikasjon]
+    - id: historie-vg2
+      title: Historie
+      timer: 56
+      fagkode: HIS1009
+      tilgjengeligFor: [studiespesialisering, musikk-dans-drama, medier-kommunikasjon]
+    - id: kroppsoving-vg2
+      title: Kroppsøving
+      timer: 56
+      fagkode: KRO1018
+      tilgjengeligFor: [studiespesialisering, medier-kommunikasjon]
+    - id: geografi-vg2
+      title: Geografi
+      timer: 56
+      fagkode: GEO1003
+      tilgjengeligFor: [musikk-dans-drama, medier-kommunikasjon]
+    - id: samfunnskunnskap-vg2
+      title: Samfunnskunnskap
+      timer: 84
+      fagkode: SAK1001
+      tilgjengeligFor: [musikk-dans-drama, medier-kommunikasjon]
+    - id: fremmedsprak-vg2
+      title: Fremmedspråk
+      timer: 112
+      fagkode: FSP6219
+      tilgjengeligFor: [studiespesialisering, musikk-dans-drama, medier-kommunikasjon]
+      merknad: "Fortsetter språket fra VG1. Kan være nivå I, II eller I+II"
+
+  vg3:
+    - id: norsk-vg3
+      title: Norsk
+      timer: 168
+      fagkode: NOR1267
+      tilgjengeligFor: [studiespesialisering, musikk-dans-drama, medier-kommunikasjon]
+    - id: historie-vg3
+      title: Historie
+      timer: 113
+      fagkode: HIS1010
+      tilgjengeligFor: [studiespesialisering, musikk-dans-drama, medier-kommunikasjon]
+    - id: religion-og-etikk
+      title: Religion og etikk
+      timer: 84
+      fagkode: REL1003
+      tilgjengeligFor: [studiespesialisering, musikk-dans-drama, medier-kommunikasjon]
+    - id: kroppsoving-vg3
+      title: Kroppsøving
+      timer: 56
+      fagkode: KRO1019
+      tilgjengeligFor: [studiespesialisering, medier-kommunikasjon]
+
+# ========================================
+# VG1-VALG (matematikk og fremmedspråk som elever må velge)
+# ========================================
+vg1Valg:
+  matematikk:
+    - id: matematikk-1p
+      title: Matematikk 1P
+      timer: 140
+      fagkode: MAT1019
+    - id: matematikk-1t
+      title: Matematikk 1T
+      timer: 140
+      fagkode: MAT1021
+  fremmedsprak:
+    # For elever som HAR hatt fremmedspråk i ungdomsskolen (nivå I eller II)
+    harFremmedsprak:
+      - id: spansk-i
+        title: Spansk I
+        timer: 113
+        fagkode: FSP6215
+        merknad: Nivå I - for de som vil starte nytt språk
+      - id: spansk-ii
+        title: Spansk II
+        timer: 113
+        fagkode: FSP6218
+      - id: tysk-ii
+        title: Tysk II
+        timer: 113
+        fagkode: FSP6224
+      - id: fransk-ii
+        title: Fransk II
+        timer: 113
+        fagkode: FSP6221
+    # For elever som IKKE har hatt fremmedspråk i ungdomsskolen (nivå I+II over 3 år)
+    ikkeHarFremmedsprak:
+      - id: spansk-i-ii
+        title: Spansk I+II
+        timer: 113
+        fagkode: FSP6237
+        merknad: "Spansk nivå I+II (VG1: 113t + VG2: 112t + VG3: 140t = 365t totalt)"
+
+# ========================================
+# FELLES PROGRAMFAG (obligatoriske for spesifikke programmer)
+# Disse vises automatisk men kan ikke velges bort
+# ========================================
+fellesProgramfag:
+  # Musikk, dans og drama - obligatoriske programfag
+  musikk-dans-drama:
+    vg1:
+      - id: musikk-dans-drama-vg1
+        title: Musikk, dans og drama
+        timer: 140
+        fagkode: MDD2002
+      - id: lytting
+        title: Lytting
+        timer: 56
+        fagkode: MDD3007
+      - id: musikk-vg1
+        title: Musikk
+        timer: 140
+        fagkode: MDD3009
+    vg2:
+      - id: ergonomi-og-bevegelse-1
+        title: Ergonomi og bevegelse 1
+        timer: 56
+        fagkode: MUS2010
+      - id: instrument-kor-samspill-1
+        title: Instrument, kor, samspill 1
+        timer: 140
+        fagkode: MUS2012
+      - id: musikk-i-perspektiv-1
+        title: Musikk i perspektiv 1
+        timer: 140
+        fagkode: MUS2014
+    vg3:
+      - id: ergonomi-og-bevegelse-2
+        title: Ergonomi og bevegelse 2
+        timer: 56
+        fagkode: MUS2011
+      - id: instruksjon-og-ledelse
+        title: Instruksjon og ledelse
+        timer: 140
+        fagkode: MUS2018
+      - id: instrument-kor-samspill-2
+        title: Instrument, kor, samspill 2
+        timer: 140
+        fagkode: MUS2013
+      - id: musikk-i-perspektiv-2
+        title: Musikk i perspektiv 2
+        timer: 140
+        fagkode: MUS2016
+
+  # Medier og kommunikasjon - obligatoriske programfag
+  medier-kommunikasjon:
+    vg1:
+      - id: mediesamfunnet-1
+        title: Mediesamfunnet 1
+        timer: 140
+        fagkode: MOK2008
+      - id: medieuttrykk-1
+        title: Medieuttrykk 1
+        timer: 140
+        fagkode: MOK2012
+    vg2:
+      - id: mediesamfunnet-2
+        title: Mediesamfunnet 2
+        timer: 140
+        fagkode: MOK2009
+      - id: medieuttrykk-2
+        title: Medieuttrykk 2
+        timer: 140
+        fagkode: MOK2013
+    vg3:
+      - id: mediesamfunnet-3
+        title: Mediesamfunnet 3
+        timer: 140
+        fagkode: MOK2010
+      - id: medieuttrykk-3
+        title: Medieuttrykk 3
+        timer: 140
+        fagkode: MOK2014

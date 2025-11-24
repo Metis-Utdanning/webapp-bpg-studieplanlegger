@@ -1,0 +1,1450 @@
+/**
+ * Studieplanlegger Widget - Main Styles
+ *
+ * This file contains widget-specific styles.
+ * In production, this will be bundled with:
+ * - base.css (foundation)
+ * - brand CSS (school-specific colors)
+ * - modal.css (shared modal component)
+ */
+
+/* ============================================
+   MAIN CONTAINER
+   ============================================ */
+#studieplanlegger-widget {
+  background: #fafafa;
+  padding: var(--spacing-lg);
+  border-radius: var(--radius-lg);
+}
+
+/* ============================================
+   FILTER SECTION
+   ============================================ */
+.sp-filter-section {
+  background: white;
+  border: 2px solid var(--border-light);
+  border-radius: var(--radius-lg);
+  padding: var(--spacing-lg);
+  margin-bottom: var(--spacing-xl);
+  box-shadow: var(--shadow-md);
+}
+
+.sp-filter-grid {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: var(--spacing-lg);
+  align-items: start;
+}
+
+@media (max-width: 768px) {
+  .sp-filter-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.sp-filter-label {
+  display: block;
+  font-weight: 600;
+  margin-bottom: var(--spacing-sm);
+  font-size: 0.95rem;
+  color: var(--text-dark);
+}
+
+.sp-filter-buttons {
+  display: flex;
+  gap: var(--spacing-sm);
+  flex-wrap: wrap;
+}
+
+.sp-filter-btn {
+  padding: 0.75rem 1.5rem;
+  border: 2px solid var(--border-medium, #ccc);
+  background: white;
+  border-radius: var(--radius-md);
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  color: var(--text-dark);
+}
+
+.sp-filter-btn:hover {
+  border-color: var(--primary-color);
+  background: var(--background-light, #f5f5f5);
+}
+
+.sp-filter-btn.selected {
+  background: var(--primary-color);
+  color: white;
+  border-color: var(--primary-color);
+}
+
+/* Filter group with action button inline */
+.sp-filter-group-with-action {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: var(--spacing-md);
+}
+
+.sp-filter-group-main {
+  flex: 1;
+}
+
+.sp-filter-action {
+  flex-shrink: 0;
+}
+
+/* Fjern valg button */
+.sp-fjern-valg-btn {
+  padding: 0.75rem 1.5rem;
+  border: 2px solid var(--border-medium, #ccc);
+  background: #f5f5f5;
+  border-radius: var(--radius-md);
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: not-allowed;
+  transition: all var(--transition-fast);
+  color: #999;
+  opacity: 0.6;
+}
+
+.sp-fjern-valg-btn.active {
+  cursor: pointer;
+  opacity: 1;
+  color: var(--text-dark);
+  background: white;
+  border-color: #d32f2f;
+}
+
+.sp-fjern-valg-btn.active:hover {
+  background: #ffebee;
+  border-color: #d32f2f;
+  color: #d32f2f;
+}
+
+/* ============================================
+   VG GRID (3 columns)
+   ============================================ */
+.sp-vg-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--spacing-lg);
+  margin-bottom: var(--spacing-xl);
+  position: relative;
+}
+
+@media (max-width: 1024px) {
+  .sp-vg-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ============================================
+   VG COLUMN
+   ============================================ */
+.sp-vg-column {
+  background: white;
+  border: 2px solid var(--border-light);
+  border-radius: var(--radius-lg);
+  display: flex;
+  flex-direction: column;
+  box-shadow: var(--shadow-md);
+  transition: all var(--transition-normal);
+  position: relative;
+  z-index: 2;
+}
+
+.sp-vg-column:hover {
+  box-shadow: var(--shadow-lg);
+  transform: translateY(-4px);
+  border-color: var(--primary-color);
+}
+
+.sp-vg-column:hover .sp-vg-content {
+  background: linear-gradient(to bottom, white 0%, rgba(232, 245, 163, 0.03) 100%);
+}
+
+/* Header with gradient per trinn */
+.sp-vg-header {
+  background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-hover) 100%);
+  color: white;
+  padding: var(--spacing-lg);
+  text-align: center;
+  font-weight: 700;
+  font-size: 1.25rem;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+  position: relative;
+  min-height: 80px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+}
+
+/* VG1 header - mørkegrønn */
+.sp-vg-column:nth-child(1) .sp-vg-header {
+  background: linear-gradient(135deg, var(--primary-color) 0%, rgba(22, 53, 41, 1) 100%);
+}
+
+/* VG2 header - medium grønn */
+.sp-vg-column:nth-child(2) .sp-vg-header {
+  background: linear-gradient(135deg, rgba(31, 71, 57, 0.9) 0%, rgba(31, 71, 57, 0.75) 100%);
+}
+
+/* VG3 header - lime/lys grønn */
+.sp-vg-column:nth-child(3) .sp-vg-header {
+  background: linear-gradient(135deg, rgba(31, 71, 57, 0.7) 0%, rgba(128, 165, 110, 1) 100%);
+}
+
+.sp-vg-content {
+  padding: var(--spacing-lg);
+  flex: 1;
+  background: white;
+  transition: background var(--transition-normal);
+  overflow: hidden;
+  border-radius: 0 0 var(--radius-lg) var(--radius-lg);
+}
+
+.sp-vg-timer {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.9);
+  margin-top: var(--spacing-xs);
+}
+
+/* ============================================
+   FAG SECTIONS
+   ============================================ */
+.sp-fag-section {
+  margin-bottom: var(--spacing-lg);
+}
+
+.sp-fag-section:last-child {
+  margin-bottom: 0;
+}
+
+.sp-fag-section-title {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--text-medium, #737373);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: var(--spacing-sm);
+}
+
+/* ============================================
+   FAG ITEMS
+   ============================================ */
+.sp-fag-item {
+  background: white;
+  border: 2px solid var(--border-light);
+  border-radius: var(--radius-md);
+  padding: var(--spacing-sm) var(--spacing-md);
+  margin-bottom: var(--spacing-xs, 4px);
+  font-size: 0.9rem;
+  transition: all var(--transition-fast);
+  /* Compact layout: title and timer on same row */
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: var(--spacing-sm);
+}
+
+.sp-fag-item:last-child {
+  margin-bottom: 0;
+}
+
+.sp-fag-item-title {
+  font-weight: 600;
+  color: var(--text-dark);
+  margin-bottom: var(--spacing-xs);
+}
+
+.sp-fag-item-timer {
+  font-size: 0.75rem;
+  color: var(--text-medium, #737373);
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+/* Info button */
+.sp-fag-item-info {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: transparent;
+  border: none;
+  padding: 0;
+  color: var(--text-medium, #737373);
+  font-size: 0.7rem;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  flex-shrink: 0;
+  transition: all var(--transition-fast);
+}
+
+.sp-fag-item-info:hover {
+  background: rgba(31, 71, 57, 0.1);
+  color: var(--primary-color);
+  transform: scale(1.15);
+}
+
+.sp-fag-item-info svg {
+  display: block;
+}
+
+/* Wrapper for timer + info */
+.sp-fag-item-meta {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-xs, 4px);
+  flex-shrink: 0;
+}
+
+/* Fellesfag style */
+.sp-fag-item.fellesfag {
+  background: var(--background-light);
+  border-color: var(--primary-color);
+}
+
+/* Obligatoriske programfag style (felles programfag for spesifikke programmer) */
+.sp-fag-item.obligatorisk-programfag {
+  background: #f0f7ff;
+  border-color: var(--secondary-color);
+  border-left: 4px solid var(--secondary-color);
+}
+
+/* Empty/gray programfag slots */
+.sp-fag-item.empty-slot {
+  background: var(--background-light, #f5f5f5);
+  border: 2px dashed var(--border-medium, #ccc);
+  color: var(--text-light, #999);
+  cursor: pointer;
+  /* Same padding as regular fag-items for consistent height */
+  padding: var(--spacing-sm) var(--spacing-md);
+  transition: all var(--transition-fast);
+}
+
+.sp-fag-item.empty-slot .sp-fag-item-title {
+  color: var(--text-light, #999);
+  font-weight: 500;
+}
+
+/* Group hover effect for programfag slots */
+.sp-programfag-gruppe:hover .sp-fag-item.empty-slot {
+  border-color: var(--vg-header-color);
+  background: #e8f0ec;
+}
+
+.sp-programfag-gruppe:hover .sp-fag-item.empty-slot .sp-fag-item-title {
+  color: var(--vg-header-color);
+}
+
+/* VG2 Matematikk gruppe - klikkbar */
+.sp-vg2-matematikk-gruppe {
+  cursor: pointer;
+}
+
+.sp-vg2-matematikk-gruppe:hover .sp-fag-item.empty-slot {
+  border-color: var(--vg-header-color);
+  background: #e8f0ec;
+}
+
+.sp-vg2-matematikk-gruppe:hover .sp-fag-item.selected {
+  border-color: var(--primary-color);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+/* Selected programfag */
+.sp-fag-item.selected {
+  background: var(--secondary-color);
+  border-color: var(--primary-color);
+}
+
+/* Divider between sections */
+.sp-divider {
+  height: 2px;
+  background: var(--border-light);
+  margin: var(--spacing-lg) 0;
+}
+
+/* ============================================
+   SPECIAL NOTATIONS
+   ============================================ */
+.sp-fag-note {
+  font-size: 0.75rem;
+  color: var(--text-medium, #737373);
+  font-style: italic;
+  margin-top: var(--spacing-xs);
+}
+
+.sp-fag-item.blokkskjema-valg {
+  position: relative;
+}
+
+.sp-fag-item.blokkskjema-valg::after {
+  content: "Velges i blokkskjema";
+  position: absolute;
+  top: var(--spacing-xs);
+  right: var(--spacing-sm);
+  font-size: 0.7rem;
+  color: var(--text-light, #999);
+  font-style: italic;
+}
+
+/* ============================================
+   MODAL BACKDROP
+   ============================================ */
+.sp-modal {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.6);
+  z-index: 10000;
+  align-items: flex-start;
+  justify-content: center;
+  padding: 40px 20px 20px 20px;
+  overflow-y: auto;
+}
+
+/* ============================================
+   MODAL CONTENT CONTAINER
+   ============================================ */
+.sp-modal-content {
+  background: white;
+  border-radius: var(--radius-xl);
+  padding: 40px;
+  max-width: 800px;
+  width: 100%;
+  max-height: 90vh;
+  overflow-y: auto;
+  overflow-x: hidden;
+  position: relative;
+  animation: modalSlideIn 0.3s ease;
+  box-shadow: 0 10px 40px rgba(31, 71, 57, 0.2);
+  border: 2px solid var(--secondary-color);
+  box-sizing: border-box;
+}
+
+@keyframes modalSlideIn {
+  from {
+    opacity: 0;
+    transform: translateY(-30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ============================================
+   MODAL CLOSE BUTTON
+   ============================================ */
+.sp-modal-close {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  background: rgba(255, 255, 255, 0.9);
+  border: none;
+  font-size: 2rem;
+  cursor: pointer;
+  color: #999;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  transition: all var(--transition-normal);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(10px);
+  z-index: 10;
+}
+
+.sp-modal-close:hover {
+  background: rgba(240, 240, 240, 0.95);
+  color: #333;
+}
+
+/* ============================================
+   MODAL HEADER
+   ============================================ */
+.sp-modal-header {
+  margin-bottom: var(--spacing-lg);
+}
+
+.sp-modal-title {
+  margin: 0 0 10px 0;
+  font-size: 2rem;
+  color: #333;
+}
+
+.sp-modal-subtitle {
+  margin: 0;
+  font-size: 1rem;
+  color: var(--text-medium, #737373);
+}
+
+/* ============================================
+   MODAL FOOTER
+   ============================================ */
+.sp-modal-footer {
+  margin-top: var(--spacing-lg);
+  padding-top: var(--spacing-md);
+  border-top: 2px solid var(--border-light);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: var(--spacing-md);
+}
+
+.sp-modal-actions {
+  display: flex;
+  gap: var(--spacing-sm);
+}
+
+/* ============================================
+   MODAL BUTTONS
+   ============================================ */
+.sp-btn-primary, .sp-btn-secondary {
+  padding: 0.75rem 1.5rem;
+  border-radius: var(--radius-md);
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  border: none;
+}
+
+.sp-btn-primary {
+  background: var(--primary-color);
+  color: white;
+}
+
+.sp-btn-primary:hover:not(:disabled) {
+  background: var(--primary-hover);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(31, 71, 57, 0.3);
+}
+
+.sp-btn-primary:disabled {
+  background: #ccc;
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+.sp-btn-secondary {
+  background: white;
+  color: var(--text-dark);
+  border: 2px solid var(--border-medium, #ccc);
+}
+
+.sp-btn-secondary:hover {
+  border-color: var(--primary-color);
+  background: var(--background-light, #f5f5f5);
+}
+
+/* ============================================
+   MODAL EXTENSIONS (VG1 specific)
+   ============================================ */
+.sp-modal-content.sp-modal-vg1 {
+  max-width: 500px;
+  padding: 30px;
+}
+
+/* Blokkskjema modal - wider for better readability */
+.sp-modal-blokkskjema .sp-modal-content {
+  max-width: 1400px;
+  width: 90vw;
+}
+
+/* ============================================
+   RESPONSIVE MODAL
+   ============================================ */
+@media (max-width: 768px) {
+  .sp-modal-content {
+    padding: 30px 20px;
+  }
+
+  .sp-modal-title {
+    font-size: 1.5rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .sp-modal {
+    padding: 0;
+    align-items: stretch;
+  }
+
+  .sp-modal-content {
+    padding: 60px 20px 20px 20px;
+    margin: 0;
+    width: 100%;
+    max-width: 100%;
+    max-height: 100vh;
+    height: 100%;
+    border-radius: 0;
+    border: none;
+  }
+
+  .sp-modal-title {
+    font-size: 1.4rem;
+    padding-right: 30px;
+  }
+
+  .sp-modal-close {
+    position: fixed;
+    top: 10px;
+    right: 10px;
+    background: rgba(255, 255, 255, 0.85);
+    backdrop-filter: blur(10px);
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.15);
+  }
+}
+
+/* ============================================
+   VG1 MODAL - FAG LISTE
+   ============================================ */
+.sp-vg1-fag-liste {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-sm);
+}
+
+.sp-vg1-fag-item {
+  background: white;
+  border: 2px solid var(--border-light);
+  border-radius: var(--radius-md);
+  padding: var(--spacing-md);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.sp-vg1-fag-item:hover {
+  border-color: var(--vg-header-color);
+  background: #f9f9f9;
+}
+
+.sp-vg1-fag-item.selected {
+  background: var(--secondary-color);
+  border-color: var(--primary-color);
+}
+
+.sp-vg1-fag-item-title {
+  font-weight: 600;
+  color: var(--text-dark);
+  margin-bottom: var(--spacing-xs);
+}
+
+.sp-vg1-fag-item.selected .sp-vg1-fag-item-title {
+  color: var(--primary-color);
+}
+
+.sp-vg1-fag-item-timer {
+  font-size: 0.8rem;
+  color: var(--text-medium, #737373);
+}
+
+/* ============================================
+   VALIDERING (kompakt horisontal)
+   ============================================ */
+.sp-validering {
+  background: var(--background-light, #f5f5f5);
+  border: 2px solid var(--border-light);
+  border-radius: var(--radius-md);
+  padding: var(--spacing-md);
+  margin-bottom: var(--spacing-lg);
+}
+
+.sp-validering-items {
+  display: flex;
+  gap: var(--spacing-lg);
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.sp-validering-item {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  font-size: 0.85rem;
+}
+
+.sp-validering-icon {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.7rem;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+
+.sp-validering-item.met .sp-validering-icon {
+  background: #4CAF50;
+  color: white;
+}
+
+.sp-validering-item.unmet .sp-validering-icon {
+  background: #d32f2f;
+  color: white;
+}
+
+.sp-validering-item.met .sp-validering-text {
+  color: #4CAF50;
+  font-weight: 600;
+}
+
+.sp-validering-item.unmet .sp-validering-text {
+  color: #d32f2f;
+  font-weight: 600;
+}
+
+/* ============================================
+   BLOKKSKJEMA GRID (smaller fag boxes)
+   ============================================ */
+.sp-blokkskjema {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: var(--spacing-md);
+  margin-bottom: var(--spacing-lg);
+}
+
+@media (max-width: 1024px) {
+  .sp-blokkskjema {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 640px) {
+  .sp-blokkskjema {
+    grid-template-columns: 1fr;
+  }
+}
+
+.sp-blokk {
+  background: var(--background-light);
+  border: 2px solid var(--border-light);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  box-shadow: var(--shadow-sm);
+  transition: all var(--transition-fast);
+}
+
+.sp-blokk:hover {
+  box-shadow: var(--shadow-md);
+  transform: translateY(-2px);
+}
+
+.sp-blokk-header {
+  background: linear-gradient(135deg,
+    var(--primary-color) 0%,
+    rgba(31, 71, 57, 0.9) 50%,
+    var(--primary-hover) 100%);
+  color: white;
+  padding: 0.75rem;
+  text-align: center;
+  font-weight: 700;
+  font-size: 0.95rem;
+  box-shadow: 0 2px 4px rgba(31, 71, 57, 0.2);
+}
+
+.sp-blokk-fag-liste {
+  padding: var(--spacing-sm);
+}
+
+/* Smaller fag items in blokkskjema */
+.sp-blokk-fag-item {
+  background: white;
+  border: 2px solid var(--border-light);
+  border-radius: var(--radius-sm);
+  padding: 0.4rem 0.6rem;
+  margin-bottom: 0.35rem;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  font-size: 0.8rem;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+}
+
+.sp-blokk-fag-item:last-child {
+  margin-bottom: 0;
+}
+
+.sp-blokk-fag-item:hover:not(.disabled) {
+  border-color: var(--vg-header-color);
+  background: #f9f9f9;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  transform: translateX(2px);
+}
+
+.sp-blokk-fag-item.selected {
+  background: var(--secondary-color);
+  border-color: var(--primary-color);
+}
+
+.sp-blokk-fag-item.disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+  background: #f5f5f5;
+}
+
+/* Obligatorisk fag (e.g., Historie VG3) - highlighted */
+.sp-blokk-fag-item.obligatorisk {
+  background: #fff3e0;
+  border-color: #ff9800;
+}
+
+.sp-blokk-fag-item.obligatorisk::before {
+  content: '★ ';
+  color: #ff9800;
+}
+
+.sp-blokk-fag-item.obligatorisk.selected {
+  background: #ffe0b2;
+  border-color: #e65100;
+}
+
+/* Fordypning nivå farger - for å skille valgte fag */
+.sp-blokk-fag-item.fordypning-1.selected {
+  background: #e3f2fd;
+  border-color: #1976d2;
+}
+
+.sp-blokk-fag-item.fordypning-2.selected {
+  background: #e8f5e9;
+  border-color: #388e3c;
+}
+
+.sp-blokk-fag-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.sp-blokk-fag-navn {
+  font-weight: 600;
+  color: var(--text-dark);
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.sp-blokk-fag-right {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+}
+
+.sp-blokk-fag-timer {
+  font-size: 0.75rem;
+  color: var(--text-medium, #737373);
+  white-space: nowrap;
+}
+
+.sp-fag-info-btn {
+  background: transparent;
+  border: none;
+  padding: 4px;
+  cursor: pointer;
+  color: var(--text-medium);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  transition: all var(--transition-fast);
+  flex-shrink: 0;
+}
+
+.sp-fag-info-btn:hover {
+  background: rgba(31, 71, 57, 0.1);
+  color: var(--primary-color);
+  transform: scale(1.1);
+}
+
+.sp-fag-info-btn svg {
+  display: block;
+}
+
+.sp-blokk-fag-note {
+  font-size: 0.7rem;
+  color: var(--text-light, #999);
+  font-style: italic;
+  margin-top: 2px;
+}
+
+/* ============================================
+   VG3 HISTORIE GRUPPE - klikkbar (velges i blokkskjema)
+   ============================================ */
+.sp-vg3-historie-gruppe {
+  cursor: pointer;
+}
+
+.sp-vg3-historie-gruppe:hover .sp-fag-item.empty-slot {
+  border-color: var(--vg-header-color);
+  background: #e8f0ec;
+}
+
+.sp-vg3-historie-gruppe:hover .sp-fag-item.historie-obligatorisk {
+  border-color: var(--vg-header-color);
+  background: #fff8e8;
+}
+
+.sp-vg3-historie-gruppe:hover .sp-fag-item.selected {
+  border-color: var(--primary-color);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+/* Historie obligatorisk - shown as fellesfag but must be selected in blokkskjema */
+.sp-fag-item.historie-obligatorisk {
+  background: #fffbe8;
+  border: 2px dashed var(--border-medium, #ccc);
+  border-left: 4px solid #f0a500;
+  cursor: pointer;
+}
+
+.sp-fag-item.historie-obligatorisk .sp-fag-item-title {
+  color: var(--text-dark);
+  font-weight: 600;
+}
+
+.sp-fag-item.historie-obligatorisk .sp-fag-item-timer {
+  color: var(--text-medium, #737373);
+}
+
+/* Note text for historie */
+.sp-fag-item.historie-obligatorisk .sp-fag-item-note {
+  font-size: 0.7rem;
+  color: #b58800;
+  font-style: italic;
+}
+
+/* ============================================
+   SHAKE ANIMATION (for validation errors)
+   ============================================ */
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
+  20%, 40%, 60%, 80% { transform: translateX(5px); }
+}
+
+/* ============================================
+   VALIDERING - Blokkskjema modal
+   ============================================ */
+
+/* Hint: Fag allerede valgt i annen blokk (grået ut som hint) */
+.sp-blokk-fag-item.selected-elsewhere {
+  opacity: 0.4;
+  background: #e8e8e8;
+}
+
+.sp-blokk-fag-item.selected-elsewhere::after {
+  content: ' (valgt)';
+  font-size: 0.7rem;
+  color: #666;
+  font-style: italic;
+}
+
+/* Ved hover: fjern grå, vis at den er klikkbar */
+.sp-blokk-fag-item.selected-elsewhere:hover {
+  opacity: 1;
+  background: var(--color-background);
+  cursor: pointer;
+}
+
+.sp-blokk-fag-item.selected-elsewhere:hover::after {
+  content: ' (klikk for å bytte)';
+  color: var(--color-primary);
+}
+
+/* Duplikat-fag (valgt flere ganger - viser feil) */
+.sp-blokk-fag-item.invalid-duplicate {
+  background: #ffebee;
+  border: 2px solid #ef5350;
+}
+
+.sp-blokk-fag-item.invalid-duplicate::after {
+  content: ' ⚠ duplikat';
+  font-size: 0.7rem;
+  color: #c62828;
+  font-weight: 600;
+}
+
+/* Matematikk-eksklusjon (S og R kombinert - viser feil) */
+.sp-blokk-fag-item.invalid-math {
+  background: #fff3e0;
+  border: 2px solid #ff9800;
+}
+
+.sp-blokk-fag-item.invalid-math::after {
+  content: ' ⚠ konflikt';
+  font-size: 0.7rem;
+  color: #e65100;
+  font-weight: 600;
+}
+
+/* Forutsetning mangler (warning - still selectable) */
+.sp-blokk-fag-item.missing-prerequisite {
+  border-left: 4px solid #ff9800;
+  background: #fffacd;
+  border: 2px solid #ffcc80;
+  border-left: 4px solid #ff9800;
+}
+
+.sp-blokk-fag-item.missing-prerequisite::before {
+  content: '⚠ ';
+  color: #ff9800;
+}
+
+/* Generic warning state */
+.sp-blokk-fag-item.warning-state {
+  border: 2px solid #ffb74d;
+  background: #fff9e6;
+}
+
+.sp-blokk-fag-item.warning-state::before {
+  content: '⚠ ';
+  color: #ff9800;
+}
+
+/* Validerings-sjekkliste i modal */
+.sp-validering {
+  background: #f5f5f5;
+  border-radius: var(--radius-md);
+  padding: var(--spacing-md);
+  margin-bottom: var(--spacing-md);
+}
+
+.sp-validering-title {
+  font-weight: 600;
+  margin-bottom: var(--spacing-sm);
+  font-size: 0.9rem;
+}
+
+.sp-validering-items {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--spacing-sm);
+}
+
+.sp-validering-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.4rem 0.8rem;
+  border-radius: var(--radius-sm);
+  font-size: 0.85rem;
+}
+
+.sp-validering-item.met {
+  background: #e8f5e9;
+  color: #2e7d32;
+}
+
+.sp-validering-item.unmet {
+  background: #ffebee;
+  color: #c62828;
+}
+
+.sp-validering-icon {
+  font-weight: bold;
+}
+
+.sp-validering-item.met .sp-validering-icon::before {
+  content: '✓';
+}
+
+.sp-validering-item.unmet .sp-validering-icon::before {
+  content: '✗';
+}
+
+/* Studie-validering oppsummering */
+.sp-studie-validering {
+  background: white;
+  border: 2px solid var(--border-light);
+  border-radius: var(--radius-lg);
+  padding: var(--spacing-lg);
+  margin-top: var(--spacing-xl);
+}
+
+.sp-studie-validering.valid {
+  border-color: #4caf50;
+}
+
+.sp-studie-validering.invalid {
+  border-color: #f44336;
+}
+
+.sp-studie-validering-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--spacing-md);
+}
+
+.sp-studie-validering-badge {
+  padding: 0.4rem 1rem;
+  border-radius: var(--radius-md);
+  font-weight: 600;
+  font-size: 0.85rem;
+}
+
+.sp-studie-validering.valid .sp-studie-validering-badge {
+  background: #e8f5e9;
+  color: #2e7d32;
+}
+
+.sp-studie-validering.invalid .sp-studie-validering-badge {
+  background: #ffebee;
+  color: #c62828;
+}
+
+.sp-fordypning-groups {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: var(--spacing-md);
+}
+
+.sp-fordypning-group {
+  padding: var(--spacing-sm);
+  border-left: 3px solid var(--primary-color);
+  background: var(--secondary-color);
+}
+
+/* ============================================
+   MODAL INFO GRID (VG2 + Fordypning side by side)
+   ============================================ */
+.sp-modal-info-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--spacing-md);
+  margin-bottom: var(--spacing-md);
+}
+
+@media (max-width: 768px) {
+  .sp-modal-info-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ============================================
+   FORDYPNING STATUS (in modal)
+   ============================================ */
+.sp-fordypning-status {
+  background: white;
+  border: 2px solid var(--border-light);
+  border-radius: var(--radius-md);
+  padding: var(--spacing-sm);
+  margin-bottom: 0;
+}
+
+.sp-fordypning-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--spacing-sm);
+}
+
+.sp-fordypning-label {
+  font-weight: 600;
+  font-size: 0.9rem;
+  color: var(--text-dark);
+}
+
+.sp-fordypning-progress {
+  font-weight: 700;
+  font-size: 0.9rem;
+}
+
+/* Fordypning blocks grid - 2 blocks side by side */
+.sp-fordypning-blokker-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--spacing-md);
+  margin-top: var(--spacing-sm);
+}
+
+@media (max-width: 640px) {
+  .sp-fordypning-blokker-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.sp-fordypning-blokk {
+  background: white;
+  border: 2px solid var(--border-light);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  box-shadow: var(--shadow-sm);
+  transition: all var(--transition-fast);
+}
+
+.sp-fordypning-blokk:hover {
+  box-shadow: var(--shadow-md);
+  transform: translateY(-2px);
+}
+
+.sp-fordypning-blokk.complete {
+  border-color: #4CAF50;
+  background: linear-gradient(to bottom, white 0%, #f1f8f4 100%);
+}
+
+.sp-fordypning-blokk-header {
+  background: var(--background-light);
+  padding: var(--spacing-sm) var(--spacing-md);
+  font-weight: 600;
+  font-size: 0.85rem;
+  color: var(--text-dark);
+  border-bottom: 1px solid var(--border-light);
+}
+
+.sp-fordypning-blokk.complete .sp-fordypning-blokk-header {
+  background: #e8f5e9;
+  color: #2e7d32;
+  border-bottom-color: #4CAF50;
+}
+
+.sp-fordypning-blokk-fag {
+  padding: var(--spacing-sm) var(--spacing-md);
+  font-size: 0.8rem;
+  color: var(--text-medium);
+  line-height: 1.4;
+}
+
+.sp-fordypning-hint {
+  font-size: 0.8rem;
+  color: var(--text-medium, #737373);
+  font-style: italic;
+  padding: var(--spacing-sm);
+  text-align: center;
+}
+
+/* ============================================
+   VG2 SELECTIONS (shown in VG3 modal)
+   ============================================ */
+.sp-vg2-selections {
+  background: #f5f9ff;
+  border: 2px solid #bbdefb;
+  border-radius: var(--radius-md);
+  padding: var(--spacing-sm);
+  margin-bottom: 0;
+  font-size: 0.9rem;
+  line-height: 1.4;
+}
+
+.sp-vg2-text {
+  display: block;
+  color: var(--text-dark);
+  font-weight: 600;
+  margin-bottom: var(--spacing-sm);
+  font-family: inherit;
+}
+
+.sp-vg2-fag-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--spacing-xs);
+}
+
+.sp-vg2-fag-tag {
+  display: inline-block;
+  background: var(--primary-color);
+  color: white;
+  padding: 4px 12px;
+  border-radius: 12px;
+  font-size: 0.85rem;
+  font-weight: 500;
+  font-family: inherit;
+}
+
+/* ============================================
+   BLOCKED FAG ITEM
+   ============================================ */
+.sp-blokk-fag-item.blocked {
+  opacity: 0.5;
+  background: #f5f5f5;
+  cursor: not-allowed;
+  text-decoration: line-through;
+  text-decoration-color: rgba(0,0,0,0.3);
+}
+
+.sp-blokk-fag-item.blocked:hover {
+  opacity: 0.7;
+  background: #ffebee;
+}
+
+/* Shake animation for blocked items */
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
+  20%, 40%, 60%, 80% { transform: translateX(5px); }
+}
+
+.sp-blokk-fag-item.shake {
+  animation: shake 0.5s;
+}
+
+/* ============================================
+   VALIDATION HINT ICON
+   ============================================ */
+.sp-validation-hint {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 18px;
+  height: 18px;
+  font-size: 0.85rem;
+  cursor: help;
+}
+
+/* ============================================
+   VALIDATION ERRORS SECTION
+   ============================================ */
+.sp-validering-errors {
+  background: #fff3e0;
+  border: 1px solid #ffcc80;
+  border-radius: var(--radius-sm);
+  padding: var(--spacing-sm);
+  margin-top: var(--spacing-sm);
+}
+
+.sp-validering-errors .sp-validering-title {
+  color: #e65100;
+  font-weight: 600;
+  margin-bottom: var(--spacing-xs);
+}
+
+/* Validation error content wrapper */
+.sp-validering-content {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+/* Suggestion styling */
+.sp-validering-suggestion {
+  font-size: 0.8rem;
+  color: #4caf50;
+  font-style: italic;
+  padding-left: 0.5rem;
+  border-left: 2px solid #4caf50;
+  margin-top: 0.25rem;
+}
+
+/* Shake animation for modal errors */
+.sp-modal-content.shake {
+  animation: shake 0.5s ease;
+}
+
+/* ============================================
+   PROGRAMFAG-INFO MODAL OVERRIDES
+   Match programfag-katalog styling
+   ============================================ */
+#programfag-modal .modal-content {
+  border-radius: 20px;
+}
+
+#programfag-modal .fagkode-large {
+  border-radius: 10px;
+}
+
+#programfag-modal .fag-bilde {
+  border-radius: 12px;
+}
+
+#programfag-modal .vimeo-container {
+  border-radius: 8px;
+}
+
+#programfag-modal .btn-lareplan {
+  border-radius: 12px;
+}
+
+/* ============================================
+   ACCORDION - Kompetansemål in Fag Modal
+   Match programfag-katalog styling
+   ============================================ */
+#programfag-modal .accordion {
+  margin: 30px 0;
+  border-radius: 12px;
+  overflow: hidden;
+  background: rgba(232, 245, 163, 0.15);
+  border: 2px solid var(--secondary-color);
+  transition: all 0.3s ease;
+}
+
+#programfag-modal .accordion-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px;
+  background: rgba(232, 245, 163, 0.3);
+  cursor: pointer;
+  transition: background 0.3s ease;
+  user-select: none;
+}
+
+#programfag-modal .accordion-header:hover {
+  background: rgba(232, 245, 163, 0.5);
+}
+
+#programfag-modal .accordion-header h3 {
+  margin: 0;
+  padding: 0;
+  border: none;
+  font-size: 1.4rem;
+  color: var(--primary-color);
+}
+
+#programfag-modal .accordion-count {
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: #666;
+  margin-left: 8px;
+}
+
+#programfag-modal .accordion-icon {
+  font-size: 1.2rem;
+  color: var(--primary-color);
+  transition: transform 0.3s ease;
+  font-weight: bold;
+}
+
+#programfag-modal .accordion-content {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.4s ease;
+  background: rgba(232, 245, 163, 0.08);
+}
+
+#programfag-modal .accordion.open .accordion-content {
+  max-height: 2000px;
+  padding: 20px;
+  background: rgba(232, 245, 163, 0.12);
+}
+
+#programfag-modal .accordion.open .accordion-header {
+  background: var(--secondary-color);
+}
+
+#programfag-modal .accordion.open .accordion-icon {
+  transform: rotate(180deg);
+}
+
+#programfag-modal .accordion-content ul {
+  margin: 0;
+  padding: 0;
+}

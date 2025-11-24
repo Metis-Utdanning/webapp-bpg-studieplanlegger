@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="no">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Studieplanlegger - Demo</title>
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="../styles/base.css">
+  <link rel="stylesheet" href="../styles/brand.css">
+  <link rel="stylesheet" href="../styles/components/modal.css">
+  <link rel="stylesheet" href="../styles/studieplanlegger.css">
+
+  <style>
+    body {
+      margin: 0;
+      padding: 20px;
+      font-family: system-ui, -apple-system, sans-serif;
+      background: #f5f5f5;
+    }
+    .demo-header {
+      max-width: 1200px;
+      margin: 0 auto 20px;
+      padding: 20px;
+      background: white;
+      border-radius: 8px;
+    }
+    #studieplanlegger {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+  </style>
+</head>
+<body>
+  <div class="demo-header">
+    <h1>Studieplanlegger - Lokal Demo</h1>
+    <p>Bergen Private Gymnas</p>
+  </div>
+
+  <div id="studieplanlegger"></div>
+
+  <script type="module">
+    import { Studieplanlegger } from '../src/studieplanlegger.js';
+
+    const app = new Studieplanlegger(
+      document.getElementById('studieplanlegger'),
+      {
+        schoolId: 'bergen-private-gymnas',
+        apiBaseUrl: '../dist/api/v2',
+        apiVersion: 'v2',
+        useMockData: false
+      }
+    );
+
+    // Expose for debugging
+    window.studieplanlegger = app;
+    console.log('Studieplanlegger loaded:', app);
+  </script>
+</body>
+</html>
