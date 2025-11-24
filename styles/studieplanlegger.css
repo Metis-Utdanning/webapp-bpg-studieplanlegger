@@ -413,6 +413,11 @@
   font-weight: 500;
 }
 
+/* Programfag gruppe - klikkbar */
+.sp-programfag-gruppe {
+  cursor: pointer;
+}
+
 /* Group hover effect for programfag slots */
 .sp-programfag-gruppe:hover .sp-fag-item.empty-slot {
   border-color: var(--vg-header-color);

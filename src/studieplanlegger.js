@@ -75,7 +75,7 @@ export class Studieplanlegger {
     // Filter buttons - Programområde
     this.container.querySelectorAll('[data-programomrade]').forEach(btn => {
       btn.addEventListener('click', (e) => {
-        const programomrade = e.target.dataset.programomrade;
+        const programomrade = e.currentTarget.dataset.programomrade;
         this.state.setProgramomrade(programomrade);
       });
     });
@@ -83,7 +83,7 @@ export class Studieplanlegger {
     // Filter buttons - Fremmedspråk
     this.container.querySelectorAll('[data-fremmedsprak]').forEach(btn => {
       btn.addEventListener('click', (e) => {
-        const harFremmedsprak = e.target.dataset.fremmedsprak === 'true';
+        const harFremmedsprak = e.currentTarget.dataset.fremmedsprak === 'true';
         this.state.setHarFremmedsprak(harFremmedsprak);
 
         // Auto-populate Spansk I+II when "NEI" is selected, clear when "JA"
@@ -198,6 +198,13 @@ export class Studieplanlegger {
     // Update body attribute for CSS
     document.body.setAttribute('data-programomrade', state.programomrade);
 
+    // Don't re-render if a modal is open (it would close the modal)
+    const anyModalOpen = this.container.querySelector('.sp-modal[style*="display: flex"]') ||
+                         this.container.querySelector('.sp-modal[style*="display:flex"]');
+    if (anyModalOpen) {
+      return;
+    }
+
     // Reset modal setup flag (DOM elements are replaced on re-render)
     this.blokkskjemaModalSetup = false;
 
@@ -283,8 +290,9 @@ export class Studieplanlegger {
     // Primary button - confirm selection
     primaryBtn.addEventListener('click', () => {
       if (selectedFag) {
-        this.state.setVG1Subject(type, selectedFag);
+        const fagToSave = {...selectedFag};
         this.closeVG1Modal(type);
+        this.state.setVG1Subject(type, fagToSave);
       }
     });
   }
@@ -321,7 +329,21 @@ export class Studieplanlegger {
       // Re-select existing fag in UI
       existingFag.forEach(fag => {
         const fagId = fag.id;  // use curriculum id
-        const fagItem = modal.querySelector(`.sp-blokk-fag-item[data-id="${fagId}"]`);
+        const blokkId = fag.blokkId;  // which blokk was it selected from
+
+        // Find the specific fag item in the correct blokk
+        let fagItem;
+        if (blokkId) {
+          // Search within specific blokk first
+          const blokk = modal.querySelector(`.sp-blokk[data-blokk-id="${blokkId}"]`);
+          fagItem = blokk?.querySelector(`.sp-blokk-fag-item[data-id="${fagId}"]`);
+        }
+
+        // Fallback: search globally if blokkId not found or not specified
+        if (!fagItem) {
+          fagItem = modal.querySelector(`.sp-blokk-fag-item[data-id="${fagId}"]`);
+        }
+
         if (fagItem) {
           fagItem.classList.add('selected');
         }
@@ -541,29 +563,8 @@ export class Studieplanlegger {
           return;
         }
 
-        // Check if maxAntallFag would be exceeded (before deselecting old fag in same blokk)
-        const valgregler = this.dataHandler.getValgreglerForTrinn(currentState.programomrade, currentTrinn);
-        const maxAllowed = valgregler?.maxAntallFag || 4;
-
-        // Count fag that would be selected after this operation (excluding old fag in same blokk)
-        const otherBlokkSelections = this.selectedBlokkskjemaFag.filter(f => f.blokkId !== blokkId);
-        const wouldExceedMax = otherBlokkSelections.length >= maxAllowed;
-
-        // SIMPLIFIED: Just check if max would be exceeded (removed obligatorisk priority logic)
-        // User can select fag in any order - submit validation will ensure Histoire is selected
-        if (wouldExceedMax) {
-          // Shake animation
-          fagItem.classList.add('shake');
-          setTimeout(() => fagItem.classList.remove('shake'), 500);
-
-          // Show error message
-          this.showModalValidationError(
-            modal,
-            `Du kan maks velge ${maxAllowed} fag for ${currentTrinn.toUpperCase()}!`
-          );
-          return;
-        }
-
+        // NO MAX CHECK HERE - User can freely swap fag between blokker
+        // Submit validation will check if total selection is valid
 
         // Deselect any other fag in same blokk (1 per blokk rule - swap)
         blokk?.querySelectorAll('.sp-blokk-fag-item.selected').forEach(item => {
@@ -596,11 +597,11 @@ export class Studieplanlegger {
 
     // Info button - show fag details modal
     modal.addEventListener('click', (e) => {
-      const infoBtn = e.target.closest('.sp-fag-info-btn');
+      const infoBtn = e.target.closest('.sp-fag-item-info');
       if (!infoBtn) return;
 
       e.stopPropagation(); // Prevent fag selection when clicking info button
-      const fagId = infoBtn.dataset.fagInfo;
+      const fagId = infoBtn.dataset.fagId;
       if (fagId) {
         this.showFagDetails(fagId);
       }
@@ -610,13 +611,10 @@ export class Studieplanlegger {
     primaryBtn.addEventListener('click', () => {
       const trinn = modal.dataset.currentTrinn;
       if (trinn && this.selectedBlokkskjemaFag.length > 0) {
-        // For VG2, matematikk is required
+        // STEP 1: VALIDATE
         if (trinn === 'vg2') {
           const matematikkFag = this.selectedBlokkskjemaFag.find(f =>
             f.fagkode?.startsWith('matematikk') || f.id?.startsWith('matematikk')
-          );
-          const programfag = this.selectedBlokkskjemaFag.filter(f =>
-            !f.fagkode?.startsWith('matematikk') && !f.id?.startsWith('matematikk')
           );
 
           // Validate: matematikk must be selected for VG2
@@ -624,9 +622,6 @@ export class Studieplanlegger {
             this.showModalValidationError(modal, 'Du må velge matematikk for VG2!');
             return;
           }
-
-          this.state.setVG2Matematikk(matematikkFag);
-          this.state.setProgramfag(trinn, programfag);
         } else if (trinn === 'vg3') {
           // For VG3, validate minimum requirements
           const historieFag = this.selectedBlokkskjemaFag.find(f =>
@@ -650,14 +645,28 @@ export class Studieplanlegger {
               return;
             }
           }
-
-          this.state.setProgramfag(trinn, this.selectedBlokkskjemaFag);
-        } else {
-          this.state.setProgramfag(trinn, this.selectedBlokkskjemaFag);
         }
 
+        // STEP 2: SAVE TO TEMP VARIABLES
+        const selectionsToSave = [...this.selectedBlokkskjemaFag];
+
+        // STEP 3: CLOSE MODAL FIRST (before state update)
         this.selectedBlokkskjemaFag = [];
         this.closeBlokkskjemaModal();
+
+        // STEP 4: UPDATE STATE (triggers re-render now that modal is closed)
+        if (trinn === 'vg2') {
+          const matematikkFag = selectionsToSave.find(f =>
+            f.fagkode?.startsWith('matematikk') || f.id?.startsWith('matematikk')
+          );
+          const programfag = selectionsToSave.filter(f =>
+            !f.fagkode?.startsWith('matematikk') && !f.id?.startsWith('matematikk')
+          );
+          this.state.setVG2Matematikk(matematikkFag);
+          this.state.setProgramfag(trinn, programfag);
+        } else {
+          this.state.setProgramfag(trinn, selectionsToSave);
+        }
       }
     });
 

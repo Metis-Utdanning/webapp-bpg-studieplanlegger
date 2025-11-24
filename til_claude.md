@@ -120,3 +120,11 @@ Dette systemet skal sikre at Claude husker mine preferanser for arbeidsprosessen
 - ÉN, ENKEL todo-fil med "Bugs" og "Feature requests"
 - Minst mulig clutter
 - Arkiv nederst er valgfritt (endringer som beholdes comittes og pushes uansett) 
+
+# Om Historiefaget i blokkskjema
+- Skal være i blokkskjema for alle programområder i VG3
+- Skal ikke telles som valgfritt programfag, men utenom
+- Hensikten med å ha Historie i blokkskjema er praktiske årsaker, og for å få et "LIKT" tall på programområdet for studiespesialisering: Da velger elever 4 fag i VG2 (3 programfag + 1 matematikkfag) og 4 fag i VG3 (3 valgfrie programfag + 1 Historie) - Dette er "SLOTS" som handler om praktisk timeplanlegging og ikke validering. 
+- I VG3 blokkskjema MÅ man velge Historie som 1 av 4 fag for VG3 studiespesialiserende, 1 av 3 fag for Medier og 1 av 2 fag for Musikk. Dette skal stemme overens med TIMEFORDELING.md
+- Historie Må velges i blokkskjema, men i den rekkefølgen man ønsker. 
+- Historie skal Gråes ut når valgt, men man kan bytte/endre valg. Som i andre tilfeller skal blokk-interne valg nulle hverandre ut. Hvsi man allerede har valgt et fag i en blokk, og velger et nytt i samme blokk ENDRER man valget. 

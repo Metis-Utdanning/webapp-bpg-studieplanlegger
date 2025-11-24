@@ -228,7 +228,8 @@ export class StudieplanleggerState {
           timer: fag.timer,
           fagkode: fag.fagkode,
           type: 'programfag',
-          slot: 'matematikk'
+          slot: 'matematikk',
+          blokkId: fag.blokkId // Preserve blokkId
         };
       } else if (isHistorie && trinn === 'vg3') {
         // Update historie slot
@@ -238,7 +239,8 @@ export class StudieplanleggerState {
           timer: fag.timer,
           fagkode: fag.fagkode,
           type: 'fellesfag',
-          slot: 'historie'
+          slot: 'historie',
+          blokkId: fag.blokkId // Preserve blokkId
         };
       } else {
         // Regular programfag
