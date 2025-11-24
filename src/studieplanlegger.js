@@ -39,11 +39,16 @@ export class Studieplanlegger {
       // Set programområde on body for CSS
       document.body.setAttribute('data-programomrade', this.state.getState().programomrade);
 
-      // Load data and validation rules in parallel
-      await Promise.all([
-        this.dataHandler.loadAll(),
-        this.validator.init()
-      ]);
+      // Load data first (v2 API has regler embedded)
+      await this.dataHandler.loadAll();
+
+      // Initialize validator with regler from loaded data (v2 API)
+      if (this.dataHandler.data && this.dataHandler.data.regler) {
+        await this.validator.init(this.dataHandler.data.regler);
+      } else {
+        console.warn('⚠️ No regler found in data, validator will use fallback');
+        await this.validator.init(null);
+      }
 
       // Render initial UI
       this.renderer.render();
@@ -1145,50 +1150,42 @@ export class Studieplanlegger {
    * @param {string} fagId - Subject ID
    */
   showFagDetails(fagId) {
-    // IMPORTANT: Use v1 API curriculum.json for complete subject data
-    // v1 has: beskrivelseHTML, bilde, vimeo, kompetansemål (full markdown content)
-    // v2 studieplanlegger.json only has: omFaget (simple text description)
-    const schoolId = this.options.schoolId;
-    const apiUrl = `${this.dataHandler.apiBaseUrlV1}/schools/${schoolId}/curriculum.json`;
+    // Use v2 API data (already loaded in this.dataHandler.data.curriculum)
+    // v2 has: omFaget (simple text description)
+    // v1 has: beskrivelseHTML, bilde, vimeo, kompetansemål (full markdown) - could be added later
 
-    fetch(apiUrl)
-      .then(response => {
-        if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`);
-        }
-        return response.json();
-      })
-      .then(data => {
-        // v1 API has curriculum nested under .curriculum key
-        const curriculum = data.curriculum || data;
+    if (!this.dataHandler.data || !this.dataHandler.data.curriculum) {
+      console.error('Curriculum data not loaded yet');
+      return;
+    }
 
-        // Find fag in the nested structure
-        let fag = null;
+    const curriculum = this.dataHandler.data.curriculum;
+    let fag = null;
 
-        // Search in valgfrieProgramfag
-        if (curriculum.valgfrieProgramfag) {
-          fag = curriculum.valgfrieProgramfag.find(f => f.id === fagId);
-        }
+    // Search in valgfrieProgramfag
+    if (curriculum.valgfrieProgramfag) {
+      fag = curriculum.valgfrieProgramfag.find(f => f.id === fagId);
+    }
 
-        // Search in obligatoriskeProgramfag if not found
-        if (!fag && curriculum.obligatoriskeProgramfag) {
-          fag = curriculum.obligatoriskeProgramfag.find(f => f.id === fagId);
-        }
+    // Search in obligatoriskeProgramfag if not found
+    if (!fag && curriculum.obligatoriskeProgramfag) {
+      fag = curriculum.obligatoriskeProgramfag.find(f => f.id === fagId);
+    }
 
-        // Search in fellesfag if not found
-        if (!fag && curriculum.fellesfag) {
-          fag = curriculum.fellesfag.find(f => f.id === fagId);
-        }
+    // Search in fellesfag if not found
+    if (!fag && curriculum.fellesfag) {
+      fag = curriculum.fellesfag.find(f => f.id === fagId);
+    }
 
-        if (fag) {
-          this.renderFagModal(fag);
-        } else {
-          console.error('Fag not found:', fagId, 'Available categories:', Object.keys(curriculum));
-        }
-      })
-      .catch(error => {
-        console.error('Error loading fag details:', error);
+    if (fag) {
+      this.renderFagModal(fag);
+    } else {
+      console.error('Fag not found:', fagId, 'Available:', {
+        valgfrie: curriculum.valgfrieProgramfag?.length,
+        obligatoriske: curriculum.obligatoriskeProgramfag?.length,
+        fellesfag: curriculum.fellesfag?.length
       });
+    }
   }
 
   /**
@@ -1205,14 +1202,14 @@ export class Studieplanlegger {
       document.body.appendChild(modal);
     }
 
-    // Image if available
+    // Image if available (v1 only - not in v2)
     const bildeHTML = fag.bilde
       ? `<div class="fag-bilde">
           <img src="${fag.bilde}" alt="${fag.title}" />
         </div>`
       : '';
 
-    // Vimeo video if available
+    // Vimeo video if available (v1 only - not in v2)
     const vimeoHTML = fag.vimeo
       ? `<div class="vimeo-container">
           <iframe
@@ -1229,6 +1226,9 @@ export class Studieplanlegger {
       ? `<p class="related-info">Fordypning oppnås i lag med: <span class="related-badge-large">${fag.related.join(', ')}</span></p>`
       : '';
 
+    // Use beskrivelseHTML from v2 API (full markdown HTML with all sections)
+    const beskrivelseHTML = fag.beskrivelseHTML || fag.omFaget || '<p>Ingen beskrivelse tilgjengelig.</p>';
+
     modal.innerHTML = `
       <div class="modal-content">
         <button class="modal-close" onclick="window.studieplanlegger.closeFagModal()">&times;</button>
@@ -1240,7 +1240,7 @@ export class Studieplanlegger {
         ${vimeoHTML}
 
         <div class="modal-body">
-          <div class="om-faget"></div>
+          ${beskrivelseHTML}
         </div>
 
         <a href="https://sokeresultat.udir.no/finn-lareplan.html?query=${fag.fagkode}&source=Laereplan&fltypefiltermulti=L%C3%A6replan&filtervalues=all" target="_blank" class="btn-lareplan">Se full læreplan på udir.no →</a>

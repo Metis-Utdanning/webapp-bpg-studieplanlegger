@@ -29,51 +29,66 @@ export class ValidationService {
   }
 
   /**
-   * Initialize service by loading rules from API
-   * @param {string} apiBaseUrl - Base URL for API (default to GitHub Pages)
+   * Initialize service with validation rules
+   * @param {Object|string} reglerOrUrl - Either regler object (from v2 API) or URL to fetch from (v1 API)
    */
-  async init(apiBaseUrl = 'https://fredeids-metis.github.io/school-data/api/v1') {
+  async init(reglerOrUrl) {
     console.log('🔄 ValidationService: Starting init...');
-    try {
-      const url = `${apiBaseUrl}/curriculum/regler.json`;
-      console.log('🔄 ValidationService: Fetching from', url);
-      const response = await fetch(url);
-      if (!response.ok) {
-        throw new Error(`Failed to load regler.json: ${response.status}`);
+
+    let regler;
+
+    // If reglerOrUrl is an object, use it directly (v2 API - already loaded)
+    if (typeof reglerOrUrl === 'object' && reglerOrUrl !== null) {
+      console.log('✅ Using regler from v2 API (already loaded)');
+      regler = reglerOrUrl;
+    }
+    // If reglerOrUrl is a string, fetch from URL (v1 API - legacy)
+    else if (typeof reglerOrUrl === 'string') {
+      try {
+        const url = `${reglerOrUrl}/curriculum/regler.json`;
+        console.log('🔄 ValidationService: Fetching from', url);
+        const response = await fetch(url);
+        if (!response.ok) {
+          throw new Error(`Failed to load regler.json: ${response.status}`);
+        }
+        regler = await response.json();
+      } catch (error) {
+        this.loadError = error;
+        console.error('❌ ValidationService failed to load rules:', error);
+        // Fallback: Use minimal hardcoded rules
+        this._loadFallbackRules();
+        return false;
       }
-
-      const regler = await response.json();
-
-      // Load all rule sets
-      this.eksklusjoner = regler.eksklusjoner || [];
-
-      // Normalize forutsetninger: ensure fag is always an array
-      this.forutsetninger = (regler.forutsetninger || []).map(f => ({
-        ...f,
-        fag: Array.isArray(f.fag) ? f.fag : [f.fag]  // Convert string to array
-      }));
-
-      this.fagomrader = regler.fagomrader || {};
-      this.fordypningKrav = regler.fordypning || {};
-      this.spesialregler = regler.spesialregler || {};
-
-      // Build reverse lookup maps from fagomrader
-      this._buildFagomradeMaps();
-
-      this.loaded = true;
-      console.log('✅ ValidationService loaded rules from API');
-      console.log(`   - ${this.eksklusjoner.length} eksklusjoner`);
-      console.log(`   - ${this.forutsetninger.length} forutsetninger`);
-      console.log(`   - ${Object.keys(this.fagomrader).length} fagområder`);
-      return true;
-    } catch (error) {
-      this.loadError = error;
-      console.error('❌ ValidationService failed to load rules:', error);
-
-      // Fallback: Use minimal hardcoded rules
+    }
+    // No regler provided - use fallback
+    else {
+      console.warn('⚠️ No regler provided to ValidationService.init()');
       this._loadFallbackRules();
       return false;
     }
+
+    // Load all rule sets from regler object
+    this.eksklusjoner = regler.eksklusjoner || [];
+
+    // Normalize forutsetninger: ensure fag is always an array
+    this.forutsetninger = (regler.forutsetninger || []).map(f => ({
+      ...f,
+      fag: Array.isArray(f.fag) ? f.fag : [f.fag]  // Convert string to array
+    }));
+
+    this.fagomrader = regler.fagomrader || {};
+    this.fordypningKrav = regler.fordypning || {};
+    this.spesialregler = regler.spesialregler || {};
+
+    // Build reverse lookup maps from fagomrader
+    this._buildFagomradeMaps();
+
+    this.loaded = true;
+    console.log('✅ ValidationService loaded rules');
+    console.log(`   - ${this.eksklusjoner.length} eksklusjoner`);
+    console.log(`   - ${this.forutsetninger.length} forutsetninger`);
+    console.log(`   - ${Object.keys(this.fagomrader).length} fagområder`);
+    return true;
   }
 
   /**

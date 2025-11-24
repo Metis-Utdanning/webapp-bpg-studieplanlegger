@@ -181,6 +181,15 @@ function buildStudieplanleggerAPI(schoolId, curriculumData) {
   // Load tilbud for enrichment
   const tilbud = loadYAML(path.join(schoolDataDir, 'tilbud.yml'));
 
+  // Load curriculum validation rules (regler.yml)
+  const reglerPath = path.join(CURRICULUM_DIR, 'regler.yml');
+  const curriculumRegler = loadYAML(reglerPath);
+  if (!curriculumRegler) {
+    console.error('❌ CRITICAL: Could not load regler.yml');
+    process.exit(1);
+  }
+  console.log('  ✅ Loaded curriculum regler.yml');
+
   // Build kategori lookup map
   const kategoriMap = new Map();
   if (tilbud) {
@@ -262,13 +271,13 @@ function buildStudieplanleggerAPI(schoolId, curriculumData) {
     // Validation rules per program
     valgregler: blokkskjema.valgregler || {},
 
-    // Prerequisites and exclusions
-    regler: blokkskjema.regler || {},
+    // Prerequisites and exclusions (from curriculum/regler.yml)
+    regler: curriculumRegler || {},
 
     // Time validation per program and grade
     timevalidering: blokkskjema.timevalidering || {},
 
-    // Curriculum data (simplified for quick lookups)
+    // Curriculum data (with full beskrivelse for fag details modal)
     curriculum: {
       valgfrieProgramfag: valgfrieProgramfag.map(f => ({
         id: f.id,
@@ -276,6 +285,7 @@ function buildStudieplanleggerAPI(schoolId, curriculumData) {
         fagkode: f.fagkode,
         lareplan: f.lareplan,
         omFaget: f.omFaget,
+        beskrivelseHTML: f.beskrivelseHTML,  // Full markdown HTML for modal
         related: f.related
       })),
       obligatoriskeProgramfag: obligatoriskeProgramfag.map(f => ({
@@ -284,7 +294,8 @@ function buildStudieplanleggerAPI(schoolId, curriculumData) {
         fagkode: f.fagkode,
         lareplan: f.lareplan,
         program: f.program,
-        omFaget: f.omFaget
+        omFaget: f.omFaget,
+        beskrivelseHTML: f.beskrivelseHTML  // Full markdown HTML for modal
       })),
       fellesfag: fellesfag.map(f => ({
         id: f.id,
@@ -292,7 +303,8 @@ function buildStudieplanleggerAPI(schoolId, curriculumData) {
         fagkode: f.fagkode,
         lareplan: f.lareplan,
         trinn: f.trinn,
-        omFaget: f.omFaget
+        omFaget: f.omFaget,
+        beskrivelseHTML: f.beskrivelseHTML  // Full markdown HTML for modal
       }))
     }
   };

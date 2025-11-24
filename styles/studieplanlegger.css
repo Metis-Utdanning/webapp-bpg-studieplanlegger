@@ -1373,6 +1373,21 @@
   border-radius: 12px;
 }
 
+#programfag-modal .modal-body {
+  margin: 20px 0;
+  padding: 0;
+}
+
+#programfag-modal .om-faget {
+  font-size: 1rem;
+  line-height: 1.6;
+  color: var(--text-color);
+}
+
+#programfag-modal .om-faget p {
+  margin: 0 0 1rem 0;
+}
+
 /* ============================================
    ACCORDION - Kompetansemål in Fag Modal
    Match programfag-katalog styling

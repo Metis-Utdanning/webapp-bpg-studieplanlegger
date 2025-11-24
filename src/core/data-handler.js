@@ -2,12 +2,13 @@
  * Data Handler - Loads and processes curriculum data
  *
  * Supports:
- * - Mock data (default for development)
  * - API v2 (recommended - single endpoint with all data)
  * - API v1 (legacy - separate endpoints)
  */
 
-import { mockTimefordeling, mockBlokkskjema } from './data-mock.js';
+// Minimal mock data for fallback (should not be used in production)
+const mockBlokkskjema = { blokker: {}, valgregler: {} };
+const mockTimefordeling = { fellesfag: {}, fellesProgramfag: {} };
 
 export class DataHandler {
   constructor(options = {}) {
@@ -18,7 +19,7 @@ export class DataHandler {
 
     // Configuration
     this.schoolId = options.schoolId || 'bergen-private-gymnas';
-    this.useMockData = options.useMockData !== false;  // Default: true
+    this.useMockData = options.useMockData === true;  // Default: false (use API)
     this.apiVersion = options.apiVersion || 'v2';  // Default: v2
 
     // API URLs - Use GitHub Pages by default, but allow override
