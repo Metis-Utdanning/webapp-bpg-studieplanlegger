@@ -79,6 +79,17 @@
   border-color: var(--primary-color);
 }
 
+/* Programområde-spesifikke farger */
+.sp-filter-btn[data-programomrade="musikk-dans-drama"].selected {
+  background: linear-gradient(135deg, #c62828 0%, #e65100 100%);
+  border-color: #c62828;
+}
+
+.sp-filter-btn[data-programomrade="medier-kommunikasjon"].selected {
+  background: linear-gradient(135deg, #00897b 0%, #0277bd 100%);
+  border-color: #00897b;
+}
+
 /* Filter group with action button inline */
 .sp-filter-group-with-action {
   display: flex;
@@ -183,19 +194,45 @@
   border-radius: var(--radius-lg) var(--radius-lg) 0 0;
 }
 
-/* VG1 header - mørkegrønn */
+/* VG1 header - mørkegrønn (default: studiespesialisering) */
 .sp-vg-column:nth-child(1) .sp-vg-header {
   background: linear-gradient(135deg, var(--primary-color) 0%, rgba(22, 53, 41, 1) 100%);
 }
 
-/* VG2 header - medium grønn */
+/* VG2 header - medium grønn (default: studiespesialisering) */
 .sp-vg-column:nth-child(2) .sp-vg-header {
   background: linear-gradient(135deg, rgba(31, 71, 57, 0.9) 0%, rgba(31, 71, 57, 0.75) 100%);
 }
 
-/* VG3 header - lime/lys grønn */
+/* VG3 header - lime/lys grønn (default: studiespesialisering) */
 .sp-vg-column:nth-child(3) .sp-vg-header {
   background: linear-gradient(135deg, rgba(31, 71, 57, 0.7) 0%, rgba(128, 165, 110, 1) 100%);
+}
+
+/* MUSIKK programområde - mørkere rød-oransje gradients */
+.sp-vg-grid[data-programomrade="musikk-dans-drama"] .sp-vg-column:nth-child(1) .sp-vg-header {
+  background: linear-gradient(135deg, #b71c1c 0%, #d84315 100%);
+}
+
+.sp-vg-grid[data-programomrade="musikk-dans-drama"] .sp-vg-column:nth-child(2) .sp-vg-header {
+  background: linear-gradient(135deg, #c62828 0%, #e65100 100%);
+}
+
+.sp-vg-grid[data-programomrade="musikk-dans-drama"] .sp-vg-column:nth-child(3) .sp-vg-header {
+  background: linear-gradient(135deg, #d32f2f 0%, #f57c00 100%);
+}
+
+/* MEDIER programområde - blå-dominant med hint av grønn */
+.sp-vg-grid[data-programomrade="medier-kommunikasjon"] .sp-vg-column:nth-child(1) .sp-vg-header {
+  background: linear-gradient(135deg, #00695c 0%, #01579b 100%);
+}
+
+.sp-vg-grid[data-programomrade="medier-kommunikasjon"] .sp-vg-column:nth-child(2) .sp-vg-header {
+  background: linear-gradient(135deg, #00897b 0%, #0277bd 100%);
+}
+
+.sp-vg-grid[data-programomrade="medier-kommunikasjon"] .sp-vg-column:nth-child(3) .sp-vg-header {
+  background: linear-gradient(135deg, #26a69a 0%, #039be5 100%);
 }
 
 .sp-vg-content {
@@ -314,9 +351,50 @@
 
 /* Obligatoriske programfag style (felles programfag for spesifikke programmer) */
 .sp-fag-item.obligatorisk-programfag {
-  background: #f0f7ff;
-  border-color: var(--secondary-color);
-  border-left: 4px solid var(--secondary-color);
+  background: #f5f5f5;  /* Lysegrå bakgrunn */
+  border-left: 4px solid var(--primary-color);  /* Default: grønn for studiespesialisering */
+  border-color: var(--border-medium);
+}
+
+/* VG1 obligatoriske programfag - mørkegrønn (default: studiespesialisering) */
+.sp-vg-column:nth-child(1) .sp-fag-item.obligatorisk-programfag {
+  border-left-color: var(--primary-color);
+}
+
+/* VG2 obligatoriske programfag - medium grønn (default: studiespesialisering) */
+.sp-vg-column:nth-child(2) .sp-fag-item.obligatorisk-programfag {
+  border-left-color: rgba(31, 71, 57, 0.9);
+}
+
+/* VG3 obligatoriske programfag - lime/lys grønn (default: studiespesialisering) */
+.sp-vg-column:nth-child(3) .sp-fag-item.obligatorisk-programfag {
+  border-left-color: rgba(128, 165, 110, 1);
+}
+
+/* MUSIKK programområde - rød-oransje border (matcher header) */
+.sp-vg-grid[data-programomrade="musikk-dans-drama"] .sp-vg-column:nth-child(1) .sp-fag-item.obligatorisk-programfag {
+  border-left-color: #b71c1c;
+}
+
+.sp-vg-grid[data-programomrade="musikk-dans-drama"] .sp-vg-column:nth-child(2) .sp-fag-item.obligatorisk-programfag {
+  border-left-color: #c62828;
+}
+
+.sp-vg-grid[data-programomrade="musikk-dans-drama"] .sp-vg-column:nth-child(3) .sp-fag-item.obligatorisk-programfag {
+  border-left-color: #d32f2f;
+}
+
+/* MEDIER programområde - blå-dominant border (matcher header) */
+.sp-vg-grid[data-programomrade="medier-kommunikasjon"] .sp-vg-column:nth-child(1) .sp-fag-item.obligatorisk-programfag {
+  border-left-color: #00695c;
+}
+
+.sp-vg-grid[data-programomrade="medier-kommunikasjon"] .sp-vg-column:nth-child(2) .sp-fag-item.obligatorisk-programfag {
+  border-left-color: #00897b;
+}
+
+.sp-vg-grid[data-programomrade="medier-kommunikasjon"] .sp-vg-column:nth-child(3) .sp-fag-item.obligatorisk-programfag {
+  border-left-color: #26a69a;
 }
 
 /* Empty/gray programfag slots */
@@ -800,16 +878,16 @@
   background: #f5f5f5;
 }
 
-/* Obligatorisk fag (e.g., Histoire VG3) - highlighted */
+/* Obligatorisk fag (e.g., Histoire VG3) - NO special styling when not selected */
+/* Bruker ønsker at Histoire ser normal ut inntil den er valgt */
 .sp-blokk-fag-item.obligatorisk {
-  background: #fff3e0;
-  border-color: #ff9800;
-  border-left: 4px solid #ff9800;
+  /* No special styling - looks like regular fag */
 }
 
 /* Removed star icon - takes too much space */
 /* .sp-blokk-fag-item.obligatorisk::before { content: '★ '; } */
 
+/* When obligatorisk fag IS SELECTED - show orange highlight */
 .sp-blokk-fag-item.obligatorisk.selected {
   background: #ffe0b2;
   border-color: #e65100;

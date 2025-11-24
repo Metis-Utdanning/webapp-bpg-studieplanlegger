@@ -549,32 +549,21 @@ export class Studieplanlegger {
         const otherBlokkSelections = this.selectedBlokkskjemaFag.filter(f => f.blokkId !== blokkId);
         const wouldExceedMax = otherBlokkSelections.length >= maxAllowed;
 
-        // Check if this is an obligatorisk fag
-        const isObligatorisk = fagItem.classList.contains('obligatorisk');
+        // SIMPLIFIED: Just check if max would be exceeded (removed obligatorisk priority logic)
+        // User can select fag in any order - submit validation will ensure Histoire is selected
+        if (wouldExceedMax) {
+          // Shake animation
+          fagItem.classList.add('shake');
+          setTimeout(() => fagItem.classList.remove('shake'), 500);
 
-        // If max would be exceeded AND this is not obligatorisk, block it
-        if (wouldExceedMax && !isObligatorisk) {
-          // Check if there are obligatoriske fag that haven't been selected yet
-          const obligatoriskeFag = modal.querySelectorAll('.sp-blokk-fag-item.obligatorisk');
-          const hasUnselectedObligatorisk = Array.from(obligatoriskeFag).some(item =>
-            !this.selectedBlokkskjemaFag.some(f => f.id === item.dataset.id)
+          // Show error message
+          this.showModalValidationError(
+            modal,
+            `Du kan maks velge ${maxAllowed} fag for ${currentTrinn.toUpperCase()}!`
           );
-
-          if (hasUnselectedObligatorisk) {
-            // Shake animation
-            fagItem.classList.add('shake');
-            setTimeout(() => fagItem.classList.remove('shake'), 500);
-
-            // Show error message
-            this.showModalValidationError(
-              modal,
-              currentTrinn === 'vg3'
-                ? 'Du må velge Historie før du kan legge til flere fag!'
-                : 'Du må velge alle obligatoriske fag før du kan legge til flere fag!'
-            );
-            return;
-          }
+          return;
         }
+
 
         // Deselect any other fag in same blokk (1 per blokk rule - swap)
         blokk?.querySelectorAll('.sp-blokk-fag-item.selected').forEach(item => {
@@ -780,32 +769,10 @@ export class Studieplanlegger {
         return;
       }
 
-      // Check if maxAntallFag is reached and obligatoriske fag are not yet selected
-      // If so, block selection of non-obligatoriske fag
-      const valgregler = this.dataHandler.getValgreglerForTrinn(currentState.programomrade, currentTrinn);
-      const maxAllowed = valgregler?.maxAntallFag || 4;
-      const currentCount = this.selectedBlokkskjemaFag.length;
+      // SIMPLIFIED: Removed obligatorisk priority blocking logic
+      // User can select fag in any order - submit validation will ensure Historie is selected
+      // Max check is now only in click handler, not in visual validation
 
-      if (currentCount >= maxAllowed && !isSelectedHere) {
-        const isObligatorisk = item.classList.contains('obligatorisk');
-
-        if (!isObligatorisk) {
-          // Check if there are unselected obligatoriske fag
-          const obligatoriskeFag = modal.querySelectorAll('.sp-blokk-fag-item.obligatorisk');
-          const hasUnselectedObligatorisk = Array.from(obligatoriskeFag).some(obligItem =>
-            !this.selectedBlokkskjemaFag.some(f => f.id === obligItem.dataset.id)
-          );
-
-          if (hasUnselectedObligatorisk) {
-            item.classList.add('blocked');
-            item.title = currentTrinn === 'vg3'
-              ? 'Du må velge Histoire før du kan velge flere fag'
-              : 'Du må velge alle obligatoriske fag før du kan velge flere fag';
-            this.addValidationHint(item, '🔒', 'Obligatoriske fag må velges først');
-            return;
-          }
-        }
-      }
 
       // Check if there's a conflicting fag IN THE SAME BLOKK
       const hasConflictInSameBlokk = this.selectedBlokkskjemaFag.some(
@@ -1035,77 +1002,35 @@ export class Studieplanlegger {
           `;
         }).join('');
 
-      // For VG3, wrap fordypning and VG2 selections in a grid
-      if (currentTrinn === 'vg3') {
-        // Collect all VG2 fag including matematikk (from unified selections array)
-        const vg2Fag = [];
-        if (currentState.vg2?.selections && currentState.vg2.selections.length > 0) {
-          // Get all VG2 selections (matematikk + programfag)
-          vg2Fag.push(...currentState.vg2.selections.map(f => f.navn));
-        }
-
-        html += `<div class="sp-modal-info-grid">`;
-
-        // VG2 selections (left)
-        if (vg2Fag.length > 0) {
-          html += `
-            <div class="sp-vg2-selections">
-              <span class="sp-vg2-text">📚 Dine programfag fra VG2:</span>
-              <div class="sp-vg2-fag-tags">
-                ${vg2Fag.map(navn => `<span class="sp-vg2-fag-tag">${navn}</span>`).join('')}
-              </div>
-            </div>
-          `;
-        }
-
-        // Fordypning (right)
-        html += `
-          <div class="sp-fordypning-status">
-            <div class="sp-fordypning-header">
-              <span class="sp-fordypning-label">📊 Fordypning: ${antallFordypninger} av 2 fordypninger</span>
-              <span class="sp-fordypning-progress" style="color: ${progressColor}">
-                ${fordypningData.isMet ? '✓' : '✗'}
-              </span>
-            </div>
-            ${fagomraderBlokker ? `
-              <div class="sp-fordypning-blokker-grid">
-                ${fagomraderBlokker}
-              </div>
-            ` : `
-              <div class="sp-fordypning-hint">
-                2 fag fra samme fagområde = 1 fordypning. Trenger 2 fordypninger totalt.
-              </div>
-            `}
+      // SIMPLIFIED (2024-11-24): Remove VG2 programfag display, only show fordypning
+      // Both VG2 and VG3 use same fordypning display
+      html += `
+        <div class="sp-fordypning-status">
+          <div class="sp-fordypning-header">
+            <span class="sp-fordypning-label">📊 Fordypning: ${antallFordypninger} av 2 fordypninger</span>
+            <span class="sp-fordypning-progress" style="color: ${progressColor}">
+              ${fordypningData.isMet ? '✓' : '✗'}
+            </span>
           </div>
-        `;
-
-        html += `</div>`;
-      } else {
-        // For VG2, just show fordypning without grid
-        html += `
-          <div class="sp-fordypning-status">
-            <div class="sp-fordypning-header">
-              <span class="sp-fordypning-label">📊 Fordypning: ${antallFordypninger} av 2 fordypninger</span>
-              <span class="sp-fordypning-progress" style="color: ${progressColor}">
-                ${fordypningData.isMet ? '✓ Oppfylt' : 'Ikke oppfylt'}
-              </span>
+          ${fagomraderBlokker ? `
+            <div class="sp-fordypning-blokker-grid">
+              ${fagomraderBlokker}
             </div>
-            ${fagomraderBlokker ? `
-              <div class="sp-fordypning-blokker-grid">
-                ${fagomraderBlokker}
-              </div>
-            ` : `
-              <div class="sp-fordypning-hint">
-                2 fag fra samme fagområde = 1 fordypning. Trenger 2 fordypninger totalt.
-              </div>
-            `}
-          </div>
-        `;
-      }
+          ` : `
+            <div class="sp-fordypning-hint">
+              2 fag fra samme fagområde = 1 fordypning. Trenger 2 fordypninger totalt.
+            </div>
+          `}
+        </div>
+      `;
     }
 
-    // Validation errors
-    if (this.blokkValidationErrors.length > 0) {
+    // Validation errors - ONLY show when all fag are selected
+    const valgregler = this.dataHandler.getValgreglerForTrinn(currentState.programomrade, currentTrinn);
+    const required = valgregler?.maxAntallFag || 4;
+    const count = this.selectedBlokkskjemaFag.length;
+
+    if (this.blokkValidationErrors.length > 0 && count >= required) {
       html += `
         <div class="sp-validering-errors">
           <div class="sp-validering-title">⚠️ Valideringsfeil:</div>
@@ -1203,16 +1128,9 @@ export class Studieplanlegger {
     const currentCount = this.selectedBlokkskjemaFag.length;
     const remaining = required - currentCount;
 
-    // VG3: Auto-fill Historie when 1 slot remaining
-    if (currentTrinn === 'vg3' && remaining === 1) {
-      const hasHistorie = this.selectedBlokkskjemaFag.some(f =>
-        f.id?.includes('historie') || f.fagkode?.includes('historie')
-      );
+    // NO AUTO-SELECT FOR HISTORIE (Removed 2024-11-24)
+    // User should be able to select Historie in any order, not auto-fill
 
-      if (!hasHistorie) {
-        this.autoSelectFag(modal, 'historie');
-      }
-    }
 
     // VG2/VG3: Auto-fill Spansk I+II when fremmedsprak=NEI and 2 slots remaining
     if ((currentTrinn === 'vg2' || currentTrinn === 'vg3') &&

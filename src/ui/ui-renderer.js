@@ -118,8 +118,9 @@ export class UIRenderer {
    * Render VG grid (VG1, VG2, VG3 columns)
    */
   renderVGGrid() {
+    const currentState = this.state.getState();
     return `
-      <div class="sp-vg-grid">
+      <div class="sp-vg-grid" data-programomrade="${currentState.programomrade}">
         ${this.renderVG1()}
         ${this.renderVG2()}
         ${this.renderVG3()}
