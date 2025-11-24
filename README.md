@@ -2,6 +2,14 @@
 
 Interaktiv studieplanlegger for videregående skole (VG1-VG3) - Bergen Private Gymnas.
 
+## Funksjoner
+
+- Velg programfag for VG2 og VG3 via blokkskjema
+- Automatisk validering av fordypningskrav (2 fag fra samme fagområde = 1 fordypning)
+- Matematikk R/S-linje konfliktsjekk
+- Støtte for fremmedspråk-unntak (Spansk I+II)
+- Responsivt design for desktop og mobil
+
 ## Komme i gang
 
 ### 1. Installer dependencies
@@ -14,8 +22,6 @@ npm install
 npm run build
 ```
 
-Dette genererer `dist/api/v2/studieplanlegger.json` fra YAML og markdown-kilder.
-
 ### 3. Start lokal server
 ```bash
 npm run dev
@@ -23,79 +29,75 @@ npm run dev
 
 Åpne: http://localhost:8000/public/demo.html
 
+## Innbygging på Squarespace
+
+Kopier innholdet fra `public/embed.html` inn i en Squarespace Code Block:
+
+```html
+<!-- CSS -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/fredeids-metis/studieplanlegger@main/styles/base.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/fredeids-metis/studieplanlegger@main/styles/brand.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/fredeids-metis/studieplanlegger@main/styles/components/modal.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/fredeids-metis/studieplanlegger@main/styles/studieplanlegger.css">
+
+<!-- Container -->
+<div id="studieplanlegger"></div>
+
+<!-- JavaScript -->
+<script type="module">
+  import { Studieplanlegger } from 'https://cdn.jsdelivr.net/gh/fredeids-metis/studieplanlegger@main/src/studieplanlegger.js';
+
+  const app = new Studieplanlegger(
+    document.getElementById('studieplanlegger'),
+    {
+      schoolId: 'bergen-private-gymnas',
+      apiBaseUrl: 'https://cdn.jsdelivr.net/gh/fredeids-metis/studieplanlegger@main/dist/api/v2',
+      apiVersion: 'v2'
+    }
+  );
+</script>
+```
+
+**Viktig:** Kjør `npm run build` og push til GitHub før embed fungerer.
+
 ## Prosjektstruktur
 
 ```
 studieplanlegger/
-├── data/                   # Master curriculum data
+├── data/                   # Curriculum data
 │   ├── curriculum/
-│   │   ├── master-lists/   # TXT-filer fra UDIR
-│   │   ├── markdown/       # 80 markdown-filer (curriculum)
+│   │   ├── markdown/       # Fagbeskrivelser (80 filer)
 │   │   └── regler.yml      # Valideringsregler
 │   └── schools/
 │       └── bergen-private-gymnas/
-│           ├── school-config.yml
-│           ├── timefordeling.yml
 │           └── blokkskjema_v2.yml
 │
-├── src/                    # App source code
-│   ├── core/               # Business logic
-│   │   ├── state.js
-│   │   ├── data-handler.js
+├── src/                    # App source
+│   ├── core/
+│   │   ├── state.js        # State management
+│   │   ├── data-handler.js # API loading
 │   │   └── validation-service.js
-│   ├── ui/                 # UI components
-│   │   └── ui-renderer.js
 │   └── studieplanlegger.js # Main entry
 │
 ├── styles/                 # CSS
-│   ├── base.css
-│   ├── brand.css
-│   ├── studieplanlegger.css
-│   └── components/
-│       └── modal.css
-│
-├── scripts/                # Build scripts
-│   ├── build-api.js        # Bygger JSON API
-│   └── fetch-curriculum.sh # Henter fra UDIR
-│
-├── public/                 # Static files
-│   └── demo.html           # Demo page
-│
-└── dist/                   # Build output (generated)
-    └── api/
-        └── v2/
-            └── studieplanlegger.json
+├── public/
+│   ├── demo.html           # Lokal demo
+│   └── embed.html          # Squarespace embed-kode
+└── dist/                   # Build output
 ```
 
 ## Utvikling
 
-### Oppdatere data fra UDIR
 ```bash
+# Oppdater data fra UDIR
 npm run fetch:all
-```
 
-Dette henter oppdatert curriculum-data fra UDIR Grep API.
-
-### Rebuild API
-```bash
+# Rebuild API etter endringer
 npm run build
+
+# Start dev server
+npm run dev
 ```
-
-Kjør etter endringer i YAML-filer eller markdown.
-
-## Deploy
-
-Deploy til GitHub Pages (kommer):
-```bash
-npm run deploy
-```
-
-## Dokumentasjon
-
-Se `docs/` for mer dokumentasjon:
-- `GETTING_STARTED.md` - Komme i gang
-- `DATA_FLOW.md` - Hvordan data flyter gjennom systemet
-- `API_REFERENCE.md` - API-dokumentasjon
 
 ## Lisens
 

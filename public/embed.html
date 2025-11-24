@@ -1,0 +1,41 @@
+<!--
+  STUDIEPLANLEGGER - Innbyggingskode for Squarespace
+  ===================================================
+
+  INSTRUKSJONER:
+  1. Gå til Squarespace Editor
+  2. Legg til en "Code Block" (Kodeblokk)
+  3. Kopier HELE innholdet under denne kommentaren
+  4. Lim inn i kodeblokken
+  5. Lagre og publiser
+
+  VIKTIG: API-data må være tilgjengelig på jsDelivr CDN.
+  Kjør "npm run build" og push til GitHub før bruk.
+-->
+
+<!-- CSS - Laster stilark fra jsDelivr CDN -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/fredeids-metis/studieplanlegger@main/styles/base.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/fredeids-metis/studieplanlegger@main/styles/brand.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/fredeids-metis/studieplanlegger@main/styles/components/modal.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/fredeids-metis/studieplanlegger@main/styles/studieplanlegger.css">
+
+<!-- Container for widget -->
+<div id="studieplanlegger"></div>
+
+<!-- JavaScript - ES6 Module -->
+<script type="module">
+  import { Studieplanlegger } from 'https://cdn.jsdelivr.net/gh/fredeids-metis/studieplanlegger@main/src/studieplanlegger.js';
+
+  const app = new Studieplanlegger(
+    document.getElementById('studieplanlegger'),
+    {
+      schoolId: 'bergen-private-gymnas',
+      apiBaseUrl: 'https://cdn.jsdelivr.net/gh/fredeids-metis/studieplanlegger@main/dist/api/v2',
+      apiVersion: 'v2',
+      useMockData: false
+    }
+  );
+
+  // Expose for debugging (kan fjernes i produksjon)
+  window.studieplanlegger = app;
+</script>
