@@ -320,8 +320,8 @@ export class Studieplanlegger {
 
       // Re-select existing fag in UI
       existingFag.forEach(fag => {
-        const fagId = fag.fagkode || fag.id;
-        const fagItem = modal.querySelector(`.sp-blokk-fag-item[data-fagkode="${fagId}"]`);
+        const fagId = fag.id;  // use curriculum id
+        const fagItem = modal.querySelector(`.sp-blokk-fag-item[data-id="${fagId}"]`);
         if (fagItem) {
           fagItem.classList.add('selected');
         }
@@ -407,7 +407,7 @@ export class Studieplanlegger {
             if (shouldBlockSpansk) classes.push('blocked');
 
             return `
-            <div class="${classes.join(' ')}" data-fagkode="${f.id}" data-timer="${f.timer}"${f.lareplan ? ` data-lareplan="${f.lareplan}"` : ''}${fordypningLevel ? ` data-fordypning="${fordypningLevel}"` : ''}>
+            <div class="${classes.join(' ')}" data-id="${f.id}" data-fagkode="${f.fagkode || f.id}" data-timer="${f.timer}"${f.lareplan ? ` data-lareplan="${f.lareplan}"` : ''}${fordypningLevel ? ` data-fordypning="${fordypningLevel}"` : ''}>
               <div class="sp-blokk-fag-row">
                 <span class="sp-blokk-fag-navn">${f.title || f.id}</span>
                 <div class="sp-blokk-fag-right">
@@ -476,7 +476,8 @@ export class Studieplanlegger {
       const blokkId = blokk?.dataset.blokkId;
       const fagNavn = fagItem.querySelector('.sp-blokk-fag-navn').textContent;
       const fagTimer = fagItem.dataset.timer;
-      const fagId = fagItem.dataset.fagkode;
+      const fagId = fagItem.dataset.id;  // curriculum id
+      const fagKode = fagItem.dataset.fagkode;  // actual fagkode (e.g., HIS1010)
       const fagLareplan = fagItem.dataset.lareplan;
 
       // If already selected, deselect
@@ -513,13 +514,13 @@ export class Studieplanlegger {
           );
           // Remove 'selected' class from the DOM element in the other blokk
           const otherBlokk = modal.querySelector(`.sp-blokk[data-blokk-id="${existingSelection.blokkId}"]`);
-          otherBlokk?.querySelector(`.sp-blokk-fag-item[data-fagkode="${fagId}"].selected`)?.classList.remove('selected');
+          otherBlokk?.querySelector(`.sp-blokk-fag-item[data-id="${fagId}"].selected`)?.classList.remove('selected');
         }
 
         // Deselect any other fag in same blokk (1 per blokk rule - swap)
         blokk?.querySelectorAll('.sp-blokk-fag-item.selected').forEach(item => {
           item.classList.remove('selected');
-          const oldId = item.dataset.fagkode;
+          const oldId = item.dataset.id;  // use curriculum id
           this.selectedBlokkskjemaFag = this.selectedBlokkskjemaFag.filter(f =>
             !(f.id === oldId && f.blokkId === blokkId)
           );
@@ -527,7 +528,14 @@ export class Studieplanlegger {
 
         // Select this fag
         fagItem.classList.add('selected');
-        this.selectedBlokkskjemaFag.push({ navn: fagNavn, timer: fagTimer, fagkode: fagId, id: fagId, blokkId, lareplan: fagLareplan });
+        this.selectedBlokkskjemaFag.push({
+          navn: fagNavn,
+          timer: fagTimer,
+          fagkode: fagKode,  // actual fagkode (e.g., HIS1010)
+          id: fagId,  // curriculum id (e.g., historie-vg3)
+          blokkId,
+          lareplan: fagLareplan
+        });
       }
 
       // Check for auto-fill opportunities
@@ -1107,8 +1115,8 @@ export class Studieplanlegger {
    * Programmatically auto-select a fag by partial match
    */
   autoSelectFag(modal, fagPattern) {
-    // Find the fag item matching the pattern
-    const fagItem = modal.querySelector(`.sp-blokk-fag-item[data-fagkode*="${fagPattern}"]`);
+    // Find the fag item matching the pattern (use data-id)
+    const fagItem = modal.querySelector(`.sp-blokk-fag-item[data-id*="${fagPattern}"]`);
     if (!fagItem || fagItem.classList.contains('selected')) return;
 
     const blokk = fagItem.closest('.sp-blokk');
@@ -1117,7 +1125,7 @@ export class Studieplanlegger {
     // Deselect other fag in same blokk first
     blokk?.querySelectorAll('.sp-blokk-fag-item.selected').forEach(item => {
       item.classList.remove('selected');
-      const oldId = item.dataset.fagkode;
+      const oldId = item.dataset.id;  // use curriculum id
       this.selectedBlokkskjemaFag = this.selectedBlokkskjemaFag.filter(f =>
         !(f.id === oldId && f.blokkId === blokkId)
       );
@@ -1127,14 +1135,15 @@ export class Studieplanlegger {
     fagItem.classList.add('selected');
     const fagNavn = fagItem.querySelector('.sp-blokk-fag-navn').textContent;
     const fagTimer = fagItem.dataset.timer;
-    const fagId = fagItem.dataset.fagkode;
+    const fagId = fagItem.dataset.id;  // curriculum id
+    const fagKode = fagItem.dataset.fagkode;  // actual fagkode
     const fagLareplan = fagItem.dataset.lareplan;
 
     this.selectedBlokkskjemaFag.push({
       navn: fagNavn,
       timer: fagTimer,
-      fagkode: fagId,
-      id: fagId,
+      fagkode: fagKode,  // actual fagkode (e.g., HIS1010)
+      id: fagId,  // curriculum id (e.g., historie-vg3)
       blokkId,
       lareplan: fagLareplan
     });
