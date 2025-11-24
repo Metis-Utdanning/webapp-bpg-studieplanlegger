@@ -307,14 +307,18 @@ export class Studieplanlegger {
     // Load current state
     const currentState = this.state.getState();
 
+    // FIXED (2024-11-24): Reset array and use consistent id field
+    // id should be curriculum id (e.g., 'fysikk-1'), not fagkode (e.g., 'FYS1002')
+    this.selectedBlokkskjemaFag = [];
+
     // Restore existing selections from state using unified structure
     const existingFag = currentState[trinn]?.selections || [];
     this.selectedBlokkskjemaFag = existingFag.map(fag => ({
-      id: fag.fagkode || fag.id,
+      id: fag.id || fag.fagkode,  // Use curriculum id first (consistent with DOM data-id)
       navn: fag.navn,
       timer: fag.timer,
       fagkode: fag.fagkode,
-      blokkId: fag.blokkId // Preserve blokkId
+      blokkId: fag.blokkId
     }));
 
     // Update modal title
@@ -399,7 +403,16 @@ export class Studieplanlegger {
     const currentState = this.state.getState();
 
     // Helper to determine fordypning level from fag id (e.g., psykologi-1, fysikk-2)
+    // FIXED (2024-11-24): Exclude matematikk from getting fordypning colors
+    // matematikk-r1, matematikk-s1 etc. should NOT get blue/green fordypning styling
     const getFordypningLevel = (fagId) => {
+      // Skip matematikk - these are not fordypningsfag
+      if (fagId.startsWith('matematikk')) return null;
+      // Skip historie - fellesfag, not fordypning
+      if (fagId.startsWith('historie')) return null;
+      // Skip spansk - obligatorisk for non-fremmedspråk students
+      if (fagId.startsWith('spansk')) return null;
+
       if (fagId.endsWith('-1')) return '1';
       if (fagId.endsWith('-2')) return '2';
       return null;

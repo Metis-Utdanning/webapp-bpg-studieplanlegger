@@ -66,11 +66,28 @@
   cursor: pointer;
   transition: all var(--transition-fast);
   color: var(--text-dark);
+  /* FIXED (2024-11-24): Add shadow effect - Bug 8 */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
 }
 
 .sp-filter-btn:hover {
   border-color: var(--primary-color);
   background: var(--background-light, #f5f5f5);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.12);
+}
+
+/* FIXED (2024-11-24): Gray styling for fremmedspråk buttons - Bug 7 */
+.sp-filter-btn[data-fremmedsprak]:not(.selected) {
+  background: #f5f5f5;
+  color: #666;
+  border-color: #ddd;
+}
+
+/* Fremmedspråk selected = dark gray instead of primary green */
+.sp-filter-btn[data-fremmedsprak].selected {
+  background: #424242;
+  color: white;
+  border-color: #212121;
 }
 
 .sp-filter-btn.selected {
@@ -852,12 +869,21 @@
   background: white;
   border: 2px solid var(--border-light);
   border-radius: var(--radius-sm);
-  padding: 0.4rem 0.6rem;
-  margin-bottom: 0.35rem;
+  /* FIXED (2024-11-24): Less padding - Bug 9 */
+  padding: 0.3rem 0.5rem;
+  margin-bottom: 0.3rem;
   cursor: pointer;
   transition: all var(--transition-fast);
-  font-size: 0.8rem;
+  /* FIXED (2024-11-24): Slightly smaller font - Bug 9 */
+  font-size: 0.75rem;
   box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+}
+
+/* FIXED (2024-11-24): Text wrapping for small screens - Bug 9 */
+.sp-blokk-fag-navn {
+  word-break: break-word;
+  overflow-wrap: anywhere;
+  line-height: 1.3;
 }
 
 .sp-blokk-fag-item:last-child {
@@ -1279,16 +1305,17 @@
 }
 
 /* Fordypning blocks grid - 2 blocks side by side */
+/* FIXED (2024-11-24): Horizontal layout for fordypning boxes - Bug 5 */
 .sp-fordypning-blokker-grid {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: var(--spacing-md);
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--spacing-sm);
   margin-top: var(--spacing-sm);
 }
 
 @media (max-width: 640px) {
   .sp-fordypning-blokker-grid {
-    grid-template-columns: 1fr;
+    flex-direction: column;
   }
 }
 
@@ -1298,6 +1325,10 @@
   border-radius: var(--radius-md);
   overflow: hidden;
   box-shadow: var(--shadow-sm);
+  /* FIXED (2024-11-24): Compact width for horizontal layout - Bug 5 */
+  flex: 1 1 auto;
+  min-width: 140px;
+  max-width: 220px;
   transition: all var(--transition-fast);
 }
 

@@ -389,7 +389,18 @@ export class ValidationService {
 
     // NEW LOGIC (2024-11-24): 1 fordypning = 2 fag from SAME fagområde (not timer-based)
     // Exclude: Matematikk 2P (fellesfag, not fordypning), Spansk I+II (obligatorisk, not fordypning)
-    const excludedFromFordypning = ['matematikk-2p', 'spansk-i-ii', 'spansk-i-ii-vg3'];
+    // FIXED (2024-11-24): Also exclude mediefag and musikkfag (not ST fordypning)
+    const excludedFromFordypning = [
+      'matematikk-2p',
+      'spansk-i-ii',
+      'spansk-i-ii-vg3',
+      // Mediefag - programfag for Medier, ikke ST-fordypning
+      'grafisk-design',
+      'bilde',
+      // Musikkfag - programfag for Musikk, ikke ST-fordypning
+      'musikk-fordypning-1',
+      'musikk-fordypning-2'
+    ];
 
     // Group fag by fagområde
     allFag.forEach(fagId => {
@@ -741,7 +752,16 @@ export class ValidationService {
       const fagomraderMap = {};
 
       // Fag excluded from fordypning calculation
-      const excludedFromFordypning = ['matematikk-2p', 'spansk-i-ii', 'spansk-i-ii-vg3'];
+      // FIXED (2024-11-24): Also exclude mediefag and musikkfag
+      const excludedFromFordypning = [
+        'matematikk-2p',
+        'spansk-i-ii',
+        'spansk-i-ii-vg3',
+        'grafisk-design',
+        'bilde',
+        'musikk-fordypning-1',
+        'musikk-fordypning-2'
+      ];
 
       // Group fag by fagområde (from regler.yml fagomrader)
       allSelections.forEach(fag => {
