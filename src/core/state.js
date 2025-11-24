@@ -146,7 +146,91 @@ export class StudieplanleggerState {
   }
 
   // ==========================================================================
-  // BACKWARD COMPATIBILITY - Legacy API that maps to new structure
+  // UNIFIED API - Replaces legacy setVG2Matematikk + setProgramfag
+  // ==========================================================================
+
+  /**
+   * UNIFIED: Set all selections for a trinn (VG2/VG3)
+   * Automatically assigns correct slots based on fag type
+   *
+   * @param {string} trinn - 'vg2' or 'vg3'
+   * @param {Array} allSelections - Array of ALL fag from modal (including math/historie)
+   *
+   * Slot assignment:
+   * - VG2: matematikk-* → slot 'matematikk', others → 'programfag-1/2/3'
+   * - VG3: historie-vg3/HIS1010 → slot 'historie', others → 'programfag-1/2/3'
+   */
+  setTrinnSelections(trinn, allSelections) {
+    const selections = [];
+
+    // Helper functions for fag type detection
+    const isMath = (fag) => {
+      const id = (fag.id || '').toLowerCase();
+      const fagkode = (fag.fagkode || '').toUpperCase();
+      return id.startsWith('matematikk') || fagkode.startsWith('MAT');
+    };
+
+    const isHistorie = (fag) => {
+      const id = (fag.id || '').toLowerCase();
+      const fagkode = (fag.fagkode || '').toUpperCase();
+      return id === 'historie-vg3' || fagkode === 'HIS1010';
+    };
+
+    // Sort: special fag first (matematikk for VG2, historie for VG3)
+    const sortedFag = [...allSelections].sort((a, b) => {
+      if (trinn === 'vg2') {
+        if (isMath(a) && !isMath(b)) return -1;
+        if (!isMath(a) && isMath(b)) return 1;
+      } else if (trinn === 'vg3') {
+        if (isHistorie(a) && !isHistorie(b)) return -1;
+        if (!isHistorie(a) && isHistorie(b)) return 1;
+      }
+      return 0;
+    });
+
+    // Track if special slots are filled
+    let specialSlotFilled = false;
+
+    // Process each fag
+    sortedFag.forEach((fag) => {
+      // Determine slot based on fag type and trinn
+      let slot;
+      let type = 'programfag';
+
+      if (trinn === 'vg2' && isMath(fag) && !specialSlotFilled) {
+        slot = 'matematikk';
+        type = 'programfag';
+        specialSlotFilled = true;
+      } else if (trinn === 'vg3' && isHistorie(fag) && !specialSlotFilled) {
+        slot = 'historie';
+        type = 'fellesfag';
+        specialSlotFilled = true;
+      } else {
+        // Regular programfag - auto-increment slot number
+        const programfagCount = selections.filter(s => s.slot?.startsWith('programfag-')).length;
+        slot = `programfag-${programfagCount + 1}`;
+        type = 'programfag';
+      }
+
+      // Add selection with all fields preserved
+      selections.push({
+        id: fag.id || fag.fagkode,
+        navn: fag.navn,
+        timer: fag.timer,
+        fagkode: fag.fagkode,
+        type: type,
+        slot: slot,
+        blokkId: fag.blokkId,  // IMPORTANT: Preserve blokkId!
+        lareplan: fag.lareplan
+      });
+    });
+
+    this.state[trinn].selections = selections;
+    this.notify();
+  }
+
+  // ==========================================================================
+  // BACKWARD COMPATIBILITY - Legacy API (still works, but use setTrinnSelections)
   // ==========================================================================
 
   /**
@@ -171,8 +255,7 @@ export class StudieplanleggerState {
   }
 
   /**
-   * Set VG2 matematikk (LEGACY - maps to new structure)
-   * @param {Object} matematikk - Matematikk object
+   * @deprecated Use setTrinnSelections() instead
    */
   setVG2Matematikk(matematikk) {
     if (!matematikk) {
@@ -186,71 +269,26 @@ export class StudieplanleggerState {
       timer: matematikk.timer,
       fagkode: matematikk.fagkode,
       type: 'programfag',
-      slot: 'matematikk'
+      slot: 'matematikk',
+      blokkId: matematikk.blokkId  // FIXED: Now preserves blokkId
     });
   }
 
   /**
-   * Set VG2/VG3 programfag (LEGACY - maps to new structure)
-   * @param {string} trinn - 'vg2' or 'vg3'
-   * @param {Array} programfag - Array of programfag objects
+   * @deprecated Use setTrinnSelections() instead
    */
   setProgramfag(trinn, programfag) {
-    // FIXED (2024-11-24): Sort input so special fag (Historie) come first
-    // This prevents overwriting regular programfag when assigning slots
-    const sortedFag = [...programfag].sort((a, b) => {
-      const aIsHistorie = a.fagkode === 'HIS1010' || a.id === 'historie-vg3';
-      const bIsHistorie = b.fagkode === 'HIS1010' || b.id === 'historie-vg3';
-      if (aIsHistorie && !bIsHistorie) return -1;
-      if (!aIsHistorie && bIsHistorie) return 1;
-      return 0;
-    });
-
-    // Start with empty array, but preserve existing matematikk for VG2
-    const selections = [];
-    let historiePlaced = false;
-
-    // FIXED (2024-11-24): For VG2, preserve existing matematikk (saved via setVG2Matematikk)
-    if (trinn === 'vg2') {
-      const existingMath = this.getSelection('vg2', 'matematikk');
-      if (existingMath) {
-        selections.push(existingMath);
-      }
+    // Redirect to unified function for VG3
+    // For VG2, still need to handle separately due to math being saved first
+    if (trinn === 'vg3') {
+      this.setTrinnSelections(trinn, programfag);
+      return;
     }
 
-    // Process each fag and assign correct slot
-    sortedFag.forEach((fag) => {
-      const isHistorie = fag.slot === 'historie' || fag.fagkode === 'HIS1010' || fag.id === 'historie-vg3';
-
-      if (isHistorie && trinn === 'vg3' && !historiePlaced) {
-        // VG3 historie gets special slot
-        selections.push({
-          id: fag.id || fag.fagkode,
-          navn: fag.navn,
-          timer: fag.timer,
-          fagkode: fag.fagkode,
-          type: 'fellesfag',
-          slot: 'historie',
-          blokkId: fag.blokkId
-        });
-        historiePlaced = true;
-      } else {
-        // Regular programfag - count existing programfag slots
-        const slotIndex = selections.filter(s => s.slot?.startsWith('programfag-')).length + 1;
-        selections.push({
-          id: fag.id || fag.fagkode,
-          navn: fag.navn,
-          timer: fag.timer,
-          fagkode: fag.fagkode,
-          type: fag.type || 'programfag',
-          slot: `programfag-${slotIndex}`,
-          blokkId: fag.blokkId
-        });
-      }
-    });
-
-    this.state[trinn].selections = selections;
-    this.notify();
+    // VG2: preserve existing matematikk, add programfag
+    const existingMath = this.getSelection('vg2', 'matematikk');
+    const allSelections = existingMath ? [existingMath, ...programfag] : programfag;
+    this.setTrinnSelections(trinn, allSelections);
   }
 
   // ==========================================================================

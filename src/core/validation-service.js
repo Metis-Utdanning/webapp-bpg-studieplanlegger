@@ -112,17 +112,22 @@ export class ValidationService {
   /**
    * Get all selected fag IDs from state (VG2 + VG3)
    * Updated to use unified selections[] structure
+   *
+   * @param {Object} state - Current state
+   * @param {string} excludeTrinn - Optional: Exclude this trinn (to avoid double-counting in modal)
    */
-  getAllSelectedFagIds(state) {
+  getAllSelectedFagIds(state, excludeTrinn = null) {
     const ids = [];
 
     // Get all VG2 selections (includes matematikk + programfag)
-    if (state.vg2?.selections) {
+    // FIXED (2024-11-24): Skip if excludeTrinn='vg2' (modal is open for VG2)
+    if (state.vg2?.selections && excludeTrinn !== 'vg2') {
       state.vg2.selections.forEach(f => ids.push(f.id || f.fagkode));
     }
 
     // Get all VG3 selections (includes historie + programfag)
-    if (state.vg3?.selections) {
+    // FIXED (2024-11-24): Skip if excludeTrinn='vg3' (modal is open for VG3)
+    if (state.vg3?.selections && excludeTrinn !== 'vg3') {
       state.vg3.selections.forEach(f => ids.push(f.id || f.fagkode));
     }
 
@@ -148,9 +153,11 @@ export class ValidationService {
     };
 
     const normalizedFagId = fagId.toLowerCase();
-    const allSelected = this.getAllSelectedFagIds(state);
+    // FIXED (2024-11-24): Exclude current trinn from state to avoid double-counting
+    // Modal selections ARE the current trinn, so don't count state's version
+    const otherTrinnSelected = this.getAllSelectedFagIds(state, trinn);
     const modalSelectedIds = currentModalSelections.map(f => (f.id || f.fagkode || '').toLowerCase());
-    const combinedSelected = [...allSelected, ...modalSelectedIds];
+    const combinedSelected = [...otherTrinnSelected, ...modalSelectedIds];
 
     // 1. Check if already selected in this modal
     if (modalSelectedIds.includes(normalizedFagId)) {
@@ -159,11 +166,11 @@ export class ValidationService {
       return result;
     }
 
-    // 2. Check if already selected in state (duplicate)
-    if (allSelected.includes(normalizedFagId)) {
+    // 2. Check if already selected in OTHER trinn (cross-year duplicate)
+    if (otherTrinnSelected.includes(normalizedFagId)) {
       result.status = 'blocked';
       result.cssClass = 'invalid-duplicate';
-      result.reasons.push('Du har allerede dette faget');
+      result.reasons.push('Du har allerede dette faget i et annet trinn');
       return result;
     }
 
@@ -178,7 +185,8 @@ export class ValidationService {
     }
 
     // 4. Check prerequisites (warnings, not blocking)
-    const prereqCheck = this._checkPrerequisites(normalizedFagId, allSelected, trinn);
+    // Use combinedSelected for prerequisite check (includes current modal selections)
+    const prereqCheck = this._checkPrerequisites(normalizedFagId, combinedSelected, trinn);
     if (!prereqCheck.met) {
       result.status = 'warning';
       result.cssClass = 'missing-prerequisite';
@@ -550,8 +558,9 @@ export class ValidationService {
     };
 
     const selectedIds = selectedFag.map(f => (f.id || f.fagkode || '').toLowerCase());
-    const stateIds = this.getAllSelectedFagIds(state);
-    const allIds = [...stateIds, ...selectedIds];
+    // FIXED (2024-11-24): Exclude current trinn to avoid double-counting
+    const otherTrinnIds = this.getAllSelectedFagIds(state, trinn);
+    const allIds = [...otherTrinnIds, ...selectedIds];
 
     // Check for duplicates within selection
     const seen = new Set();

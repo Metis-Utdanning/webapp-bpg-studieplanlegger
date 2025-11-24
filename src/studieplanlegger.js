@@ -364,13 +364,14 @@ export class Studieplanlegger {
           this.autoSelectFag(modal, 'spansk-i-ii');
         }
       }
-
-      // Run initial validation to show selected-elsewhere hints
-      this.updateBlokkValidation(modal);
     }
 
-    // IMPORTANT: Set currentTrinn BEFORE calling updateModalButton
+    // IMPORTANT: Set currentTrinn BEFORE calling updateBlokkValidation
+    // (moved up from after validation call - fixes fordypning not showing on modal open)
     modal.dataset.currentTrinn = trinn;
+
+    // Run initial validation to show fordypning and selected-elsewhere hints
+    this.updateBlokkValidation(modal);
 
     // Update button with existing selection count
     const primaryBtn = modal.querySelector('.sp-btn-primary');
@@ -668,18 +669,9 @@ export class Studieplanlegger {
         this.closeBlokkskjemaModal();
 
         // STEP 4: UPDATE STATE (triggers re-render now that modal is closed)
-        if (trinn === 'vg2') {
-          const matematikkFag = selectionsToSave.find(f =>
-            f.fagkode?.startsWith('matematikk') || f.id?.startsWith('matematikk')
-          );
-          const programfag = selectionsToSave.filter(f =>
-            !f.fagkode?.startsWith('matematikk') && !f.id?.startsWith('matematikk')
-          );
-          this.state.setVG2Matematikk(matematikkFag);
-          this.state.setProgramfag(trinn, programfag);
-        } else {
-          this.state.setProgramfag(trinn, selectionsToSave);
-        }
+        // REFACTORED (2024-11-24): Use unified setTrinnSelections for both VG2 and VG3
+        // This handles slot assignment automatically and preserves blokkId
+        this.state.setTrinnSelections(trinn, selectionsToSave);
       }
     });
 
@@ -878,9 +870,9 @@ export class Studieplanlegger {
     if (currentTrinn === 'vg3') {
       const vg2Selections = currentState.vg2?.selections || [];
 
-      // Create temp VG3 selections by combining saved + current modal selections
-      const savedVg3 = currentState.vg3?.selections || [];
-      const tempVg3Selections = [...savedVg3, ...this.selectedBlokkskjemaFag];
+      // FIXED (2024-11-24): selectedBlokkskjemaFag already contains all VG3 selections
+      // (restored from state when modal opened + any changes)
+      const tempVg3Selections = [...this.selectedBlokkskjemaFag];
 
       // Run cross-trinn validation
       const crossTrinnValidation = this.validator.validateCombinedSelections(
@@ -1094,11 +1086,13 @@ export class Studieplanlegger {
     // Deep clone state
     const tempState = JSON.parse(JSON.stringify(currentState));
 
-    // Add modal selections to appropriate trinn (using unified selections[] structure)
+    // FIXED (2024-11-24): REPLACE instead of ADD
+    // selectedBlokkskjemaFag already contains all selections for current trinn
+    // (restored from state when modal opened + any new changes)
     if (currentTrinn === 'vg2') {
-      tempState.vg2.selections = [...(tempState.vg2.selections || []), ...this.selectedBlokkskjemaFag];
+      tempState.vg2.selections = [...this.selectedBlokkskjemaFag];
     } else {
-      tempState.vg3.selections = [...(tempState.vg3.selections || []), ...this.selectedBlokkskjemaFag];
+      tempState.vg3.selections = [...this.selectedBlokkskjemaFag];
     }
 
     return tempState;
