@@ -49,12 +49,13 @@ eksklusjoner:
 
 # =============================================================================
 # FORUTSETNINGER - Fag som bygger på andre fag
+# Basert på UDIR Tabell 5 og 6 (kun fag med eksplisitt "bygger på"-merknad)
 # =============================================================================
 forutsetninger:
-  # Realfag
+  # Realfag (Tabell 5)
   - fag: fysikk-2
     krever: [fysikk-1]
-    type: warning  # Anbefaling, ikke obligatorisk
+    type: warning
     beskrivelse: "Fysikk 2 bygger på Fysikk 1"
     feilmelding: "Fysikk 2 anbefales med Fysikk 1 først"
     forslag: "Legg til Fysikk 1 i VG2"
@@ -66,63 +67,41 @@ forutsetninger:
     feilmelding: "Kjemi 2 anbefales med Kjemi 1 først"
     forslag: "Legg til Kjemi 1 i VG2"
 
-  - fag: biologi-2
-    krever: [biologi-1]
-    type: warning
-    beskrivelse: "Biologi 2 bygger på Biologi 1"
-    feilmelding: "Biologi 2 anbefales med Biologi 1 først"
-    forslag: "Legg til Biologi 1 i VG2"
-
-  # Matematikk
   - fag: matematikk-r2
     krever: [matematikk-r1]
     type: warning
-    beskrivelse: "Matematikk R2 krever R1"
+    beskrivelse: "Matematikk R2 bygger på Matematikk R1"
     feilmelding: "Matematikk R2 krever at du har hatt R1 i VG2"
     forslag: "Legg til Matematikk R1 i VG2"
 
   - fag: matematikk-s2
     krever: [matematikk-s1]
     type: warning
-    beskrivelse: "Matematikk S2 krever S1"
+    beskrivelse: "Matematikk S2 bygger på Matematikk S1"
     feilmelding: "Matematikk S2 krever at du har hatt S1 i VG2"
     forslag: "Legg til Matematikk S1 i VG2"
 
-  # Samfunnsfag
-  - fag: markedsforing-og-ledelse-2
-    krever: [markedsforing-og-ledelse-1]
+  # Språk, samfunnsfag og økonomi (Tabell 6)
+  - fag: engelsk-2
+    krever: [engelsk-1]
     type: warning
-    beskrivelse: "Markedsføring 2 bygger på Markedsføring 1"
-    feilmelding: "Markedsføring og ledelse 2 anbefales med nivå 1 først"
-    forslag: "Legg til Markedsføring og ledelse 1"
-
-  - fag: entreprenorskap-og-bedriftsutvikling-2
-    krever: [entreprenorskap-og-bedriftsutvikling-1]
-    type: warning
-    beskrivelse: "Entreprenørskap 2 bygger på Entreprenørskap 1"
-    feilmelding: "Entreprenørskap 2 anbefales med nivå 1 først"
-    forslag: "Legg til Entreprenørskap 1"
-
-  - fag: psykologi-2
-    krever: [psykologi-1]
-    type: warning
-    beskrivelse: "Psykologi 2 bygger på Psykologi 1"
-    feilmelding: "Psykologi 2 anbefales med Psykologi 1 først"
-    forslag: "Legg til Psykologi 1"
-
-  - fag: rettslare-2
-    krever: [rettslare-1]
-    type: warning
-    beskrivelse: "Rettslære 2 bygger på Rettslære 1"
-    feilmelding: "Rettslære 2 anbefales med Rettslære 1 først"
-    forslag: "Legg til Rettslære 1"
+    beskrivelse: "Engelsk 2 bygger på Engelsk 1"
+    feilmelding: "Engelsk 2 anbefales med Engelsk 1 først"
+    forslag: "Legg til Engelsk 1"
 
   - fag: historie-og-filosofi-2
     krever: [historie-og-filosofi-1]
     type: warning
-    beskrivelse: "Historie og filosofi 2 bygger på nivå 1"
+    beskrivelse: "Historie og filosofi 2 bygger på Historie og filosofi 1"
     feilmelding: "Historie og filosofi 2 anbefales med nivå 1 først"
     forslag: "Legg til Historie og filosofi 1"
+
+  - fag: markedsforing-og-ledelse-2
+    krever: [markedsforing-og-ledelse-1]
+    type: warning
+    beskrivelse: "Markedsføring og ledelse 2 bygger på Markedsføring og ledelse 1"
+    feilmelding: "Markedsføring og ledelse 2 anbefales med nivå 1 først"
+    forslag: "Legg til Markedsføring og ledelse 1"
 
   - fag: samfunnsokonomi-2
     krever: [samfunnsokonomi-1]
@@ -131,37 +110,15 @@ forutsetninger:
     feilmelding: "Samfunnsøkonomi 2 anbefales med nivå 1 først"
     forslag: "Legg til Samfunnsøkonomi 1"
 
-  # Musikk
-  - fag: musikk-fordypning-2
-    krever: [musikk-fordypning-1]
-    type: warning
-    beskrivelse: "Musikk fordypning 2 bygger på nivå 1"
-    feilmelding: "Musikk fordypning 2 anbefales med nivå 1 først"
-    forslag: "Legg til Musikk fordypning 1"
-
-  # IT
-  - fag: informasjonsteknologi-2
-    krever: [informasjonsteknologi-1]
-    type: warning
-    beskrivelse: "IT 2 bygger på IT 1"
-    feilmelding: "Informasjonsteknologi 2 anbefales med nivå 1 først"
-    forslag: "Legg til Informasjonsteknologi 1"
-
-  # Geofag
-  - fag: geofag-2
-    krever: [geofag-1]
-    type: warning
-    beskrivelse: "Geofag 2 bygger på Geofag 1"
-    feilmelding: "Geofag 2 anbefales med Geofag 1 først"
-    forslag: "Legg til Geofag 1"
-
-  # Engelsk
-  - fag: engelsk-2
-    krever: [engelsk-1]
-    type: warning
-    beskrivelse: "Engelsk 2 bygger på Engelsk 1"
-    feilmelding: "Engelsk 2 anbefales med Engelsk 1 først"
-    forslag: "Legg til Engelsk 1"
+  # MERK: Følgende fag bygger IKKE på hverandre (ingen "bygger på" i UDIR-tabeller):
+  # - Biologi 1 og 2 (kan tas uavhengig)
+  # - Geofag 1 og 2 (kan tas uavhengig)
+  # - Informasjonsteknologi 1 og 2 (kan tas uavhengig)
+  # - Teknologi og forskningslære 1 og 2 (kan tas uavhengig)
+  # - Entreprenørskap og bedriftsutvikling 1 og 2 (kan tas uavhengig)
+  # - Psykologi 1 og 2 (kan tas uavhengig)
+  # - Rettslære 1 og 2 (kan tas uavhengig)
+  # - Musikk fordypning 1 og 2 (ikke i UDIR-tabeller, antar uavhengig)
 
 # =============================================================================
 # FAGOMRÅDER - For fordypningsberegning
