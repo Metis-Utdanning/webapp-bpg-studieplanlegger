@@ -54,17 +54,17 @@ export class ValidationService {
         regler = await response.json();
       } catch (error) {
         this.loadError = error;
-        console.error('❌ ValidationService failed to load rules:', error);
-        // Fallback: Use minimal hardcoded rules
-        this._loadFallbackRules();
-        return false;
+        console.error('❌ CRITICAL: ValidationService failed to load rules:', error);
+        console.error('   Widget cannot function without validation rules.');
+        throw error;  // Fail fast - no fallback!
       }
     }
-    // No regler provided - use fallback
+    // No regler provided - FAIL
     else {
-      console.warn('⚠️ No regler provided to ValidationService.init()');
-      this._loadFallbackRules();
-      return false;
+      const error = new Error('No regler provided to ValidationService.init()');
+      console.error('❌ CRITICAL:', error.message);
+      console.error('   Widget cannot function without validation rules.');
+      throw error;  // Fail fast - no fallback!
     }
 
     // Load all rule sets from regler object
@@ -107,64 +107,6 @@ export class ValidationService {
         }
       }
     }
-  }
-
-  /**
-   * Fallback rules if API fails (basic math conflict rules)
-   */
-  _loadFallbackRules() {
-    console.warn('⚠️ Using fallback validation rules');
-
-    this.eksklusjoner = [
-      {
-        id: 'math-s-r-conflict',
-        type: 'blocking',
-        konfliktGrupper: [
-          ['matematikk-s1', 'matematikk-s2'],  // S-linja
-          ['matematikk-r1', 'matematikk-r2']   // R-linja
-        ],
-        feilmelding: 'Du kan ikke kombinere Matematikk S og R på samme vitnemål',
-        forslag: 'Velg enten S-linja (S1/S2) eller R-linja (R1/R2)'
-      },
-      {
-        id: 'math-programfag-2p-conflict',
-        type: 'blocking',
-        konfliktGrupper: [
-          ['matematikk-r1', 'matematikk-s1'],  // Programfag
-          ['matematikk-2p']                     // Fellesfag
-        ],
-        feilmelding: 'R1/S1 og 2P kan ikke kombineres - programfaget erstatter fellesfaget',
-        forslag: 'Matematikk R1 eller S1 erstatter 2P automatisk'
-      },
-      {
-        id: 'geofag-x-1-conflict',
-        type: 'blocking',
-        gruppe: ['geofag-x', 'geofag-1'],
-        feilmelding: 'Geofag X og Geofag 1 kan ikke kombineres',
-        forslag: 'Velg enten Geofag X eller Geofag 1'
-      },
-      {
-        id: 'tof-x-1-conflict',
-        type: 'blocking',
-        gruppe: ['teknologi-og-forskningslare-x', 'teknologi-og-forskningslare-1'],
-        feilmelding: 'Teknologi og forskningslære X og 1 kan ikke kombineres',
-        forslag: 'Velg enten X-varianten eller nivå 1'
-      }
-    ];
-
-    this.fagomradeMap = {
-      'matematikk-r1': 'MAT', 'matematikk-r2': 'MAT',
-      'matematikk-s1': 'MAT', 'matematikk-s2': 'MAT',
-      'fysikk-1': 'FYS', 'fysikk-2': 'FYS',
-      'kjemi-1': 'KJE', 'kjemi-2': 'KJE',
-      'biologi-1': 'BIO', 'biologi-2': 'BIO'
-    };
-
-    this.fagomradeNavn = {
-      'MAT': 'Matematikk', 'FYS': 'Fysikk', 'KJE': 'Kjemi', 'BIO': 'Biologi'
-    };
-
-    this.loaded = true;
   }
 
   /**
@@ -740,19 +682,15 @@ export class ValidationService {
     // 2. FORDYPNING CALCULATION (VG2 + VG3 combined)
     // ========================================================================
     // Requirement: 560 timer from minimum 2 fagområder
-    // Exception: Two foreign languages count as 1 fagområde
+    // Uses fagområde from regler.yml (not læreplankode!)
 
     const fagomraderMap = {};
     let totalFordypningTimer = 0;
 
-    // IMPORTANT: Fordypning er basert på LÆREPLANKODE, ikke fagkode!
-    // Fag med samme læreplankode gir fordypning sammen
-    // API har nå lareplan-feltet, så vi bruker det direkte
-
     // Fag excluded from fordypning calculation
     const excludedFromFordypning = ['matematikk-2p', 'spansk-i-ii', 'spansk-i-ii-vg3'];
 
-    // Group fag by læreplankode
+    // Group fag by fagområde (from regler.yml fagomrader)
     allSelections.forEach(fag => {
       const fagId = (fag.id || fag.fagkode || '').toLowerCase();
 
@@ -761,38 +699,31 @@ export class ValidationService {
         return;
       }
 
-      // Skip fellesfag (historie, matematikk in VG1)
+      // Skip fellesfag (historie, etc.) - matematikk counts if it's a programfag
       if (fag.type === 'fellesfag' && fag.slot !== 'matematikk') return;
 
       const timer = parseInt(fag.timer) || 140;
+
+      // Get fagområde from fagomradeMap (built from regler.yml)
+      const fagomrade = this.fagomradeMap[fagId];
+
+      if (!fagomrade) {
+        console.warn(`⚠️ Fag ${fagId} (${fag.navn}) mangler fagområde - teller ikke mot fordypning`);
+        return;
+      }
+
       totalFordypningTimer += timer;
 
-      // Use lareplan from API (e.g., "NOK02-03", "MAT1-04", "ENT01-04")
-      // Fallback: if lareplan is missing, use fagkode prefix as identifier
-      let lareplan = fag.lareplan;
-
-      if (!lareplan) {
-        // Fallback for fag without lareplan (shouldn't happen with API data)
-        const fagkode = (fag.fagkode || fag.id || '').toUpperCase();
-        if (fagkode.startsWith('MAT')) lareplan = 'MAT1-04';
-        else if (fagkode.startsWith('FYS')) lareplan = 'NAT1-03';
-        else if (fagkode.startsWith('KJE')) lareplan = 'KJE1-03';
-        else if (fagkode.startsWith('BIO')) lareplan = 'BIO1-03';
-        else if (fagkode.startsWith('GEO')) lareplan = 'GEO1-03';
-        else if (fagkode.startsWith('INF')) lareplan = 'INF1-04';
-        else lareplan = fagkode; // Use fagkode as fallback
+      // Add to fagområde map
+      if (!fagomraderMap[fagomrade]) {
+        fagomraderMap[fagomrade] = {
+          timer: 0,
+          fag: [],
+          displayName: this.fagomradeNavn[fagomrade] || fagomrade
+        };
       }
-
-      // Add to læreplankode map (this is what determines fordypning!)
-      if (!fagomraderMap[lareplan]) {
-        // Extract display name from first fag in this område
-        // Use fag.navn for display (e.g., "Markedsføring og ledelse 1")
-        // Strip level suffix to get fagområde name (e.g., "Markedsføring og ledelse")
-        const displayName = fag.navn.replace(/\s+[12]$/, '').toUpperCase();
-        fagomraderMap[lareplan] = { timer: 0, fag: [], displayName };
-      }
-      fagomraderMap[lareplan].timer += timer;
-      fagomraderMap[lareplan].fag.push(fag.navn);
+      fagomraderMap[fagomrade].timer += timer;
+      fagomraderMap[fagomrade].fag.push(fag.navn);
     });
 
     // Count fagområder (exception: multiple fremmedspråk = 1 fagområde)
