@@ -517,6 +517,43 @@ export class Studieplanlegger {
           otherBlokk?.querySelector(`.sp-blokk-fag-item[data-id="${fagId}"].selected`)?.classList.remove('selected');
         }
 
+        // Check if maxAntallFag would be exceeded (before deselecting old fag in same blokk)
+        const currentTrinn = modal.dataset.currentTrinn;
+        const currentState = this.state.getState();
+        const valgregler = this.dataHandler.getValgreglerForTrinn(currentState.programomrade, currentTrinn);
+        const maxAllowed = valgregler?.maxAntallFag || 4;
+
+        // Count fag that would be selected after this operation (excluding old fag in same blokk)
+        const otherBlokkSelections = this.selectedBlokkskjemaFag.filter(f => f.blokkId !== blokkId);
+        const wouldExceedMax = otherBlokkSelections.length >= maxAllowed;
+
+        // Check if this is an obligatorisk fag
+        const isObligatorisk = fagItem.classList.contains('obligatorisk');
+
+        // If max would be exceeded AND this is not obligatorisk, block it
+        if (wouldExceedMax && !isObligatorisk) {
+          // Check if there are obligatoriske fag that haven't been selected yet
+          const obligatoriskeFag = modal.querySelectorAll('.sp-blokk-fag-item.obligatorisk');
+          const hasUnselectedObligatorisk = Array.from(obligatoriskeFag).some(item =>
+            !this.selectedBlokkskjemaFag.some(f => f.id === item.dataset.id)
+          );
+
+          if (hasUnselectedObligatorisk) {
+            // Shake animation
+            fagItem.classList.add('shake');
+            setTimeout(() => fagItem.classList.remove('shake'), 500);
+
+            // Show error message
+            this.showModalValidationError(
+              modal,
+              currentTrinn === 'vg3'
+                ? 'Du må velge Historie før du kan legge til flere fag!'
+                : 'Du må velge alle obligatoriske fag før du kan legge til flere fag!'
+            );
+            return;
+          }
+        }
+
         // Deselect any other fag in same blokk (1 per blokk rule - swap)
         blokk?.querySelectorAll('.sp-blokk-fag-item.selected').forEach(item => {
           item.classList.remove('selected');
@@ -699,6 +736,34 @@ export class Studieplanlegger {
         item.classList.add('selected-elsewhere');
         item.title = 'Allerede valgt i annen blokk - klikk for å bytte';
         return;
+      }
+
+      // Check if maxAntallFag is reached and obligatoriske fag are not yet selected
+      // If so, block selection of non-obligatoriske fag
+      const currentTrinn = modal.dataset.currentTrinn;
+      const valgregler = this.dataHandler.getValgreglerForTrinn(currentState.programomrade, currentTrinn);
+      const maxAllowed = valgregler?.maxAntallFag || 4;
+      const currentCount = this.selectedBlokkskjemaFag.length;
+
+      if (currentCount >= maxAllowed && !isSelectedHere) {
+        const isObligatorisk = item.classList.contains('obligatorisk');
+
+        if (!isObligatorisk) {
+          // Check if there are unselected obligatoriske fag
+          const obligatoriskeFag = modal.querySelectorAll('.sp-blokk-fag-item.obligatorisk');
+          const hasUnselectedObligatorisk = Array.from(obligatoriskeFag).some(obligItem =>
+            !this.selectedBlokkskjemaFag.some(f => f.id === obligItem.dataset.id)
+          );
+
+          if (hasUnselectedObligatorisk) {
+            item.classList.add('blocked');
+            item.title = currentTrinn === 'vg3'
+              ? 'Du må velge Histoire før du kan velge flere fag'
+              : 'Du må velge alle obligatoriske fag før du kan velge flere fag';
+            this.addValidationHint(item, '🔒', 'Obligatoriske fag må velges først');
+            return;
+          }
+        }
       }
 
       // Check if there's a conflicting fag IN THE SAME BLOKK

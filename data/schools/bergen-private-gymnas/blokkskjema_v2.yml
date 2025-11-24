@@ -108,6 +108,7 @@ blokker:
         timer: 113
         trinn: vg3
         tilgjengeligFor: ["studiespesialisering"]
+        obligatorisk: true
         merknad: "OBLIGATORISK for alle VG3 - Fellesfag som velges i blokkskjema"
 
       # ===== VG3 NIVÅ 1-FAG (for elever som ikke tok dem i VG2) =====
@@ -248,6 +249,7 @@ blokker:
         timer: 113
         trinn: vg3
         tilgjengeligFor: ["studiespesialisering", "medier-kommunikasjon"]
+        obligatorisk: true
         merknad: "OBLIGATORISK for alle VG3 - Fellesfag som velges i blokkskjema"
 
       # ===== VG3 LEVEL 1 FAG (kan tas i VG3 hvis ikke tatt i VG2) =====
@@ -388,6 +390,7 @@ blokker:
         timer: 113
         trinn: vg3
         tilgjengeligFor: ["studiespesialisering", "musikk-dans-drama", "medier-kommunikasjon"]
+        obligatorisk: true
         merknad: "OBLIGATORISK for alle VG3 - Fellesfag som velges i blokkskjema"
 
       # ===== VG3 LEVEL 1 FAG (kan tas i VG3 hvis ikke tatt i VG2) =====
@@ -508,6 +511,7 @@ blokker:
         timer: 113
         trinn: vg3
         tilgjengeligFor: ["studiespesialisering", "musikk-dans-drama", "medier-kommunikasjon"]
+        obligatorisk: true
         merknad: "OBLIGATORISK for alle VG3 - Fellesfag som velges i blokkskjema"
 
       # ===== VG3 LEVEL 1 FAG (kan tas i VG3 hvis ikke tatt i VG2) =====
