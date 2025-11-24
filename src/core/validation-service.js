@@ -367,6 +367,23 @@ export class ValidationService {
       timerPerOmrade: 280
     };
 
+    // Skip fordypning validation if not required for this programområde (e.g., Musikk, Medier)
+    if (krav.minOmrader === 0) {
+      return {
+        areas: [],
+        fordypninger: [],
+        antallFordypninger: 0,
+        totalTimer: 0,
+        required: 0,
+        requiredFordypninger: 0,
+        isValid: true,
+        notRequired: true,
+        progress: 100,
+        missingFordypninger: 0,
+        missingTimer: 0
+      };
+    }
+
     const allFag = this.getAllSelectedFagIds(state);
     const fagomradeMap = {};
 
@@ -419,9 +436,9 @@ export class ValidationService {
     // Calculate total timer from all fordypninger
     const totalFordypningTimer = fordypninger.reduce((sum, a) => sum + a.timer, 0);
 
-    // Valid if 2+ fordypninger
-    const isValid = antallFordypninger >= 2;
-    const progress = Math.min(100, Math.round((antallFordypninger / 2) * 100));
+    // Valid if meets minOmrader requirement (from regler.yml)
+    const isValid = antallFordypninger >= krav.minOmrader;
+    const progress = Math.min(100, Math.round((antallFordypninger / krav.minOmrader) * 100));
 
     return {
       areas,
@@ -429,10 +446,10 @@ export class ValidationService {
       antallFordypninger,
       totalTimer: totalFordypningTimer,
       required: krav.minTimer,  // Keep for legacy compatibility
-      requiredFordypninger: 2,
+      requiredFordypninger: krav.minOmrader,
       isValid,
       progress,
-      missingFordypninger: Math.max(0, 2 - antallFordypninger),
+      missingFordypninger: Math.max(0, krav.minOmrader - antallFordypninger),
       missingTimer: Math.max(0, krav.minTimer - totalFordypningTimer)  // Keep for legacy
     };
   }
@@ -701,82 +718,103 @@ export class ValidationService {
     // Requirement: 2 fordypninger total (not timer-based)
     // Uses fagområde from regler.yml (not læreplankode!)
 
-    const fagomraderMap = {};
-
-    // Fag excluded from fordypning calculation
-    const excludedFromFordypning = ['matematikk-2p', 'spansk-i-ii', 'spansk-i-ii-vg3'];
-
-    // Group fag by fagområde (from regler.yml fagomrader)
-    allSelections.forEach(fag => {
-      const fagId = (fag.id || fag.fagkode || '').toLowerCase();
-
-      // Skip fag that don't count toward fordypning
-      if (excludedFromFordypning.includes(fagId)) {
-        return;
-      }
-
-      // Skip fellesfag (historie, etc.) - matematikk counts if it's a programfag
-      if (fag.type === 'fellesfag' && fag.slot !== 'matematikk') return;
-
-      const timer = parseInt(fag.timer) || 140;
-
-      // Get fagområde from fagomradeMap (built from regler.yml)
-      const fagomrade = this.fagomradeMap[fagId];
-
-      if (!fagomrade) {
-        // Skip warning for fellesfag (e.g., historie-vg3)
-        if (fag.type === 'fellesfag') {
-          return; // Silent skip
-        }
-        console.warn(`⚠️ Fag ${fagId} (${fag.navn}) mangler fagområde - teller ikke mot fordypning`);
-        return;
-      }
-
-      // Add to fagområde map
-      if (!fagomraderMap[fagomrade]) {
-        fagomraderMap[fagomrade] = {
-          timer: 0,
-          fag: [],
-          displayName: this.fagomradeNavn[fagomrade] || fagomrade
-        };
-      }
-      fagomraderMap[fagomrade].timer += timer;
-      fagomraderMap[fagomrade].fag.push(fag.navn);
-    });
-
-    // Count fordypninger (fagområder with 2+ fag)
-    let fordypninger = 0;
-    let totalFordypningTimer = 0;
-
-    Object.entries(fagomraderMap).forEach(([fagomrade, data]) => {
-      if (data.fag.length >= 2) {
-        fordypninger++;
-        totalFordypningTimer += data.timer;
-      }
-    });
-
-    // Check if fordypning requirement is met (2+ fordypninger)
-    const fordypningMet = fordypninger >= 2;
-
-    result.fordypning = {
-      totalTimer: totalFordypningTimer,
-      fagomrader: fagomraderMap,
-      fordypninger: fordypninger,
-      requiredFordypninger: 2,
-      isMet: fordypningMet
+    // Get fordypning requirements for this programområde
+    const programomrade = context.programomrade || 'studiespesialisering';
+    const fordypningKrav = this.fordypningKrav[programomrade] || this.fordypningKrav.studiespesialisering || {
+      minTimer: 560,
+      minOmrader: 2
     };
 
-    // Add error if fordypning not met
-    if (!fordypningMet) {
-      result.errors.push({
-        type: 'fordypning-insufficient',
-        message: `Fordypning: Du har ${fordypninger} fordypning(er), men trenger minst 2 fordypninger`,
-        details: `En fordypning = 2 fag fra samme fagområde. Du har fag fra ${Object.keys(fagomraderMap).length} fagområde(r).`,
-        suggestion: 'Velg 2 fag fra samme fagområde for å oppnå en fordypning'
+    // Skip fordypning validation if not required for this programområde (e.g., Musikk, Medier)
+    if (fordypningKrav.minOmrader === 0) {
+      result.fordypning = {
+        totalTimer: 0,
+        fagomrader: {},
+        fordypninger: 0,
+        requiredFordypninger: 0,
+        isMet: true,
+        notRequired: true
+      };
+      // Skip to next validation section - do not add fordypning errors
+    } else {
+      // Only calculate fordypning if required for this programområde
+      const fagomraderMap = {};
+
+      // Fag excluded from fordypning calculation
+      const excludedFromFordypning = ['matematikk-2p', 'spansk-i-ii', 'spansk-i-ii-vg3'];
+
+      // Group fag by fagområde (from regler.yml fagomrader)
+      allSelections.forEach(fag => {
+        const fagId = (fag.id || fag.fagkode || '').toLowerCase();
+
+        // Skip fag that don't count toward fordypning
+        if (excludedFromFordypning.includes(fagId)) {
+          return;
+        }
+
+        // Skip fellesfag (historie, etc.) - matematikk counts if it's a programfag
+        if (fag.type === 'fellesfag' && fag.slot !== 'matematikk') return;
+
+        const timer = parseInt(fag.timer) || 140;
+
+        // Get fagområde from fagomradeMap (built from regler.yml)
+        const fagomrade = this.fagomradeMap[fagId];
+
+        if (!fagomrade) {
+          // Skip warning for fellesfag (e.g., historie-vg3)
+          if (fag.type === 'fellesfag') {
+            return; // Silent skip
+          }
+          console.warn(`⚠️ Fag ${fagId} (${fag.navn}) mangler fagområde - teller ikke mot fordypning`);
+          return;
+        }
+
+        // Add to fagområde map
+        if (!fagomraderMap[fagomrade]) {
+          fagomraderMap[fagomrade] = {
+            timer: 0,
+            fag: [],
+            displayName: this.fagomradeNavn[fagomrade] || fagomrade
+          };
+        }
+        fagomraderMap[fagomrade].timer += timer;
+        fagomraderMap[fagomrade].fag.push(fag.navn);
       });
 
-      result.valid = false;
-    }
+      // Count fordypninger (fagområder with 2+ fag)
+      let fordypninger = 0;
+      let totalFordypningTimer = 0;
+
+      Object.entries(fagomraderMap).forEach(([fagomrade, data]) => {
+        if (data.fag.length >= 2) {
+          fordypninger++;
+          totalFordypningTimer += data.timer;
+        }
+      });
+
+      // Check if fordypning requirement is met (use minOmrader from regler.yml)
+      const fordypningMet = fordypninger >= fordypningKrav.minOmrader;
+
+      result.fordypning = {
+        totalTimer: totalFordypningTimer,
+        fagomrader: fagomraderMap,
+        fordypninger: fordypninger,
+        requiredFordypninger: fordypningKrav.minOmrader,
+        isMet: fordypningMet
+      };
+
+      // Add error if fordypning not met
+      if (!fordypningMet) {
+        result.errors.push({
+          type: 'fordypning-insufficient',
+          message: `Fordypning: Du har ${fordypninger} fordypning(er), men trenger minst ${fordypningKrav.minOmrader} fordypninger`,
+          details: `En fordypning = 2 fag fra samme fagområde. Du har fag fra ${Object.keys(fagomraderMap).length} fagområde(r).`,
+          suggestion: 'Velg 2 fag fra samme fagområde for å oppnå en fordypning'
+        });
+
+        result.valid = false;
+      }
+    } // End of fordypning calculation (else block)
 
     // ========================================================================
     // 3. COMBINED PREREQUISITE WARNINGS

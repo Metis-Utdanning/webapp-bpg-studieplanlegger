@@ -791,6 +791,7 @@
 .sp-blokk-fag-item.selected {
   background: var(--secondary-color);
   border-color: var(--primary-color);
+  opacity: 0.6;
 }
 
 .sp-blokk-fag-item.disabled {
@@ -799,20 +800,20 @@
   background: #f5f5f5;
 }
 
-/* Obligatorisk fag (e.g., Historie VG3) - highlighted */
+/* Obligatorisk fag (e.g., Histoire VG3) - highlighted */
 .sp-blokk-fag-item.obligatorisk {
   background: #fff3e0;
   border-color: #ff9800;
+  border-left: 4px solid #ff9800;
 }
 
-.sp-blokk-fag-item.obligatorisk::before {
-  content: '★ ';
-  color: #ff9800;
-}
+/* Removed star icon - takes too much space */
+/* .sp-blokk-fag-item.obligatorisk::before { content: '★ '; } */
 
 .sp-blokk-fag-item.obligatorisk.selected {
   background: #ffe0b2;
   border-color: #e65100;
+  border-left: 4px solid #e65100;
 }
 
 /* Fordypning nivå farger - for å skille valgte fag */
@@ -968,6 +969,31 @@
 .sp-blokk-fag-item.selected-elsewhere:hover::after {
   content: ' (klikk for å bytte)';
   color: var(--color-primary);
+}
+
+/* Hint: Fag allerede valgt i ANNET TRINN (VG2 vs VG3) - blocked */
+.sp-blokk-fag-item.selected-in-other-year {
+  opacity: 0.35;
+  background: #f5f5f5;
+  cursor: not-allowed;
+}
+
+.sp-blokk-fag-item.selected-in-other-year::after {
+  content: ' (valgt i VG2)';
+  font-size: 0.65rem;
+  color: #999;
+  font-style: italic;
+  font-weight: 500;
+}
+
+.sp-blokk-fag-item.selected-in-other-year[data-trinn="vg2"]::after {
+  content: ' (valgt i VG3)';
+}
+
+/* No hover effect - not clickable across years */
+.sp-blokk-fag-item.selected-in-other-year:hover {
+  opacity: 0.35;
+  cursor: not-allowed;
 }
 
 /* Duplikat-fag (valgt flere ganger - viser feil) */

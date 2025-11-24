@@ -517,9 +517,31 @@ export class Studieplanlegger {
           otherBlokk?.querySelector(`.sp-blokk-fag-item[data-id="${fagId}"].selected`)?.classList.remove('selected');
         }
 
-        // Check if maxAntallFag would be exceeded (before deselecting old fag in same blokk)
-        const currentTrinn = modal.dataset.currentTrinn;
+        // Check if fag is already selected in OTHER TRINN (cross-year duplicate check)
         const currentState = this.state.getState();
+        const currentTrinn = modal.dataset.currentTrinn;
+        const otherTrinn = currentTrinn === 'vg2' ? 'vg3' : 'vg2';
+        const otherTrinnSelections = currentState[otherTrinn]?.selections || [];
+        const isSelectedInOtherYear = otherTrinnSelections.some(f => {
+          return (f.id || f.fagkode) === fagId;
+        });
+
+        if (isSelectedInOtherYear) {
+          // Shake animation
+          fagItem.classList.add('shake');
+          setTimeout(() => fagItem.classList.remove('shake'), 500);
+
+          // Show error message
+          this.showModalValidationError(
+            modal,
+            currentTrinn === 'vg2'
+              ? `Dette faget er allerede valgt i VG3. Samme fag kan ikke velges to ganger.`
+              : `Dette faget er allerede valgt i VG2. Samme fag kan ikke velges to ganger.`
+          );
+          return;
+        }
+
+        // Check if maxAntallFag would be exceeded (before deselecting old fag in same blokk)
         const valgregler = this.dataHandler.getValgreglerForTrinn(currentState.programomrade, currentTrinn);
         const maxAllowed = valgregler?.maxAntallFag || 4;
 
@@ -738,9 +760,28 @@ export class Studieplanlegger {
         return;
       }
 
+      // Check if fag is selected in OTHER TRINN (cross-year duplicate check)
+      const currentTrinn = modal.dataset.currentTrinn;
+      const otherTrinn = currentTrinn === 'vg2' ? 'vg3' : 'vg2';
+      const otherTrinnSelections = currentState[otherTrinn]?.selections || [];
+      const isSelectedInOtherYear = otherTrinnSelections.some(f => {
+        // Match by id (e.g., "fysikk-1") - this prevents selecting same fag across years
+        return (f.id || f.fagkode) === item.dataset.id;
+      });
+
+      if (isSelectedInOtherYear && !isSelectedHere) {
+        item.classList.add('selected-in-other-year');
+        item.dataset.trinn = currentTrinn; // For CSS ::after content
+        item.title = currentTrinn === 'vg2'
+          ? 'Dette faget er allerede valgt i VG3. Samme fag kan ikke velges to ganger.'
+          : 'Dette faget er allerede valgt i VG2. Samme fag kan ikke velges to ganger.';
+        // Add hint icon
+        this.addValidationHint(item, '🚫', 'Allerede valgt i annet trinn');
+        return;
+      }
+
       // Check if maxAntallFag is reached and obligatoriske fag are not yet selected
       // If so, block selection of non-obligatoriske fag
-      const currentTrinn = modal.dataset.currentTrinn;
       const valgregler = this.dataHandler.getValgreglerForTrinn(currentState.programomrade, currentTrinn);
       const maxAllowed = valgregler?.maxAntallFag || 4;
       const currentCount = this.selectedBlokkskjemaFag.length;
