@@ -27,6 +27,8 @@ export class Studieplanlegger {
     this.container = container;
     this.options = {
       schoolId: 'bergen-private-gymnas',
+      showVersionSwitcher: false,  // Show blokkskjema version switcher
+      defaultBlokkskjemaVersion: null,  // Override default version from API
       ...options
     };
 
@@ -37,7 +39,7 @@ export class Studieplanlegger {
     });
     this.state = new StudieplanleggerState();
     this.validator = new ValidationService();
-    this.renderer = new UIRenderer(container, this.state, this.dataHandler);
+    this.renderer = new UIRenderer(container, this.state, this.dataHandler, this.options);
 
     // Track selected fag in blokkskjema modal
     this.selectedBlokkskjemaFag = [];
@@ -45,6 +47,9 @@ export class Studieplanlegger {
 
     // AbortController for modal event listeners (enables cleanup)
     this.modalAbortController = null;
+
+    // AbortController for version switcher listeners (enables cleanup)
+    this.versionSwitcherAbortController = null;
 
     this.init();
   }
@@ -57,6 +62,12 @@ export class Studieplanlegger {
     if (this.modalAbortController) {
       this.modalAbortController.abort();
       this.modalAbortController = null;
+    }
+
+    // Abort version switcher event listeners
+    if (this.versionSwitcherAbortController) {
+      this.versionSwitcherAbortController.abort();
+      this.versionSwitcherAbortController = null;
     }
 
     // Unsubscribe from state changes
@@ -74,6 +85,165 @@ export class Studieplanlegger {
   }
 
   /**
+   * Initialize blokkskjema version based on priority:
+   * 1. URL parameter (?blokkskjema=v1)
+   * 2. localStorage (persisted choice)
+   * 3. Constructor option (defaultBlokkskjemaVersion)
+   * 4. API default (activeVersion from school-config)
+   */
+  initBlokkskjemaVersion() {
+    const availableVersions = this.dataHandler.getAvailableVersions();
+
+    if (availableVersions.length === 0) {
+      console.warn('⚠️ No blokkskjema versions available');
+      return;
+    }
+
+    // Priority 1: URL parameter
+    const urlParams = new URLSearchParams(window.location.search);
+    const urlVersion = urlParams.get('blokkskjema');
+
+    if (urlVersion && availableVersions.includes(urlVersion)) {
+      this.dataHandler.setBlokkskjemaVersion(urlVersion);
+      console.log(`📋 Blokkskjema version from URL: ${urlVersion}`);
+      return;
+    }
+
+    // Priority 2: localStorage
+    const storedVersion = localStorage.getItem('studieplanlegger_blokkskjema_version');
+    if (storedVersion && availableVersions.includes(storedVersion)) {
+      this.dataHandler.setBlokkskjemaVersion(storedVersion);
+      console.log(`📋 Blokkskjema version from localStorage: ${storedVersion}`);
+      return;
+    }
+
+    // Priority 3: Constructor option
+    if (this.options.defaultBlokkskjemaVersion &&
+        availableVersions.includes(this.options.defaultBlokkskjemaVersion)) {
+      this.dataHandler.setBlokkskjemaVersion(this.options.defaultBlokkskjemaVersion);
+      console.log(`📋 Blokkskjema version from options: ${this.options.defaultBlokkskjemaVersion}`);
+      return;
+    }
+
+    // Priority 4: API default (already set by DataHandler)
+    console.log(`📋 Using default blokkskjema version: ${this.dataHandler.getActiveVersion()}`);
+  }
+
+  /**
+   * Check for admin mode (enables version switcher)
+   * Activated by URL parameter: ?admin=true or ?blokkskjema=*
+   */
+  checkAdminMode() {
+    const urlParams = new URLSearchParams(window.location.search);
+    const isAdmin = urlParams.get('admin') === 'true';
+    const hasBlokkskjemaParam = urlParams.has('blokkskjema');
+
+    console.log('🔍 checkAdminMode:', { isAdmin, hasBlokkskjemaParam, search: window.location.search });
+
+    if (isAdmin || hasBlokkskjemaParam) {
+      this.options.showVersionSwitcher = true;
+      // Also update renderer's reference directly to be safe
+      if (this.renderer && this.renderer.options) {
+        this.renderer.options.showVersionSwitcher = true;
+      }
+      console.log('🔧 Admin mode activated - version switcher enabled');
+    }
+  }
+
+  /**
+   * Switch to a different blokkskjema version
+   * @param {string} versionId - Version to switch to
+   */
+  switchBlokkskjemaVersion(versionId) {
+    const success = this.dataHandler.setBlokkskjemaVersion(versionId);
+
+    if (!success) {
+      console.error(`Failed to switch to version: ${versionId}`);
+      return;
+    }
+
+    // Filter out selections that don't exist in new version
+    const validFagIds = this.dataHandler.getAllFagIds(versionId);
+    this.state.filterSelectionsToValidFag(validFagIds);
+
+    // Save choice to localStorage
+    localStorage.setItem('studieplanlegger_blokkskjema_version', versionId);
+
+    // Reset modal setup flag (DOM elements are replaced on re-render)
+    this.blokkskjemaModalSetup = false;
+
+    // Re-render UI
+    this.renderer.render();
+    this.attachEventListeners();
+
+    console.log(`✅ Switched to blokkskjema version: ${versionId}`);
+  }
+
+  /**
+   * Attach event listeners for version switcher
+   */
+  attachVersionSwitcherListeners() {
+    const switcher = this.container.querySelector('.sp-version-switcher');
+    if (!switcher) return;
+
+    const btn = switcher.querySelector('.sp-version-btn');
+    const dropdown = switcher.querySelector('.sp-version-dropdown');
+
+    if (!btn || !dropdown) return;
+
+    // Abort previous listeners to prevent memory leak on re-render
+    if (this.versionSwitcherAbortController) {
+      this.versionSwitcherAbortController.abort();
+    }
+    this.versionSwitcherAbortController = new AbortController();
+    const { signal } = this.versionSwitcherAbortController;
+
+    // Toggle dropdown on button click
+    btn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const isOpen = !dropdown.classList.contains('hidden');
+
+      if (isOpen) {
+        dropdown.classList.add('hidden');
+        btn.setAttribute('aria-expanded', 'false');
+      } else {
+        dropdown.classList.remove('hidden');
+        btn.setAttribute('aria-expanded', 'true');
+      }
+    }, { signal });
+
+    // Handle version selection
+    dropdown.querySelectorAll('.sp-version-option').forEach(option => {
+      option.addEventListener('click', (e) => {
+        const version = e.currentTarget.dataset.version;
+        dropdown.classList.add('hidden');
+        btn.setAttribute('aria-expanded', 'false');
+
+        if (version && version !== this.dataHandler.getActiveVersion()) {
+          this.switchBlokkskjemaVersion(version);
+        }
+      }, { signal });
+    });
+
+    // Close dropdown when clicking outside
+    document.addEventListener('click', (e) => {
+      if (!switcher.contains(e.target)) {
+        dropdown.classList.add('hidden');
+        btn.setAttribute('aria-expanded', 'false');
+      }
+    }, { signal });
+
+    // Close dropdown on Escape key
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && !dropdown.classList.contains('hidden')) {
+        dropdown.classList.add('hidden');
+        btn.setAttribute('aria-expanded', 'false');
+        btn.focus();
+      }
+    }, { signal });
+  }
+
+  /**
    * Initialize the widget
    */
   async init() {
@@ -84,6 +254,9 @@ export class Studieplanlegger {
       // Load data first (v2 API has regler embedded)
       await this.dataHandler.loadAll();
 
+      // Handle blokkskjema version selection (URL param > localStorage > option > API default)
+      this.initBlokkskjemaVersion();
+
       // Initialize validator with regler from loaded data (v2 API)
       if (this.dataHandler.data && this.dataHandler.data.regler) {
         await this.validator.init(this.dataHandler.data.regler);
@@ -91,6 +264,9 @@ export class Studieplanlegger {
         console.warn('⚠️ No regler found in data, validator will use fallback');
         await this.validator.init(null);
       }
+
+      // Check for admin mode (enables version switcher)
+      this.checkAdminMode();
 
       // Render initial UI
       this.renderer.render();
@@ -114,6 +290,9 @@ export class Studieplanlegger {
    * Attach all event listeners
    */
   attachEventListeners() {
+    // Version switcher (if enabled)
+    this.attachVersionSwitcherListeners();
+
     // Filter buttons - Programområde
     this.container.querySelectorAll('[data-programomrade]').forEach(btn => {
       btn.addEventListener('click', (e) => {

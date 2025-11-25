@@ -147,6 +147,40 @@ function loadYAML(filePath) {
   return yaml.load(content);
 }
 
+/**
+ * Enrich a blokkskjema with curriculum data
+ * @param {Object} blokkskjema - Raw blokkskjema data
+ * @param {Map} curriculumMap - Map of fag id to curriculum data
+ * @param {Map} kategoriMap - Map of fag id to kategori
+ * @returns {Object} Enriched blokkskjema
+ */
+function enrichBlokkskjema(blokkskjema, curriculumMap, kategoriMap) {
+  const enriched = JSON.parse(JSON.stringify(blokkskjema));
+
+  if (enriched.blokker) {
+    Object.keys(enriched.blokker).forEach(blokkKey => {
+      const blokk = enriched.blokker[blokkKey];
+      if (blokk.fag && Array.isArray(blokk.fag)) {
+        blokk.fag = blokk.fag.map(fag => {
+          const curriculum = curriculumMap.get(fag.id);
+          return {
+            ...fag,
+            kategori: kategoriMap.get(fag.id) || null,
+            ...(curriculum && {
+              title: curriculum.title,
+              fagkode: curriculum.fagkode,
+              lareplan: curriculum.lareplan,
+              omFaget: curriculum.omFaget
+            })
+          };
+        });
+      }
+    });
+  }
+
+  return enriched;
+}
+
 // Build studieplanlegger.json for a school
 function buildStudieplanleggerAPI(schoolId, curriculumData) {
   console.log(`\n🏫 Building Studieplanlegger API for: ${schoolId}...`);
@@ -164,15 +198,61 @@ function buildStudieplanleggerAPI(schoolId, curriculumData) {
     return;
   }
 
-  // Load blokkskjema v2 directly (not from config version)
-  const blokkskjemaV2Path = path.join(schoolDataDir, 'blokkskjema_v2.yml');
-  const blokkskjema = loadYAML(blokkskjemaV2Path);
+  // Get blokkskjema versions from school config
+  const blokkskjemaConfig = schoolConfig.blokkskjema || {};
+  const availableVersions = blokkskjemaConfig.versions || { v2: 'blokkskjema_v2.yml' };
+  let activeVersion = blokkskjemaConfig.activeVersion || 'v2';
 
-  if (!blokkskjema) {
-    console.log(`  ⚠️  No blokkskjema_v2.yml found for ${schoolId}, skipping...`);
+  // Validate that activeVersion exists in availableVersions
+  if (!availableVersions[activeVersion]) {
+    const availableKeys = Object.keys(availableVersions);
+    console.log(`  ⚠️  activeVersion "${activeVersion}" not found in versions. Available: ${availableKeys.join(', ')}`);
+
+    if (availableKeys.length > 0) {
+      activeVersion = availableKeys[0];
+      console.log(`  ⚠️  Falling back to: ${activeVersion}`);
+    } else {
+      console.log(`  ⚠️  No blokkskjema versions defined for ${schoolId}, skipping...`);
+      return;
+    }
+  }
+
+  console.log(`  📋 Active blokkskjema version: ${activeVersion}`);
+  console.log(`  📋 Available versions: ${Object.keys(availableVersions).join(', ')}`);
+
+  // Load all available blokkskjema versions
+  const blokkskjemaVersions = {};
+  let primaryBlokkskjema = null;
+
+  for (const [versionId, filename] of Object.entries(availableVersions)) {
+    const blokkskjemaPath = path.join(schoolDataDir, filename);
+    const blokkskjema = loadYAML(blokkskjemaPath);
+
+    if (blokkskjema) {
+      blokkskjemaVersions[versionId] = blokkskjema;
+      console.log(`  ✅ Loaded ${filename} as ${versionId}`);
+
+      // Use active version as primary (for valgregler, timevalidering, etc.)
+      if (versionId === activeVersion) {
+        primaryBlokkskjema = blokkskjema;
+      }
+    } else {
+      console.log(`  ⚠️  Could not load ${filename} for version ${versionId}`);
+    }
+  }
+
+  // Ensure we have at least one blokkskjema
+  if (Object.keys(blokkskjemaVersions).length === 0) {
+    console.log(`  ⚠️  No blokkskjema files found for ${schoolId}, skipping...`);
     return;
   }
-  console.log(`  📋 Loaded blokkskjema_v2.yml`);
+
+  // If active version wasn't found, use first available
+  if (!primaryBlokkskjema) {
+    const firstVersion = Object.keys(blokkskjemaVersions)[0];
+    primaryBlokkskjema = blokkskjemaVersions[firstVersion];
+    console.log(`  ⚠️  Active version ${activeVersion} not found, using ${firstVersion}`);
+  }
 
   // Load timefordeling (fellesfag and obligatoriske programfag) - separate file
   const timefordelingPath = path.join(schoolDataDir, 'timefordeling.yml');
@@ -213,30 +293,14 @@ function buildStudieplanleggerAPI(schoolId, curriculumData) {
     curriculumMap.set(fag.id, fag);
   });
 
-  // Enrich blokkskjema with curriculum data
-  const enrichedBlokkskjema = JSON.parse(JSON.stringify(blokkskjema));
-
-  if (enrichedBlokkskjema.blokker) {
-    Object.keys(enrichedBlokkskjema.blokker).forEach(blokkKey => {
-      const blokk = enrichedBlokkskjema.blokker[blokkKey];
-      if (blokk.fag && Array.isArray(blokk.fag)) {
-        blokk.fag = blokk.fag.map(fag => {
-          const curriculum = curriculumMap.get(fag.id);
-          return {
-            ...fag,
-            kategori: kategoriMap.get(fag.id) || null,
-            // Add curriculum data if found
-            ...(curriculum && {
-              title: curriculum.title,
-              fagkode: curriculum.fagkode,
-              lareplan: curriculum.lareplan,
-              omFaget: curriculum.omFaget
-            })
-          };
-        });
-      }
-    });
+  // Enrich all blokkskjema versions with curriculum data
+  const enrichedVersions = {};
+  for (const [versionId, blokkskjema] of Object.entries(blokkskjemaVersions)) {
+    enrichedVersions[versionId] = enrichBlokkskjema(blokkskjema, curriculumMap, kategoriMap);
   }
+
+  // Get enriched primary blokkskjema for valgregler etc.
+  const enrichedPrimary = enrichedVersions[activeVersion] || enrichedVersions[Object.keys(enrichedVersions)[0]];
 
   // Build the complete studieplanlegger.json
   const studieplanleggerOutput = {
@@ -255,11 +319,19 @@ function buildStudieplanleggerAPI(schoolId, curriculumData) {
       programs: schoolConfig.school.programs
     },
 
-    // Blokkskjema structure with enriched fag data
+    // Blokkskjema structure with enriched fag data (multi-version support)
     blokkskjema: {
-      versjon: enrichedBlokkskjema.versjon,
-      struktur: enrichedBlokkskjema.struktur,
-      blokker: enrichedBlokkskjema.blokker
+      activeVersion: activeVersion,
+      versions: Object.fromEntries(
+        Object.entries(enrichedVersions).map(([versionId, enriched]) => [
+          versionId,
+          {
+            versjon: enriched.versjon,
+            struktur: enriched.struktur,
+            blokker: enriched.blokker
+          }
+        ])
+      )
     },
 
     // Fellesfag per trinn (from timefordeling.yml)
@@ -271,14 +343,14 @@ function buildStudieplanleggerAPI(schoolId, curriculumData) {
     // VG1 valg (matematikk og fremmedspråk som elever velger)
     vg1Valg: timefordeling?.vg1Valg || {},
 
-    // Validation rules per program
-    valgregler: blokkskjema.valgregler || {},
+    // Validation rules per program (from primary blokkskjema)
+    valgregler: primaryBlokkskjema.valgregler || {},
 
     // Prerequisites and exclusions (from curriculum/regler.yml)
     regler: curriculumRegler || {},
 
-    // Time validation per program and grade
-    timevalidering: blokkskjema.timevalidering || {},
+    // Time validation per program and grade (from primary blokkskjema)
+    timevalidering: primaryBlokkskjema.timevalidering || {},
 
     // Curriculum data (with full beskrivelse for fag details modal)
     curriculum: {
@@ -328,13 +400,15 @@ function buildStudieplanleggerAPI(schoolId, curriculumData) {
   );
 
   // Calculate stats
-  const blokkCount = Object.keys(enrichedBlokkskjema.blokker || {}).length;
-  const fagCount = Object.values(enrichedBlokkskjema.blokker || {})
+  const versionCount = Object.keys(enrichedVersions).length;
+  const blokkCount = Object.keys(enrichedPrimary.blokker || {}).length;
+  const fagCount = Object.values(enrichedPrimary.blokker || {})
     .reduce((sum, blokk) => sum + (blokk.fag?.length || 0), 0);
-  const programCount = Object.keys(blokkskjema.valgregler || {}).length;
+  const programCount = Object.keys(primaryBlokkskjema.valgregler || {}).length;
 
   console.log(`  ✅ Created studieplanlegger.json`);
-  console.log(`     - ${blokkCount} blokker`);
+  console.log(`     - ${versionCount} blokkskjema-versjon(er): ${Object.keys(enrichedVersions).join(', ')}`);
+  console.log(`     - ${blokkCount} blokker (i aktiv versjon ${activeVersion})`);
   console.log(`     - ${fagCount} fag-oppføringer`);
   console.log(`     - ${programCount} programområder med valgregler`);
 }
@@ -347,19 +421,19 @@ function build() {
   // Load curriculum data
   const curriculumData = loadCurriculumData();
 
-  // Find all schools with blokkskjema_v2.yml
+  // Find all schools with school-config.yml (which defines blokkskjema versions)
   const schools = fs.readdirSync(SCHOOLS_DIR).filter(f => {
     const schoolDir = path.join(SCHOOLS_DIR, f);
     return fs.statSync(schoolDir).isDirectory() &&
-           fs.existsSync(path.join(schoolDir, 'blokkskjema_v2.yml'));
+           fs.existsSync(path.join(schoolDir, 'school-config.yml'));
   });
 
   if (schools.length === 0) {
-    console.log('\n⚠️  No schools with blokkskjema_v2.yml found!');
+    console.log('\n⚠️  No schools with school-config.yml found!');
     return;
   }
 
-  console.log(`\n📍 Found ${schools.length} school(s) with blokkskjema_v2.yml`);
+  console.log(`\n📍 Found ${schools.length} school(s) with school-config.yml`);
 
   // Build API for each school
   schools.forEach(schoolId => {

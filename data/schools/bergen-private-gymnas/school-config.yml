@@ -61,30 +61,30 @@ school:
 
 blokkskjema:
   # Hvilken versjon som er aktiv (brukes i produksjon)
-  activeVersion: "v1"  # Endre til "v2" for å aktivere blokkskjema_v2.yml
+  activeVersion: "v2"  # Aktiv versjon - endre for å bytte
 
   # Tilgjengelige versjoner og deres filer
+  # Legg til nye versjoner her for å gjøre dem tilgjengelige for runtime-veksling
   versions:
-    v1: "blokkskjema.yml"        # Original blokkskjema (LIVE)
-    v2: "blokkskjema_v2.yml"     # Eksperimentell versjon basert på faktisk fagtilbud
+    v2: "blokkskjema_v2.yml"     # Gjeldende versjon basert på faktisk fagtilbud
+    test: "blokkskjema_test.yml" # Test-versjon med færre fag (uten rettslære, psykologi, entreprenørskap, markedsføring)
 
   # Versjonsbeskrivelser (for dokumentasjon)
   descriptions:
-    v1: "Original blokkskjema - Enkel struktur uten eksplisitt programtilgang"
-    v2: "Eksperimentell versjon - Faktisk fagtilbud fra bilde med eksplisitt programtilgang og timer"
+    v2: "Gjeldende versjon - Faktisk fagtilbud fra bilde med eksplisitt programtilgang og timer"
 
   # Dokumentasjon for versjonsstyring
   documentation: |
-    HVORDAN BYTTE BLOKKSKJEMA-VERSJON:
-    1. Endre 'activeVersion' til ønsket versjon (v1 eller v2)
-    2. Kjør 'npm run build' i school-data repo
-    3. Commit og push endringer
-    4. GitHub Pages deployer automatisk den nye versjonen
+    RUNTIME-VEKSLING AV BLOKKSKJEMA:
+    Alle versjoner definert under 'versions' bygges inn i API-responsen
+    og kan velges runtime via URL-parameter eller admin-grensesnitt.
 
-    ROLLBACK:
-    - Endre 'activeVersion' tilbake til forrige versjon
-    - Kjør build og deploy på nytt
+    LEGGE TIL NY VERSJON:
+    1. Opprett ny blokkskjema-fil (f.eks. blokkskjema_v3.yml)
+    2. Legg til i 'versions': v3: "blokkskjema_v3.yml"
+    3. Kjør 'npm run build'
+    4. Ny versjon er nå tilgjengelig for runtime-veksling
 
-    FREMTIDIGE VERSJONER:
-    - Legg til nye versjoner under 'versions'
-    - Eksempel: v3: "blokkskjema_v3.yml"
+    ENDRE DEFAULT-VERSJON:
+    - Endre 'activeVersion' til ønsket versjon
+    - Dette påvirker hvilken versjon som lastes som standard

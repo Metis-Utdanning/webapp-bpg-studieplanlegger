@@ -352,6 +352,32 @@ export class StudieplanleggerState {
   }
 
   /**
+   * Filter selections to only keep fag that exist in the given set of valid IDs.
+   * Used when switching blokkskjema versions to remove invalid selections.
+   * @param {string[]} validFagIds - Array of valid fag IDs
+   * @returns {number} Number of selections that were removed
+   */
+  filterSelectionsToValidFag(validFagIds) {
+    const validSet = new Set(validFagIds);
+    let removedCount = 0;
+
+    // Filter VG2 and VG3 selections (VG1 is not affected by blokkskjema)
+    ['vg2', 'vg3'].forEach(trinn => {
+      const before = this.state[trinn].selections.length;
+      this.state[trinn].selections = this.state[trinn].selections.filter(
+        sel => validSet.has(sel.id)
+      );
+      removedCount += before - this.state[trinn].selections.length;
+    });
+
+    if (removedCount > 0) {
+      this.notify();
+    }
+
+    return removedCount;
+  }
+
+  /**
    * Get current state (deep copy to prevent external mutation)
    */
   getState() {

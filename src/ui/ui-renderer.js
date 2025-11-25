@@ -18,10 +18,11 @@ function sanitizeHTML(str) {
 }
 
 export class UIRenderer {
-  constructor(container, state, dataHandler) {
+  constructor(container, state, dataHandler, options = {}) {
     this.container = container;
     this.state = state;
     this.dataHandler = dataHandler;
+    this.options = options;
   }
 
   /**
@@ -55,6 +56,13 @@ export class UIRenderer {
    * Render feedback link and print button at bottom of widget
    */
   renderFeedbackLink() {
+    const showSwitcher = this.options?.showVersionSwitcher;
+    const versions = this.dataHandler.getAvailableVersions();
+    const currentVersion = this.dataHandler.getActiveVersion();
+
+    // Only show version switcher if enabled and multiple versions exist
+    const showVersionUI = showSwitcher && versions.length > 1;
+
     return `
       <div class="sp-feedback-section">
         <button class="sp-print-btn" onclick="window.print()" title="Skriv ut eller lagre som PDF">
@@ -64,6 +72,30 @@ export class UIRenderer {
         <a href="https://forms.office.com/e/Y7ekhKc9GD" target="_blank" rel="noopener" class="sp-feedback-link">
           Gi tilbakemelding
         </a>
+        ${showVersionUI ? `
+          <span class="sp-feedback-divider">|</span>
+          <div class="sp-version-switcher">
+            <button class="sp-version-btn" aria-haspopup="listbox" aria-expanded="false">
+              Blokkskjema (${sanitizeHTML(currentVersion)})
+            </button>
+            <div class="sp-version-dropdown hidden" role="listbox">
+              ${versions.map(v => `
+                <button class="sp-version-option ${v === currentVersion ? 'active' : ''}"
+                        role="option"
+                        aria-selected="${v === currentVersion}"
+                        data-version="${sanitizeHTML(v)}">
+                  ${sanitizeHTML(v)}${v === currentVersion ? ' ✓' : ''}
+                </button>
+              `).join('')}
+            </div>
+          </div>
+        ` : ''}
+        ${showSwitcher && versions.length === 1 ? `
+          <span class="sp-feedback-divider">|</span>
+          <span class="sp-version-indicator" title="Kun én blokkskjema-versjon tilgjengelig">
+            Blokkskjema: ${sanitizeHTML(currentVersion)}
+          </span>
+        ` : ''}
       </div>
     `;
   }

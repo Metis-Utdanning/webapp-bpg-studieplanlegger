@@ -1666,3 +1666,86 @@
   color: var(--primary-color);
   text-decoration: underline;
 }
+
+/* ========================================
+   VERSION SWITCHER (Admin/Testing)
+   ======================================== */
+
+.sp-version-switcher {
+  display: inline-block;
+  position: relative;
+}
+
+.sp-version-btn {
+  background: none;
+  border: none;
+  color: #888;
+  font-size: 0.8rem;
+  font-family: var(--font-family, helvetica, arial, sans-serif);
+  cursor: pointer;
+  padding: 4px 8px;
+  border-radius: 4px;
+  transition: all var(--transition-fast);
+}
+
+.sp-version-btn:hover {
+  color: #555;
+  background-color: rgba(0, 0, 0, 0.05);
+}
+
+.sp-version-btn:focus {
+  outline: 2px solid var(--primary-color);
+  outline-offset: 2px;
+}
+
+.sp-version-dropdown {
+  position: absolute;
+  bottom: calc(100% + 4px);
+  right: 0;
+  min-width: 120px;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  z-index: 100;
+  overflow: hidden;
+}
+
+.sp-version-dropdown.hidden {
+  display: none;
+}
+
+.sp-version-option {
+  display: block;
+  width: 100%;
+  padding: 8px 12px;
+  background: none;
+  border: none;
+  text-align: left;
+  font-size: 0.85rem;
+  font-family: var(--font-family, helvetica, arial, sans-serif);
+  color: #333;
+  cursor: pointer;
+  transition: background-color var(--transition-fast);
+}
+
+.sp-version-option:hover {
+  background-color: #f5f5f5;
+}
+
+.sp-version-option.active {
+  background-color: #e8f4fc;
+  color: var(--primary-color);
+  font-weight: 500;
+}
+
+.sp-version-option:focus {
+  outline: none;
+  background-color: #e8f4fc;
+}
+
+.sp-version-indicator {
+  color: #999;
+  font-size: 0.75rem;
+  font-family: monospace;
+}

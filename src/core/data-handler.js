@@ -14,7 +14,9 @@ export class DataHandler {
   constructor(options = {}) {
     // Data storage
     this.data = null;  // v2: All data in one object
-    this.blokkskjemaData = null;  // v1 compatibility
+    this.blokkskjemaData = null;  // Current active blokkskjema version
+    this.blokkskjemaVersions = {};  // All available blokkskjema versions
+    this.currentBlokkskjemaVersion = null;  // Currently selected version ID
     this.timefordelingData = null;  // v1 compatibility
 
     // Configuration
@@ -97,13 +99,30 @@ export class DataHandler {
         console.warn(`⚠️ API response missing fields: ${missingFields.join(', ')}`);
       }
 
-      // Validate blokkskjema structure
-      if (this.data.blokkskjema && !this.data.blokkskjema.blokker) {
-        console.warn('⚠️ blokkskjema.blokker is missing - widget may not function correctly');
+      // Handle multi-version blokkskjema structure
+      const blokkskjemaResponse = this.data.blokkskjema || {};
+
+      // Check if this is the new multi-version format
+      if (blokkskjemaResponse.versions) {
+        // New format: { activeVersion: 'v2', versions: { v1: {...}, v2: {...} } }
+        this.blokkskjemaVersions = blokkskjemaResponse.versions;
+        this.currentBlokkskjemaVersion = blokkskjemaResponse.activeVersion || Object.keys(this.blokkskjemaVersions)[0];
+        this.blokkskjemaData = this.blokkskjemaVersions[this.currentBlokkskjemaVersion] || { blokker: {} };
+
+        console.log(`✅ Multi-version blokkskjema loaded`);
+        console.log(`   - Available versions: ${Object.keys(this.blokkskjemaVersions).join(', ')}`);
+        console.log(`   - Active version: ${this.currentBlokkskjemaVersion}`);
+      } else if (blokkskjemaResponse.blokker) {
+        // Legacy format: { versjon, struktur, blokker }
+        this.blokkskjemaVersions = { default: blokkskjemaResponse };
+        this.currentBlokkskjemaVersion = 'default';
+        this.blokkskjemaData = blokkskjemaResponse;
+      } else {
+        console.warn('⚠️ blokkskjema structure is invalid - widget may not function correctly');
+        this.blokkskjemaData = { blokker: {} };
       }
 
       // Extract commonly used data for easier access (with fallbacks)
-      this.blokkskjemaData = this.data.blokkskjema || { blokker: {} };
       this.valgregler = this.data.valgregler || {};
       this.regler = this.data.regler || {};
       this.timevalidering = this.data.timevalidering || {};
@@ -133,14 +152,69 @@ export class DataHandler {
   }
 
   /**
-   * Get blokkskjema structure
+   * Get blokkskjema structure (current version)
    */
   getBlokkskjema() {
     return this.blokkskjemaData;
   }
 
   /**
-   * Get all blokker
+   * Get all available blokkskjema versions
+   * @returns {string[]} Array of version IDs
+   */
+  getAvailableVersions() {
+    return Object.keys(this.blokkskjemaVersions);
+  }
+
+  /**
+   * Get currently active blokkskjema version ID
+   * @returns {string} Current version ID
+   */
+  getActiveVersion() {
+    return this.currentBlokkskjemaVersion;
+  }
+
+  /**
+   * Switch to a different blokkskjema version
+   * @param {string} versionId - The version to switch to
+   * @returns {boolean} True if switch was successful
+   */
+  setBlokkskjemaVersion(versionId) {
+    if (!this.blokkskjemaVersions[versionId]) {
+      console.warn(`⚠️ Blokkskjema version '${versionId}' not found`);
+      return false;
+    }
+
+    this.currentBlokkskjemaVersion = versionId;
+    this.blokkskjemaData = this.blokkskjemaVersions[versionId];
+
+    console.log(`✅ Switched to blokkskjema version: ${versionId}`);
+    return true;
+  }
+
+  /**
+   * Get all fag IDs available in a specific version (or current version)
+   * @param {string} [versionId] - Optional version ID, defaults to current
+   * @returns {string[]} Array of fag IDs
+   */
+  getAllFagIds(versionId = null) {
+    const version = versionId || this.currentBlokkskjemaVersion;
+    const blokkskjema = this.blokkskjemaVersions[version];
+
+    if (!blokkskjema?.blokker) return [];
+
+    const fagIds = new Set();
+    Object.values(blokkskjema.blokker).forEach(blokk => {
+      (blokk.fag || []).forEach(fag => {
+        fagIds.add(fag.id);
+      });
+    });
+
+    return Array.from(fagIds);
+  }
+
+  /**
+   * Get all blokker (from current version)
    */
   getBlokker() {
     return this.blokkskjemaData?.blokker || {};
