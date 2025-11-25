@@ -4,6 +4,7 @@ title: Rettslære 2
 fagkode: SAM3058
 lareplan: RTL01-05
 type: valgfritt-programfag
+bilde: /public/images/fag/rettslare-2.jpg
 vimeo: ""
 generert: 2025-11-24
 ---
