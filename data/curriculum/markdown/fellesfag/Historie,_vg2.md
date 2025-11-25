@@ -1,6 +1,7 @@
 ---
 id: historie-vg2
 title: Historie vg2 studieforberedende utdanningsprogram
+shortTitle: Historie VG2
 fagkode: HIS1009
 lareplan: HIS01-03
 type: fellesfag

@@ -45,7 +45,25 @@ export class UIRenderer {
         ${this.renderFilter()}
         ${this.renderValidation()}
         ${this.renderVGGrid()}
+        ${this.renderFeedbackLink()}
         ${this.renderModals()}
+      </div>
+    `;
+  }
+
+  /**
+   * Render feedback link and print button at bottom of widget
+   */
+  renderFeedbackLink() {
+    return `
+      <div class="sp-feedback-section">
+        <button class="sp-print-btn" onclick="window.print()" title="Skriv ut eller lagre som PDF">
+          Skriv ut studieplan
+        </button>
+        <span class="sp-feedback-divider">|</span>
+        <a href="https://forms.office.com/e/Y7ekhKc9GD" target="_blank" rel="noopener" class="sp-feedback-link">
+          Gi tilbakemelding
+        </a>
       </div>
     `;
   }

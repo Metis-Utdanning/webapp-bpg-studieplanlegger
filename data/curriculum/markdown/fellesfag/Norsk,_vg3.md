@@ -1,6 +1,7 @@
 ---
 id: norsk-vg3
 title: Norsk hovedmål, vg3 studieforberedende utdanningsprogram, skriftlig
+shortTitle: Norsk VG3
 fagkode: NOR1267
 lareplan: NOR01-07
 type: fellesfag

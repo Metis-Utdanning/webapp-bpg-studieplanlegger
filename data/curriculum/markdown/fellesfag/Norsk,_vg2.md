@@ -1,6 +1,7 @@
 ---
 id: norsk-vg2
 title: Norsk, vg2 studieforberedende utdanningsprogram, skriftlig
+shortTitle: Norsk VG2
 fagkode: NOR1264
 lareplan: NOR01-07
 type: fellesfag

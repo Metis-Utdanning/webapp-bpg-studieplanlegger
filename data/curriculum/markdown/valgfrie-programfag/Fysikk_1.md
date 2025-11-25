@@ -3,6 +3,7 @@ id: fysikk-1
 title: Fysikk 1
 fagkode: REA3038
 lareplan: FYS01-02
+bilde: /public/images/fag/fysikk-1.jpg
 vimeo: ""
 generert: 2025-11-14
 ---

@@ -1,6 +1,7 @@
 ---
 id: kroppsoving-vg1
 title: Kroppsøving vg1
+shortTitle: Kroppsøving VG1
 fagkode: KRO1017
 lareplan: KRO01-05;STUDIESPESIALISERING,MEDIER-KOMMUNIKASJON
 type: fellesfag

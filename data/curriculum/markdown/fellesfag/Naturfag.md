@@ -1,6 +1,7 @@
 ---
 id: naturfag
 title: Naturfag vg1 studieforberedende utdanningsprogram
+shortTitle: Naturfag
 fagkode: NAT1007
 lareplan: NAT01-04
 type: fellesfag

@@ -33,7 +33,7 @@
   display: grid;
   grid-template-columns: 2fr 1fr;
   gap: var(--spacing-lg);
-  align-items: start;
+  align-items: end;  /* Align both rows at bottom so buttons line up */
 }
 
 @media (max-width: 768px) {
@@ -54,6 +54,7 @@
   display: flex;
   gap: var(--spacing-sm);
   flex-wrap: wrap;
+  align-items: center;  /* Ensure buttons align vertically */
 }
 
 .sp-filter-btn {
@@ -197,13 +198,13 @@
 .sp-vg-header {
   background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-hover) 100%);
   color: white;
-  padding: var(--spacing-lg);
+  padding: var(--spacing-md);  /* Reduced from spacing-lg */
   text-align: center;
   font-weight: 700;
   font-size: 1.25rem;
   text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
   position: relative;
-  min-height: 80px;
+  min-height: 50px;  /* Reduced from 80px - no timer text needed */
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -261,7 +262,9 @@
   border-radius: 0 0 var(--radius-lg) var(--radius-lg);
 }
 
+/* Timer text in headers - hidden by default */
 .sp-vg-timer {
+  display: none;  /* Hidden: cleaner headers without timer info */
   font-size: 0.85rem;
   font-weight: 600;
   color: rgba(255, 255, 255, 0.9);
@@ -272,7 +275,7 @@
    FAG SECTIONS
    ============================================ */
 .sp-fag-section {
-  margin-bottom: var(--spacing-lg);
+  margin-bottom: var(--spacing-md);  /* Reduced from spacing-lg */
 }
 
 .sp-fag-section:last-child {
@@ -869,16 +872,16 @@
 /* Smaller fag items in blokkskjema */
 .sp-blokk-fag-item {
   background: white;
-  border: 2px solid var(--border-light);
+  border: 1px solid var(--border-light);  /* Thinner border */
   border-radius: var(--radius-sm);
-  /* FIXED (2024-11-24): Less padding - Bug 9 */
-  padding: 0.3rem 0.5rem;
-  margin-bottom: 0.3rem;
+  /* FIXED (2024-11-25): Even more compact - Bug 9 */
+  padding: 0.2rem 0.4rem;
+  margin-bottom: 0.2rem;
   cursor: pointer;
   transition: all var(--transition-fast);
   /* FIXED (2024-11-24): Slightly smaller font - Bug 9 */
   font-size: 0.75rem;
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+  box-shadow: none;  /* Removed shadow for cleaner look */
 }
 
 /* FIXED (2024-11-24): Text wrapping for small screens - Bug 9 */
@@ -1610,4 +1613,56 @@
 #programfag-modal .accordion-content ul {
   margin: 0;
   padding: 0;
+}
+
+/* ============================================
+   FEEDBACK LINK SECTION
+   ============================================ */
+.sp-feedback-section {
+  text-align: center;
+  padding: var(--spacing-lg) 0 var(--spacing-md) 0;
+  margin-top: var(--spacing-md);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: var(--spacing-sm);
+  flex-wrap: wrap;
+}
+
+.sp-print-btn {
+  background: transparent;
+  border: 1px solid #ccc;
+  border-radius: var(--radius-sm);
+  padding: 6px 12px;
+  color: #666;
+  font-size: 0.85rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  font-family: var(--font-family, helvetica, arial, sans-serif);
+}
+
+.sp-print-btn:hover {
+  border-color: var(--primary-color);
+  color: var(--primary-color);
+  background: rgba(31, 71, 57, 0.05);
+}
+
+.sp-feedback-divider {
+  color: #ccc;
+  font-size: 0.9rem;
+}
+
+.sp-feedback-link {
+  color: #666;
+  font-size: 0.85rem;
+  font-weight: 500;
+  text-decoration: none;
+  transition: all var(--transition-fast);
+  font-family: var(--font-family, helvetica, arial, sans-serif);
+}
+
+.sp-feedback-link:hover {
+  color: var(--primary-color);
+  text-decoration: underline;
 }

@@ -1,7 +1,7 @@
 # CLAUDE.md - Studieplanlegger
 
 > **Kontekst for Claude Code**
-> **Sist oppdatert:** 2024-11-24
+> **Sist oppdatert:** 2024-11-25
 
 ## Prosjektbeskrivelse
 
@@ -35,7 +35,7 @@ Selv om UDIR formelt deler studiespesialisering i "Realfag" og "Språk, samfunns
 studieplanlegger/
 ├── data/curriculum/        # Fagdata og regler
 │   ├── regler.yml          # Valideringsregler (SINGLE SOURCE OF TRUTH)
-│   └── markdown/           # Fagbeskrivelser
+│   └── markdown/           # Fagbeskrivelser (med shortTitle, bilde, vimeo i frontmatter)
 ├── data/schools/           # Skole-spesifikk config
 │   └── bergen-private-gymnas/
 │       └── blokkskjema_v2.yml
@@ -47,7 +47,11 @@ studieplanlegger/
 │       └── data-handler.js
 ├── public/
 │   ├── demo.html           # Lokal testing
-│   └── embed.html          # Squarespace embed-kode
+│   ├── embed.html          # Squarespace embed-kode
+│   └── images/fag/         # Fagbilder (fysikk-1.jpg, etc.)
+├── docs/                   # Dokumentasjon
+│   ├── CHANGELOG.md        # Endringslogg
+│   └── *.md                # Analyser og sesjonsdokumenter
 └── dist/api/               # Generert JSON API
 ```
 

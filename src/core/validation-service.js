@@ -184,14 +184,24 @@ export class ValidationService {
       return result;
     }
 
-    // 4. Check prerequisites (warnings, not blocking)
+    // 4. Check prerequisites (can be 'blocking' or 'warning' based on rule type)
     // Use combinedSelected for prerequisite check (includes current modal selections)
     const prereqCheck = this._checkPrerequisites(normalizedFagId, combinedSelected, trinn);
     if (!prereqCheck.met) {
-      result.status = 'warning';
-      result.cssClass = 'missing-prerequisite';
-      result.reasons.push(prereqCheck.message);
-      result.suggestion = prereqCheck.suggestion;
+      if (prereqCheck.type === 'blocking') {
+        // Blocking prerequisite - cannot select without prerequisite
+        result.status = 'blocked';
+        result.cssClass = 'blocked-prerequisite';
+        result.reasons.push(prereqCheck.message);
+        result.suggestion = prereqCheck.suggestion;
+        return result;
+      } else {
+        // Warning prerequisite - allowed but shows warning
+        result.status = 'warning';
+        result.cssClass = 'missing-prerequisite';
+        result.reasons.push(prereqCheck.message);
+        result.suggestion = prereqCheck.suggestion;
+      }
     }
 
     return result;
@@ -257,6 +267,7 @@ export class ValidationService {
 
   /**
    * Check prerequisites from API
+   * Returns: { met: true/false, type: 'blocking'/'warning', message, suggestion }
    */
   _checkPrerequisites(fagId, selectedFagIds, trinn) {
     // Only check prerequisites for VG3
@@ -276,6 +287,7 @@ export class ValidationService {
         if (!hasPrereq) {
           return {
             met: false,
+            type: prereq.type || 'warning',  // 'blocking' or 'warning'
             message: prereq.feilmelding || `Krever: ${prereq.krever.join(' eller ')}`,
             suggestion: prereq.forslag
           };

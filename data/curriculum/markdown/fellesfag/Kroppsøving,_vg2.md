@@ -1,6 +1,7 @@
 ---
 id: kroppsoving-vg2
 title: Kroppsøving vg2
+shortTitle: Kroppsøving VG2
 fagkode: KRO1018
 lareplan: KRO01-05;STUDIESPESIALISERING,MEDIER-KOMMUNIKASJON
 type: fellesfag

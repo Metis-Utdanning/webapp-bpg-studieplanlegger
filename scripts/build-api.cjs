@@ -80,6 +80,7 @@ function loadMarkdownFiles(directory, defaultType = 'programfag') {
     return {
       id: frontmatter.id,
       title: frontmatter.title,
+      shortTitle: frontmatter.shortTitle || null,  // Kort visningsnavn for modal
       fagkode: frontmatter.fagkode,
       lareplan: frontmatter.lareplan,
       type: frontmatter.type || defaultType,
@@ -87,6 +88,8 @@ function loadMarkdownFiles(directory, defaultType = 'programfag') {
       obligatorisk: frontmatter.obligatorisk || false,
       erstatbar: frontmatter.erstatbar || false,
       trinn: frontmatter.trinn || null,
+      bilde: frontmatter.bilde || null,  // Bildesti for modal
+      vimeo: frontmatter.vimeo || null,  // Vimeo video ID
       beskrivelse: markdown.trim(),
       beskrivelseHTML: marked(markdown.trim()),
       omFaget: extractOmFaget(markdown),
@@ -282,8 +285,11 @@ function buildStudieplanleggerAPI(schoolId, curriculumData) {
       valgfrieProgramfag: valgfrieProgramfag.map(f => ({
         id: f.id,
         title: f.title,
+        shortTitle: f.shortTitle,  // Kort visningsnavn for modal
         fagkode: f.fagkode,
         lareplan: f.lareplan,
+        bilde: f.bilde,  // Bildesti for modal
+        vimeo: f.vimeo,  // Vimeo video ID
         omFaget: f.omFaget,
         beskrivelseHTML: f.beskrivelseHTML,  // Full markdown HTML for modal
         related: f.related
@@ -291,18 +297,24 @@ function buildStudieplanleggerAPI(schoolId, curriculumData) {
       obligatoriskeProgramfag: obligatoriskeProgramfag.map(f => ({
         id: f.id,
         title: f.title,
+        shortTitle: f.shortTitle,  // Kort visningsnavn for modal
         fagkode: f.fagkode,
         lareplan: f.lareplan,
         program: f.program,
+        bilde: f.bilde,  // Bildesti for modal
+        vimeo: f.vimeo,  // Vimeo video ID
         omFaget: f.omFaget,
         beskrivelseHTML: f.beskrivelseHTML  // Full markdown HTML for modal
       })),
       fellesfag: fellesfag.map(f => ({
         id: f.id,
         title: f.title,
+        shortTitle: f.shortTitle,  // Kort visningsnavn for modal
         fagkode: f.fagkode,
         lareplan: f.lareplan,
         trinn: f.trinn,
+        bilde: f.bilde,  // Bildesti for modal
+        vimeo: f.vimeo,  // Vimeo video ID
         omFaget: f.omFaget,
         beskrivelseHTML: f.beskrivelseHTML  // Full markdown HTML for modal
       }))

@@ -605,6 +605,12 @@ export class Studieplanlegger {
     // Fag selection (delegated event listener)
     // NEW APPROACH: Allow all selections, show validation errors, disable button if invalid
     modal.addEventListener('click', (e) => {
+      // BUGFIX: Early return if clicking info button
+      // Info buttons should show fag details, not trigger selection
+      if (e.target.closest('.sp-fag-info-btn')) {
+        return;
+      }
+
       const fagItem = e.target.closest('.sp-blokk-fag-item');
       if (!fagItem) return;
 
@@ -725,12 +731,14 @@ export class Studieplanlegger {
     }, { signal });
 
     // Info button - show fag details modal
+    // Supports both .sp-fag-item-info (main view) and .sp-fag-info-btn (blokkskjema modal)
     modal.addEventListener('click', (e) => {
-      const infoBtn = e.target.closest('.sp-fag-item-info');
+      const infoBtn = e.target.closest('.sp-fag-item-info') || e.target.closest('.sp-fag-info-btn');
       if (!infoBtn) return;
 
       e.stopPropagation(); // Prevent fag selection when clicking info button
-      const fagId = infoBtn.dataset.fagId;
+      // Support both data-fag-id and data-fag-info attributes
+      const fagId = infoBtn.dataset.fagId || infoBtn.dataset.fagInfo;
       if (fagId) {
         this.showFagDetails(fagId);
       }
@@ -1382,14 +1390,35 @@ export class Studieplanlegger {
       document.body.appendChild(modal);
     }
 
-    // Image if available (v1 only - not in v2)
-    const bildeHTML = fag.bilde
-      ? `<div class="fag-bilde">
-          <img src="${fag.bilde}" alt="${fag.title}" />
-        </div>`
+    // Related badge (fordypning) - inline with fagkode
+    const relatedBadge = fag.related && fag.related.length > 0
+      ? `<span class="related-badge">Fordypning med: ${fag.related.join(', ')}</span>`
       : '';
 
-    // Vimeo video if available (v1 only - not in v2)
+    // Hero section with image (or fallback without)
+    const heroHTML = fag.bilde
+      ? `<div class="modal-hero">
+          <img src="${fag.bilde}" alt="${fag.shortTitle || fag.title}" class="modal-hero-image" />
+          <div class="modal-hero-overlay"></div>
+          <div class="modal-hero-content">
+            <h2>${fag.shortTitle || fag.title}</h2>
+            <div class="modal-hero-badges">
+              <span class="fagkode-badge">${fag.fagkode}</span>
+              ${relatedBadge}
+            </div>
+          </div>
+        </div>`
+      : `<div class="modal-hero no-image">
+          <div class="modal-hero-content">
+            <h2>${fag.shortTitle || fag.title}</h2>
+            <div class="modal-hero-badges">
+              <span class="fagkode-badge">${fag.fagkode}</span>
+              ${relatedBadge}
+            </div>
+          </div>
+        </div>`;
+
+    // Vimeo video if available
     const vimeoHTML = fag.vimeo
       ? `<div class="vimeo-container">
           <iframe
@@ -1401,22 +1430,22 @@ export class Studieplanlegger {
         </div>`
       : '';
 
-    // Related subjects (fordypning)
-    const relatedHTML = fag.related && fag.related.length > 0
-      ? `<p class="related-info">Fordypning oppnås i lag med: <span class="related-badge-large">${fag.related.join(', ')}</span></p>`
-      : '';
+    // Use beskrivelseHTML from v2 API, remove duplicate title and "Læreplan:" text
+    let beskrivelseHTML = fag.beskrivelseHTML || fag.omFaget || '<p>Ingen beskrivelse tilgjengelig.</p>';
 
-    // Use beskrivelseHTML from v2 API (full markdown HTML with all sections)
-    const beskrivelseHTML = fag.beskrivelseHTML || fag.omFaget || '<p>Ingen beskrivelse tilgjengelig.</p>';
+    // Remove h1 title (duplicate)
+    beskrivelseHTML = beskrivelseHTML.replace(/<h1[^>]*>.*?<\/h1>/gi, '');
+
+    // Remove "**Læreplan:** Læreplan i [fagnavn]" line
+    beskrivelseHTML = beskrivelseHTML.replace(/<p><strong>Læreplan:<\/strong>[^<]*<\/p>/gi, '');
+    beskrivelseHTML = beskrivelseHTML.replace(/<strong>Læreplan:<\/strong>[^<]*/gi, '');
 
     modal.innerHTML = `
       <div class="modal-content">
-        <button class="modal-close" onclick="window.studieplanlegger.closeFagModal()">&times;</button>
-        <h2>${fag.title}</h2>
-        <p class="fagkode-large">${fag.fagkode}</p>
-        ${relatedHTML}
+        <button class="modal-close" aria-label="Lukk">&times;</button>
 
-        ${bildeHTML}
+        ${heroHTML}
+
         ${vimeoHTML}
 
         <div class="modal-body">
@@ -1427,17 +1456,17 @@ export class Studieplanlegger {
       </div>
     `;
 
-    // Insert HTML content separately to avoid escaping
-    const beskrivelseDiv = modal.querySelector('.om-faget');
-    if (beskrivelseDiv) {
-      beskrivelseDiv.innerHTML = fag.beskrivelseHTML || fag.beskrivelse || '';
-    }
-
     modal.style.display = 'flex';
     document.body.style.overflow = 'hidden';
 
     // Convert competency goals to accordion
     this.makeCompetencyAccordion(modal);
+
+    // Close button - use proper event listener instead of inline onclick
+    const closeBtn = modal.querySelector('.modal-close');
+    if (closeBtn) {
+      closeBtn.onclick = () => this.closeFagModal();
+    }
 
     // Close on backdrop click
     modal.onclick = (e) => {
@@ -1445,6 +1474,16 @@ export class Studieplanlegger {
         this.closeFagModal();
       }
     };
+
+    // ACCESSIBILITY: Escape to close and focus trap
+    modal.onkeydown = (e) => {
+      if (e.key === 'Escape') {
+        this.closeFagModal();
+      }
+    };
+
+    // Focus the close button for accessibility
+    closeBtn?.focus();
   }
 
   /**

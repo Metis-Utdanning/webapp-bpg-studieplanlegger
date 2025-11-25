@@ -1,0 +1,271 @@
+/**
+ * Print Styles - PDF Export via Browser Print
+ *
+ * Aktiveres KUN ved print (Ctrl+P / Cmd+P)
+ * Påvirker ikke normal visning
+ */
+
+@media print {
+  /* ===========================================
+     SKJUL INTERAKTIVE ELEMENTER
+     =========================================== */
+  .sp-filter-section,
+  .sp-modal,
+  .sp-modal-blokkskjema,
+  .programfag-modal,
+  .sp-fag-item-info,
+  .sp-fjern-valg-btn,
+  .sp-feedback-section,
+  .sp-print-section,
+  .sp-export-btn {
+    display: none !important;
+  }
+
+  /* ===========================================
+     SIDE-INNSTILLINGER (A4)
+     =========================================== */
+  @page {
+    size: A4 portrait;
+    margin: 15mm;
+  }
+
+  /* ===========================================
+     BODY OG CONTAINER
+     =========================================== */
+  body {
+    margin: 0;
+    padding: 0;
+    background: white !important;
+    font-size: 11pt;
+    line-height: 1.4;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  #studieplanlegger-widget,
+  .studieplanlegger-widget {
+    background: white !important;
+    padding: 0 !important;
+    max-width: 100% !important;
+    box-shadow: none !important;
+    border: none !important;
+  }
+
+  /* ===========================================
+     PRINT HEADER (vises kun ved print)
+     =========================================== */
+  .sp-print-header {
+    display: block !important;
+    text-align: center;
+    margin-bottom: 15px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid #1F4739;
+  }
+
+  .sp-print-header h1 {
+    font-size: 18pt;
+    color: #1F4739;
+    margin: 0 0 5px 0;
+  }
+
+  .sp-print-header p {
+    font-size: 10pt;
+    color: #666;
+    margin: 0;
+  }
+
+  /* ===========================================
+     VG GRID - 3 KOLONNER
+     =========================================== */
+  .sp-vg-grid {
+    display: grid !important;
+    grid-template-columns: 1fr 1fr 1fr !important;
+    gap: 8px !important;
+    margin-bottom: 15px !important;
+  }
+
+  /* ===========================================
+     VG KOLONNER
+     =========================================== */
+  .sp-vg-column {
+    box-shadow: none !important;
+    border: 1px solid #ccc !important;
+    border-radius: 4px !important;
+    page-break-inside: avoid;
+    break-inside: avoid;
+  }
+
+  .sp-vg-column:hover {
+    transform: none !important;
+    box-shadow: none !important;
+  }
+
+  /* ===========================================
+     VG HEADERS
+     =========================================== */
+  .sp-vg-header {
+    background: #1F4739 !important;
+    color: white !important;
+    padding: 8px !important;
+    min-height: auto !important;
+    font-size: 12pt !important;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  /* Behold gradient-farger for ulike trinn */
+  .sp-vg-column:nth-child(1) .sp-vg-header {
+    background: #1F4739 !important;
+  }
+
+  .sp-vg-column:nth-child(2) .sp-vg-header {
+    background: #2d5a48 !important;
+  }
+
+  .sp-vg-column:nth-child(3) .sp-vg-header {
+    background: #4a7c59 !important;
+  }
+
+  /* ===========================================
+     VG CONTENT
+     =========================================== */
+  .sp-vg-content {
+    padding: 8px !important;
+    background: white !important;
+  }
+
+  /* ===========================================
+     FAG SEKSJONER
+     =========================================== */
+  .sp-fag-section {
+    margin-bottom: 8px !important;
+  }
+
+  .sp-fag-section-title {
+    font-size: 8pt !important;
+    color: #666 !important;
+    margin-bottom: 4px !important;
+  }
+
+  /* ===========================================
+     FAG ITEMS
+     =========================================== */
+  .sp-fag-item {
+    border: 1px solid #ddd !important;
+    border-radius: 3px !important;
+    padding: 4px 8px !important;
+    margin-bottom: 3px !important;
+    font-size: 9pt !important;
+    box-shadow: none !important;
+  }
+
+  .sp-fag-item.selected {
+    background: #E8F5A3 !important;
+    border-color: #1F4739 !important;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  .sp-fag-item.fellesfag {
+    background: #f5f5f5 !important;
+  }
+
+  .sp-fag-item.empty-slot {
+    background: #fafafa !important;
+    border-style: dashed !important;
+    color: #999 !important;
+  }
+
+  .sp-fag-item-title {
+    font-size: 9pt !important;
+  }
+
+  .sp-fag-item-timer {
+    font-size: 8pt !important;
+    color: #666 !important;
+  }
+
+  /* ===========================================
+     VALIDERING SEKSJON
+     =========================================== */
+  .sp-validering {
+    display: block !important;
+    margin-top: 10px !important;
+    padding: 10px !important;
+    border: 1px solid #1F4739 !important;
+    border-radius: 4px !important;
+    background: #f9f9f9 !important;
+    page-break-inside: avoid;
+  }
+
+  .sp-validering-title {
+    font-size: 10pt !important;
+    font-weight: bold !important;
+    color: #1F4739 !important;
+    margin-bottom: 8px !important;
+  }
+
+  .sp-fordypning-status {
+    font-size: 9pt !important;
+  }
+
+  /* ===========================================
+     PRINT FOOTER
+     =========================================== */
+  .sp-print-footer {
+    display: block !important;
+    text-align: center;
+    margin-top: 15px;
+    padding-top: 10px;
+    border-top: 1px solid #ddd;
+    font-size: 8pt;
+    color: #999;
+  }
+
+  /* ===========================================
+     DIVIDERS
+     =========================================== */
+  .sp-divider {
+    height: 1px !important;
+    background: #ddd !important;
+    margin: 6px 0 !important;
+  }
+
+  /* ===========================================
+     PROGRAMFAG GRUPPE
+     =========================================== */
+  .sp-programfag-gruppe {
+    cursor: default !important;
+  }
+
+  .sp-programfag-gruppe:hover .sp-fag-item {
+    border-color: #ddd !important;
+    background: inherit !important;
+  }
+
+  /* ===========================================
+     LINKS
+     =========================================== */
+  a {
+    color: #1F4739 !important;
+    text-decoration: none !important;
+  }
+
+  /* ===========================================
+     UTILS
+     =========================================== */
+  .no-print {
+    display: none !important;
+  }
+
+  .print-only {
+    display: block !important;
+  }
+}
+
+/* Print-only elementer skjult i normal visning */
+.sp-print-header,
+.sp-print-footer,
+.print-only {
+  display: none;
+}

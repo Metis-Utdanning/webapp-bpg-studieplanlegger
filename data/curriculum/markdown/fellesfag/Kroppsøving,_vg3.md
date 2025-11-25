@@ -1,6 +1,7 @@
 ---
 id: kroppsoving-vg3
 title: Kroppsøving Vg3
+shortTitle: Kroppsøving VG3
 fagkode: KRO1019
 lareplan: KRO01-05
 type: fellesfag

@@ -1,6 +1,7 @@
 ---
 id: engelsk
 title: Engelsk vg1 studieforberedende utdanningsprogram
+shortTitle: Engelsk VG1
 fagkode: ENG1007
 lareplan: ENG01-04
 type: fellesfag

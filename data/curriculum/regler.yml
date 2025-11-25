@@ -52,62 +52,62 @@ eksklusjoner:
 # Basert på UDIR Tabell 5 og 6 (kun fag med eksplisitt "bygger på"-merknad)
 # =============================================================================
 forutsetninger:
-  # Realfag (Tabell 5)
+  # Realfag (Tabell 5) - BLOCKING: Disse er obligatoriske forutsetninger
   - fag: fysikk-2
     krever: [fysikk-1]
-    type: warning
+    type: blocking
     beskrivelse: "Fysikk 2 bygger på Fysikk 1"
-    feilmelding: "Fysikk 2 anbefales med Fysikk 1 først"
+    feilmelding: "Fysikk 2 krever at du har hatt Fysikk 1 først"
     forslag: "Legg til Fysikk 1 i VG2"
 
   - fag: kjemi-2
     krever: [kjemi-1]
-    type: warning
+    type: blocking
     beskrivelse: "Kjemi 2 bygger på Kjemi 1"
-    feilmelding: "Kjemi 2 anbefales med Kjemi 1 først"
+    feilmelding: "Kjemi 2 krever at du har hatt Kjemi 1 først"
     forslag: "Legg til Kjemi 1 i VG2"
 
   - fag: matematikk-r2
     krever: [matematikk-r1]
-    type: warning
+    type: blocking
     beskrivelse: "Matematikk R2 bygger på Matematikk R1"
     feilmelding: "Matematikk R2 krever at du har hatt R1 i VG2"
     forslag: "Legg til Matematikk R1 i VG2"
 
   - fag: matematikk-s2
     krever: [matematikk-s1]
-    type: warning
+    type: blocking
     beskrivelse: "Matematikk S2 bygger på Matematikk S1"
     feilmelding: "Matematikk S2 krever at du har hatt S1 i VG2"
     forslag: "Legg til Matematikk S1 i VG2"
 
-  # Språk, samfunnsfag og økonomi (Tabell 6)
+  # Språk, samfunnsfag og økonomi (Tabell 6) - BLOCKING: Disse er obligatoriske forutsetninger
   - fag: engelsk-2
     krever: [engelsk-1]
-    type: warning
+    type: blocking
     beskrivelse: "Engelsk 2 bygger på Engelsk 1"
-    feilmelding: "Engelsk 2 anbefales med Engelsk 1 først"
+    feilmelding: "Engelsk 2 krever at du har hatt Engelsk 1 først"
     forslag: "Legg til Engelsk 1"
 
   - fag: historie-og-filosofi-2
     krever: [historie-og-filosofi-1]
-    type: warning
+    type: blocking
     beskrivelse: "Historie og filosofi 2 bygger på Historie og filosofi 1"
-    feilmelding: "Historie og filosofi 2 anbefales med nivå 1 først"
+    feilmelding: "Historie og filosofi 2 krever at du har hatt nivå 1 først"
     forslag: "Legg til Historie og filosofi 1"
 
   - fag: markedsforing-og-ledelse-2
     krever: [markedsforing-og-ledelse-1]
-    type: warning
+    type: blocking
     beskrivelse: "Markedsføring og ledelse 2 bygger på Markedsføring og ledelse 1"
-    feilmelding: "Markedsføring og ledelse 2 anbefales med nivå 1 først"
+    feilmelding: "Markedsføring og ledelse 2 krever at du har hatt nivå 1 først"
     forslag: "Legg til Markedsføring og ledelse 1"
 
   - fag: samfunnsokonomi-2
     krever: [samfunnsokonomi-1]
-    type: warning
+    type: blocking
     beskrivelse: "Samfunnsøkonomi 2 bygger på Samfunnsøkonomi 1"
-    feilmelding: "Samfunnsøkonomi 2 anbefales med nivå 1 først"
+    feilmelding: "Samfunnsøkonomi 2 krever at du har hatt nivå 1 først"
     forslag: "Legg til Samfunnsøkonomi 1"
 
   # MERK: Følgende fag bygger IKKE på hverandre (ingen "bygger på" i UDIR-tabeller):

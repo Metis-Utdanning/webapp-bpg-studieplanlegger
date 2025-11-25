@@ -1,6 +1,7 @@
 ---
 id: norsk-vg1
 title: Norsk, vg1 studieforberedende utdanningsprogram, skriftlig
+shortTitle: Norsk VG1
 fagkode: NOR1260
 lareplan: NOR01-07
 type: fellesfag
