@@ -3,6 +3,7 @@ id: biologi-2
 title: Biologi 2
 fagkode: REA3036
 lareplan: BIO01-02
+bilde: /public/images/fag/biologi-2.jpg
 vimeo: ""
 generert: 2025-11-14
 ---

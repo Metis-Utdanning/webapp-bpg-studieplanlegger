@@ -3,6 +3,7 @@ id: biologi-1
 title: Biologi 1
 fagkode: REA3035
 lareplan: BIO01-02
+bilde: /public/images/fag/biologi-1.jpg
 vimeo: ""
 generert: 2025-11-14
 ---

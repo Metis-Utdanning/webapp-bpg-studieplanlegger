@@ -3,6 +3,7 @@ id: fysikk-2
 title: Fysikk 2
 fagkode: REA3039
 lareplan: FYS01-02
+bilde: /public/images/fag/fysikk-2.jpg
 vimeo: ""
 generert: 2025-11-14
 ---
