@@ -418,7 +418,8 @@
 .sp-fag-item.empty-slot {
   background: var(--background-light, #f5f5f5);
   border: 2px dashed var(--border-medium, #ccc);
-  color: var(--text-light, #999);
+  /* WCAG AA fix: #666 on #f5f5f5 = 5.74:1 contrast (was #999 = 2.8:1) */
+  color: #666;
   cursor: pointer;
   /* Same padding as regular fag-items for consistent height */
   padding: var(--spacing-sm) var(--spacing-md);
@@ -426,7 +427,8 @@
 }
 
 .sp-fag-item.empty-slot .sp-fag-item-title {
-  color: var(--text-light, #999);
+  /* WCAG AA fix: #666 provides 5.74:1 contrast ratio */
+  color: #666;
   font-weight: 500;
 }
 
@@ -961,14 +963,17 @@
 
 .sp-blokk-fag-timer {
   font-size: 0.75rem;
-  color: var(--text-medium, #737373);
+  /* WCAG AA fix: #595959 on white = 7:1 contrast (was #737373 = 4.47:1) */
+  color: #595959;
   white-space: nowrap;
 }
 
 .sp-fag-info-btn {
   background: transparent;
   border: none;
-  padding: 4px;
+  /* WCAG: Minimum 44x44px touch target - padding creates clickable area */
+  padding: 12px;
+  margin: -8px;  /* Compensate for larger padding to keep visual size */
   cursor: pointer;
   color: var(--text-medium);
   display: flex;
@@ -977,6 +982,9 @@
   border-radius: 50%;
   transition: all var(--transition-fast);
   flex-shrink: 0;
+  /* Ensure minimum 44x44 touch target */
+  min-width: 44px;
+  min-height: 44px;
 }
 
 .sp-fag-info-btn:hover {

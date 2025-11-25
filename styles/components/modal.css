@@ -238,7 +238,11 @@
   }
 
   .modal-content {
-    padding: 60px 20px 20px 20px; /* Ekstra topp-padding for sticky X-knapp */
+    /* Safe area insets for iPhone notch/home indicator */
+    padding: max(60px, env(safe-area-inset-top, 60px))
+             max(20px, env(safe-area-inset-right, 20px))
+             max(20px, env(safe-area-inset-bottom, 20px))
+             max(20px, env(safe-area-inset-left, 20px));
     margin: 0;
     width: 100%;
     max-width: 100%;

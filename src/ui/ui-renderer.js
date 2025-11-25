@@ -2,6 +2,21 @@
  * UI Renderer - Renders widget UI based on state and data
  */
 
+/**
+ * Sanitize string for safe HTML insertion (XSS protection)
+ * @param {string} str - String to sanitize
+ * @returns {string} Sanitized string
+ */
+function sanitizeHTML(str) {
+  if (typeof str !== 'string') return '';
+  return str
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#039;');
+}
+
 export class UIRenderer {
   constructor(container, state, dataHandler) {
     this.container = container;
@@ -147,10 +162,10 @@ export class UIRenderer {
             <div class="sp-fag-section-title">Fellesfag</div>
             ${fellesfag.map(fag => `
               <div class="sp-fag-item fellesfag">
-                <div class="sp-fag-item-title">${fag.navn}</div>
+                <div class="sp-fag-item-title">${sanitizeHTML(fag.navn)}</div>
                 <div class="sp-fag-item-meta">
                   <div class="sp-fag-item-timer">${fag.timer}t</div>
-                  <button class="sp-fag-item-info" data-fag-id="${fag.id}" title="Se fagdetaljer" aria-label="Se detaljer for ${fag.navn}">
+                  <button class="sp-fag-item-info" data-fag-id="${sanitizeHTML(fag.id)}" title="Se fagdetaljer" aria-label="Se detaljer for ${sanitizeHTML(fag.navn)}">
                     <svg width="14" height="14" viewBox="0 0 16 16">
                       <circle cx="8" cy="8" r="7" stroke="currentColor" stroke-width="1.5" fill="none"/>
                       <text x="8" y="12" text-anchor="middle" font-size="11" font-weight="600" fill="currentColor">i</text>
@@ -167,10 +182,10 @@ export class UIRenderer {
               <div class="sp-fag-section-title">Felles programfag</div>
               ${fellesProgramfag.map(fag => `
                 <div class="sp-fag-item obligatorisk-programfag">
-                  <div class="sp-fag-item-title">${fag.navn}</div>
+                  <div class="sp-fag-item-title">${sanitizeHTML(fag.navn)}</div>
                   <div class="sp-fag-item-meta">
                     <div class="sp-fag-item-timer">${fag.timer}t</div>
-                    <button class="sp-fag-item-info" data-fag-id="${fag.id}" title="Se fagdetaljer" aria-label="Se detaljer for ${fag.navn}">
+                    <button class="sp-fag-item-info" data-fag-id="${sanitizeHTML(fag.id)}" title="Se fagdetaljer" aria-label="Se detaljer for ${sanitizeHTML(fag.navn)}">
                     <svg width="14" height="14" viewBox="0 0 16 16">
                       <circle cx="8" cy="8" r="7" stroke="currentColor" stroke-width="1.5" fill="none"/>
                       <text x="8" y="12" text-anchor="middle" font-size="11" font-weight="600" fill="currentColor">i</text>
@@ -247,10 +262,10 @@ export class UIRenderer {
             <div class="sp-fag-section-title">Fellesfag</div>
             ${fellesfag.map(fag => `
               <div class="sp-fag-item fellesfag">
-                <div class="sp-fag-item-title">${fag.navn}</div>
+                <div class="sp-fag-item-title">${sanitizeHTML(fag.navn)}</div>
                 <div class="sp-fag-item-meta">
                   <div class="sp-fag-item-timer">${fag.timer}t</div>
-                  <button class="sp-fag-item-info" data-fag-id="${fag.id}" title="Se fagdetaljer" aria-label="Se detaljer for ${fag.navn}">
+                  <button class="sp-fag-item-info" data-fag-id="${sanitizeHTML(fag.id)}" title="Se fagdetaljer" aria-label="Se detaljer for ${sanitizeHTML(fag.navn)}">
                     <svg width="14" height="14" viewBox="0 0 16 16">
                       <circle cx="8" cy="8" r="7" stroke="currentColor" stroke-width="1.5" fill="none"/>
                       <text x="8" y="12" text-anchor="middle" font-size="11" font-weight="600" fill="currentColor">i</text>
@@ -267,10 +282,10 @@ export class UIRenderer {
               <div class="sp-fag-section-title">Felles programfag</div>
               ${fellesProgramfag.map(fag => `
                 <div class="sp-fag-item obligatorisk-programfag">
-                  <div class="sp-fag-item-title">${fag.navn}</div>
+                  <div class="sp-fag-item-title">${sanitizeHTML(fag.navn)}</div>
                   <div class="sp-fag-item-meta">
                     <div class="sp-fag-item-timer">${fag.timer}t</div>
-                    <button class="sp-fag-item-info" data-fag-id="${fag.id}" title="Se fagdetaljer" aria-label="Se detaljer for ${fag.navn}">
+                    <button class="sp-fag-item-info" data-fag-id="${sanitizeHTML(fag.id)}" title="Se fagdetaljer" aria-label="Se detaljer for ${sanitizeHTML(fag.navn)}">
                     <svg width="14" height="14" viewBox="0 0 16 16">
                       <circle cx="8" cy="8" r="7" stroke="currentColor" stroke-width="1.5" fill="none"/>
                       <text x="8" y="12" text-anchor="middle" font-size="11" font-weight="600" fill="currentColor">i</text>
@@ -355,10 +370,10 @@ export class UIRenderer {
             <div class="sp-fag-section-title">Fellesfag</div>
             ${fellesfag.map(fag => `
               <div class="sp-fag-item fellesfag">
-                <div class="sp-fag-item-title">${fag.navn}</div>
+                <div class="sp-fag-item-title">${sanitizeHTML(fag.navn)}</div>
                 <div class="sp-fag-item-meta">
                   <div class="sp-fag-item-timer">${fag.timer}t</div>
-                  <button class="sp-fag-item-info" data-fag-id="${fag.id}" title="Se fagdetaljer" aria-label="Se detaljer for ${fag.navn}">
+                  <button class="sp-fag-item-info" data-fag-id="${sanitizeHTML(fag.id)}" title="Se fagdetaljer" aria-label="Se detaljer for ${sanitizeHTML(fag.navn)}">
                     <svg width="14" height="14" viewBox="0 0 16 16">
                       <circle cx="8" cy="8" r="7" stroke="currentColor" stroke-width="1.5" fill="none"/>
                       <text x="8" y="12" text-anchor="middle" font-size="11" font-weight="600" fill="currentColor">i</text>
@@ -396,10 +411,10 @@ export class UIRenderer {
               <div class="sp-fag-section-title">Felles programfag</div>
               ${fellesProgramfag.map(fag => `
                 <div class="sp-fag-item obligatorisk-programfag">
-                  <div class="sp-fag-item-title">${fag.navn}</div>
+                  <div class="sp-fag-item-title">${sanitizeHTML(fag.navn)}</div>
                   <div class="sp-fag-item-meta">
                     <div class="sp-fag-item-timer">${fag.timer}t</div>
-                    <button class="sp-fag-item-info" data-fag-id="${fag.id}" title="Se fagdetaljer" aria-label="Se detaljer for ${fag.navn}">
+                    <button class="sp-fag-item-info" data-fag-id="${sanitizeHTML(fag.id)}" title="Se fagdetaljer" aria-label="Se detaljer for ${sanitizeHTML(fag.navn)}">
                     <svg width="14" height="14" viewBox="0 0 16 16">
                       <circle cx="8" cy="8" r="7" stroke="currentColor" stroke-width="1.5" fill="none"/>
                       <text x="8" y="12" text-anchor="middle" font-size="11" font-weight="600" fill="currentColor">i</text>

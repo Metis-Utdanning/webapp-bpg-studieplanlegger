@@ -352,10 +352,23 @@ export class StudieplanleggerState {
   }
 
   /**
-   * Get current state
+   * Get current state (deep copy to prevent external mutation)
    */
   getState() {
-    return { ...this.state };
+    // Deep copy to prevent consumers from mutating internal state
+    return {
+      programomrade: this.state.programomrade,
+      harFremmedsprak: this.state.harFremmedsprak,
+      vg1: {
+        selections: this.state.vg1.selections.map(s => ({ ...s }))
+      },
+      vg2: {
+        selections: this.state.vg2.selections.map(s => ({ ...s }))
+      },
+      vg3: {
+        selections: this.state.vg3.selections.map(s => ({ ...s }))
+      }
+    };
   }
 
   /**

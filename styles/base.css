@@ -60,3 +60,38 @@ h1, h2, h3, h4, h5, h6, p, ul, ol {
 ul {
   list-style: none;
 }
+
+/* === ACCESSIBILITY: Focus indicators === */
+/* Custom focus styles for better visibility (WCAG 2.1 Level AA) */
+*:focus-visible {
+  outline: 3px solid var(--primary-color, #1F4739);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+/* Remove default outline when using mouse (only show for keyboard) */
+*:focus:not(:focus-visible) {
+  outline: none;
+}
+
+/* Specific focus for buttons with higher contrast */
+.sp-filter-btn:focus-visible,
+.sp-btn-primary:focus-visible,
+.sp-btn-secondary:focus-visible {
+  outline: 3px solid #000;
+  outline-offset: 3px;
+}
+
+/* Focus for modal close button */
+.sp-modal-close:focus-visible {
+  outline: 3px solid #000;
+  outline-offset: 2px;
+  border-radius: 50%;
+}
+
+/* Focus for selectable fag items */
+.sp-blokk-fag-item:focus-visible {
+  outline: 3px solid var(--primary-color, #1F4739);
+  outline-offset: 2px;
+  box-shadow: 0 0 0 6px rgba(31, 71, 57, 0.15);
+}

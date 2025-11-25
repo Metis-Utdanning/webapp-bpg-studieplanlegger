@@ -7,6 +7,21 @@ import { StudieplanleggerState } from './core/state.js';
 import { UIRenderer } from './ui/ui-renderer.js';
 import { ValidationService } from './core/validation-service.js';
 
+/**
+ * Sanitize string for safe HTML insertion (XSS protection)
+ * @param {string} str - String to sanitize
+ * @returns {string} Sanitized string
+ */
+function sanitizeHTML(str) {
+  if (typeof str !== 'string') return '';
+  return str
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#039;');
+}
+
 export class Studieplanlegger {
   constructor(container, options = {}) {
     this.container = container;
@@ -28,7 +43,34 @@ export class Studieplanlegger {
     this.selectedBlokkskjemaFag = [];
     this.blokkskjemaModalSetup = false;
 
+    // AbortController for modal event listeners (enables cleanup)
+    this.modalAbortController = null;
+
     this.init();
+  }
+
+  /**
+   * Cleanup method - call when destroying the widget
+   */
+  destroy() {
+    // Abort all modal event listeners
+    if (this.modalAbortController) {
+      this.modalAbortController.abort();
+      this.modalAbortController = null;
+    }
+
+    // Unsubscribe from state changes
+    if (this.stateUnsubscribe) {
+      this.stateUnsubscribe();
+      this.stateUnsubscribe = null;
+    }
+
+    // Clear container
+    if (this.container) {
+      this.container.innerHTML = '';
+    }
+
+    console.log('🧹 Studieplanlegger destroyed');
   }
 
   /**
@@ -377,7 +419,17 @@ export class Studieplanlegger {
     const primaryBtn = modal.querySelector('.sp-btn-primary');
     this.updateModalButton(modal, primaryBtn);
 
+    // ACCESSIBILITY: Store the element that opened the modal for focus return
+    this.modalTriggerElement = document.activeElement;
+
     modal.style.display = 'flex';
+
+    // ACCESSIBILITY: Set focus to modal title (or first focusable element)
+    const modalTitle = modal.querySelector('.sp-modal-title');
+    if (modalTitle) {
+      modalTitle.setAttribute('tabindex', '-1');
+      modalTitle.focus();
+    }
   }
 
   /**
@@ -390,6 +442,12 @@ export class Studieplanlegger {
       modal.querySelectorAll('.sp-blokk-fag-item').forEach(item => {
         item.classList.remove('selected');
       });
+
+      // ACCESSIBILITY: Return focus to the element that opened the modal
+      if (this.modalTriggerElement && typeof this.modalTriggerElement.focus === 'function') {
+        this.modalTriggerElement.focus();
+        this.modalTriggerElement = null;
+      }
     }
   }
 
@@ -442,13 +500,30 @@ export class Studieplanlegger {
             if (fordypningLevel) classes.push(`fordypning-${fordypningLevel}`);
             if (shouldBlockSpansk) classes.push('blocked');
 
+            // Sanitize user-facing strings to prevent XSS
+            const safeName = sanitizeHTML(f.title || f.id);
+            const safeId = sanitizeHTML(f.id);
+            const safeFagkode = sanitizeHTML(f.fagkode || f.id);
+            const safeMerknad = f.merknad ? sanitizeHTML(f.merknad) : '';
+
+            // ARIA: role="checkbox" for selectable items, tabindex for keyboard nav
+            const isBlocked = shouldBlockSpansk;
             return `
-            <div class="${classes.join(' ')}" data-id="${f.id}" data-fagkode="${f.fagkode || f.id}" data-timer="${f.timer}"${f.lareplan ? ` data-lareplan="${f.lareplan}"` : ''}${fordypningLevel ? ` data-fordypning="${fordypningLevel}"` : ''}>
+            <div class="${classes.join(' ')}"
+                 data-id="${safeId}"
+                 data-fagkode="${safeFagkode}"
+                 data-timer="${f.timer}"
+                 ${f.lareplan ? ` data-lareplan="${sanitizeHTML(f.lareplan)}"` : ''}
+                 ${fordypningLevel ? ` data-fordypning="${fordypningLevel}"` : ''}
+                 role="checkbox"
+                 aria-checked="false"
+                 aria-label="${safeName}, ${f.timer} timer${fordypningLevel ? ', fordypning nivå ' + fordypningLevel : ''}"
+                 tabindex="${isBlocked ? '-1' : '0'}">
               <div class="sp-blokk-fag-row">
-                <span class="sp-blokk-fag-navn">${f.title || f.id}</span>
+                <span class="sp-blokk-fag-navn">${safeName}</span>
                 <div class="sp-blokk-fag-right">
                   <span class="sp-blokk-fag-timer">${f.timer}t</span>
-                  <button class="sp-fag-info-btn" data-fag-info="${f.id}" title="Se fagdetaljer" aria-label="Se detaljer for ${f.title || f.id}">
+                  <button class="sp-fag-info-btn" data-fag-info="${safeId}" title="Se fagdetaljer" aria-label="Se detaljer for ${safeName}">
                     <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
                       <circle cx="8" cy="8" r="7" stroke="currentColor" stroke-width="1.5" fill="none"/>
                       <text x="8" y="12" text-anchor="middle" font-size="11" font-weight="600" fill="currentColor">i</text>
@@ -456,7 +531,7 @@ export class Studieplanlegger {
                   </button>
                 </div>
               </div>
-              ${f.merknad ? `<div class="sp-blokk-fag-note">${f.merknad}</div>` : ''}
+              ${safeMerknad ? `<div class="sp-blokk-fag-note">${safeMerknad}</div>` : ''}
             </div>
           `}).join('')}
         </div>
@@ -477,18 +552,55 @@ export class Studieplanlegger {
     const modal = this.container.querySelector('.sp-modal-blokkskjema');
     if (!modal) return;
 
+    // Create AbortController for cleanup
+    this.modalAbortController = new AbortController();
+    const { signal } = this.modalAbortController;
+
     const closeBtn = modal.querySelector('.sp-modal-close');
     const cancelBtn = modal.querySelector('.sp-btn-secondary');
     const primaryBtn = modal.querySelector('.sp-btn-primary');
 
-    // Close modal
-    closeBtn.addEventListener('click', () => this.closeBlokkskjemaModal());
-    cancelBtn.addEventListener('click', () => this.closeBlokkskjemaModal());
+    // Close modal (with abort signal for cleanup)
+    closeBtn.addEventListener('click', () => this.closeBlokkskjemaModal(), { signal });
+    cancelBtn.addEventListener('click', () => this.closeBlokkskjemaModal(), { signal });
 
     // Click outside to close
     modal.addEventListener('click', (e) => {
       if (e.target === modal) this.closeBlokkskjemaModal();
-    });
+    }, { signal });
+
+    // ACCESSIBILITY: Keyboard navigation
+    modal.addEventListener('keydown', (e) => {
+      // Escape to close
+      if (e.key === 'Escape') {
+        this.closeBlokkskjemaModal();
+        return;
+      }
+
+      // Tab trap - keep focus within modal
+      if (e.key === 'Tab') {
+        const focusableElements = modal.querySelectorAll(
+          'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"]), .sp-blokk-fag-item:not(.blocked)'
+        );
+        const focusableArray = Array.from(focusableElements);
+        const firstFocusable = focusableArray[0];
+        const lastFocusable = focusableArray[focusableArray.length - 1];
+
+        if (e.shiftKey) {
+          // Shift+Tab: if on first element, go to last
+          if (document.activeElement === firstFocusable) {
+            lastFocusable.focus();
+            e.preventDefault();
+          }
+        } else {
+          // Tab: if on last element, go to first
+          if (document.activeElement === lastFocusable) {
+            firstFocusable.focus();
+            e.preventDefault();
+          }
+        }
+      }
+    }, { signal });
 
     // Fag selection (delegated event listener)
     // NEW APPROACH: Allow all selections, show validation errors, disable button if invalid
@@ -537,6 +649,7 @@ export class Studieplanlegger {
 
         // Deselect
         fagItem.classList.remove('selected');
+        fagItem.setAttribute('aria-checked', 'false');  // ARIA update
         this.selectedBlokkskjemaFag = this.selectedBlokkskjemaFag.filter(f =>
           !(f.id === fagId && f.blokkId === blokkId)
         );
@@ -583,6 +696,7 @@ export class Studieplanlegger {
         // Deselect any other fag in same blokk (1 per blokk rule - swap)
         blokk?.querySelectorAll('.sp-blokk-fag-item.selected').forEach(item => {
           item.classList.remove('selected');
+          item.setAttribute('aria-checked', 'false');  // ARIA update
           const oldId = item.dataset.id;  // use curriculum id
           this.selectedBlokkskjemaFag = this.selectedBlokkskjemaFag.filter(f =>
             !(f.id === oldId && f.blokkId === blokkId)
@@ -591,6 +705,7 @@ export class Studieplanlegger {
 
         // Select this fag
         fagItem.classList.add('selected');
+        fagItem.setAttribute('aria-checked', 'true');  // ARIA update
         this.selectedBlokkskjemaFag.push({
           navn: fagNavn,
           timer: fagTimer,
@@ -607,7 +722,7 @@ export class Studieplanlegger {
       // Update validation and button state
       this.updateBlokkValidation(modal);
       this.updateModalButton(modal, primaryBtn);
-    });
+    }, { signal });
 
     // Info button - show fag details modal
     modal.addEventListener('click', (e) => {
@@ -619,7 +734,7 @@ export class Studieplanlegger {
       if (fagId) {
         this.showFagDetails(fagId);
       }
-    });
+    }, { signal });
 
     // Primary button - confirm selection
     primaryBtn.addEventListener('click', () => {
@@ -673,7 +788,7 @@ export class Studieplanlegger {
         // This handles slot assignment automatically and preserves blokkId
         this.state.setTrinnSelections(trinn, selectionsToSave);
       }
-    });
+    }, { signal });
 
     this.blokkskjemaModalSetup = true;
   }
@@ -948,6 +1063,10 @@ export class Studieplanlegger {
       if (blokkContent) {
         validering = document.createElement('div');
         validering.className = 'sp-validering';
+        // ARIA: Live region for screen reader announcements
+        validering.setAttribute('role', 'status');
+        validering.setAttribute('aria-live', 'polite');
+        validering.setAttribute('aria-atomic', 'true');
         blokkContent.parentNode.insertBefore(validering, blokkContent);
       }
     }

@@ -85,16 +85,33 @@ export class DataHandler {
 
       this.data = await response.json();
 
-      // Extract commonly used data for easier access
-      this.blokkskjemaData = this.data.blokkskjema;
-      this.valgregler = this.data.valgregler;
-      this.regler = this.data.regler;
-      this.timevalidering = this.data.timevalidering;
-      this.curriculum = this.data.curriculum;
-      this.school = this.data.school;
-      this.fellesfagData = this.data.fellesfag;  // From timefordeling.yml
-      this.fellesProgramfagData = this.data.fellesProgramfag;  // From timefordeling.yml
-      this.vg1ValgData = this.data.vg1Valg;  // VG1 valg (matematikk og fremmedspråk)
+      // VALIDATE API RESPONSE STRUCTURE
+      if (!this.data || typeof this.data !== 'object') {
+        throw new Error('Invalid API response: expected object');
+      }
+
+      // Validate required fields exist
+      const requiredFields = ['blokkskjema', 'curriculum', 'regler'];
+      const missingFields = requiredFields.filter(field => !this.data[field]);
+      if (missingFields.length > 0) {
+        console.warn(`⚠️ API response missing fields: ${missingFields.join(', ')}`);
+      }
+
+      // Validate blokkskjema structure
+      if (this.data.blokkskjema && !this.data.blokkskjema.blokker) {
+        console.warn('⚠️ blokkskjema.blokker is missing - widget may not function correctly');
+      }
+
+      // Extract commonly used data for easier access (with fallbacks)
+      this.blokkskjemaData = this.data.blokkskjema || { blokker: {} };
+      this.valgregler = this.data.valgregler || {};
+      this.regler = this.data.regler || {};
+      this.timevalidering = this.data.timevalidering || {};
+      this.curriculum = this.data.curriculum || {};
+      this.school = this.data.school || {};
+      this.fellesfagData = this.data.fellesfag || {};  // From timefordeling.yml
+      this.fellesProgramfagData = this.data.fellesProgramfag || {};  // From timefordeling.yml
+      this.vg1ValgData = this.data.vg1Valg || {};  // VG1 valg (matematikk og fremmedspråk)
 
       this.loaded = true;
 

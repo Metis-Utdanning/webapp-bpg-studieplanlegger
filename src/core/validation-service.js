@@ -265,8 +265,14 @@ export class ValidationService {
     }
 
     for (const prereq of this.forutsetninger) {
-      if (prereq.fag === fagId) {
-        const hasPrereq = prereq.krever.some(req => selectedFagIds.includes(req));
+      // FIXED: prereq.fag is normalized to array in init(), so use .includes()
+      const normalizedFagId = fagId.toLowerCase();
+      const prereqFagIds = prereq.fag.map(f => f.toLowerCase());
+
+      if (prereqFagIds.includes(normalizedFagId)) {
+        const hasPrereq = prereq.krever.some(req =>
+          selectedFagIds.includes(req.toLowerCase())
+        );
         if (!hasPrereq) {
           return {
             met: false,
@@ -698,26 +704,25 @@ export class ValidationService {
       const vg3MathId = (vg3MathFag.id || vg3MathFag.fagkode).toLowerCase();
 
       // Check if they're in conflicting groups (R vs S)
+      // FIXED: Check for type='blocking' AND konfliktGrupper property
+      // konfliktGrupper is array of arrays with fag IDs directly (not objects with .fag)
       const mathConflict = this.eksklusjoner.find(eks => {
-        if (eks.type !== 'konfliktGrupper') return false;
+        // Must be blocking type with konfliktGrupper
+        if (eks.type !== 'blocking' || !eks.konfliktGrupper) return false;
 
-        // Check if both math fag are in the exclusion list
-        const includesVg2 = eks.fag.some(id => id.toLowerCase() === vg2MathId);
-        const includesVg3 = eks.fag.some(id => id.toLowerCase() === vg3MathId);
-
-        if (!includesVg2 || !includesVg3) return false;
-
-        // If they're in different conflict groups, they conflict
-        // R1 and R2 are in same group (både R) - OK
-        // R1 and S1 are in different groups - BLOCKED
-        const vg2Group = eks.konfliktGrupper.find(g =>
-          g.fag.some(id => id.toLowerCase() === vg2MathId)
+        // Find which group each math fag belongs to
+        // konfliktGrupper format: [[s1, s2], [r1, r2]] - arrays of fag IDs
+        const vg2GroupIndex = eks.konfliktGrupper.findIndex(group =>
+          group.some(id => id.toLowerCase() === vg2MathId)
         );
-        const vg3Group = eks.konfliktGrupper.find(g =>
-          g.fag.some(id => id.toLowerCase() === vg3MathId)
+        const vg3GroupIndex = eks.konfliktGrupper.findIndex(group =>
+          group.some(id => id.toLowerCase() === vg3MathId)
         );
 
-        return vg2Group && vg3Group && vg2Group.navn !== vg3Group.navn;
+        // Both must be in the exclusion, but in DIFFERENT groups
+        // R1 and R2 are in same group (index matches) - OK
+        // R1 and S1 are in different groups (indices differ) - BLOCKED
+        return vg2GroupIndex !== -1 && vg3GroupIndex !== -1 && vg2GroupIndex !== vg3GroupIndex;
       });
 
       if (mathConflict) {
