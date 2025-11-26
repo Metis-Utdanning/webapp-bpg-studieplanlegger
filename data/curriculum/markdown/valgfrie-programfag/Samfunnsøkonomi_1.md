@@ -21,7 +21,7 @@ I samfunnsøkonomi kobles teori til virkeligheten gjennom analyse av dagsaktuell
 
 ## Fagets relevans
 
-Samfunnsøkonomi gir et solid grunnlag for høyere utdanning innen økonomi, statsvitenskap, jus og ledelse, både i Norge og internasjonalt. Faget er relevant for elever som ønsker å forstå hvordan økonomiske mekanismer påvirker samfunnet - fra renter og inflasjon til arbeidsmarked og global handel. Kompetansen er etterspurt i næringsliv, offentlig forvaltning og organisasjoner. Det kreves ingen forkunnskaper, og faget vektlegger forståelse av sammenhenger fremfor avansert tallbehandling.
+Samfunnsøkonomi gir et solid grunnlag for høyere utdanning innen økonomi, statsvitenskap, jus og ledelse, både i Norge og internasjonalt. Faget er relevant for elever som ønsker å forstå hvordan økonomiske mekanismer påvirker samfunnet, fra renter og inflasjon til arbeidsmarked og global handel. Kompetansen er etterspurt i næringsliv, offentlig forvaltning og organisasjoner. Det kreves ingen forkunnskaper, og faget vektlegger forståelse av sammenhenger fremfor avansert tallbehandling.
 
 ## Kompetansemål
 

@@ -17,15 +17,11 @@ Markedsføring og ledelse handler om å tilpasse produkter og tjenester til mark
 
 ## Hvordan arbeider man i faget
 
-I Markedsføring og ledelse 2 jobber du med strategisk tenkning og kreativ problemløsning. Du lærer å utvikle helhetlige markedsstrategier - fra å analysere markeder og målgrupper til å utforme konkrete tiltak som prissetting, merkevarebygging og kommunikasjonskampanjer. Mye av arbeidet handler om å bruke ulike analyseverktøy og modeller for å ta gode beslutninger.
-
-Undervisningen kombinerer teori med praktiske case fra næringslivet. Du kan for eksempel få i oppgave å utvikle en merkevare fra bunnen av, lage en mediestrategi for en kampanje, eller analysere hvordan en bedrift bør posisjonere seg i markedet. Gruppearbeid og presentasjoner er vanlig, siden samarbeid og kommunikasjon er sentralt i markedsføringsbransjen.
+I Markedsføring og ledelse 2 jobber du med strategisk tenkning og kreativ problemløsning. Du lærer å utvikle helhetlige markedsstrategier, fra å analysere markeder og målgrupper til å utforme konkrete tiltak som prissetting, merkevarebygging og kommunikasjonskampanjer. Mye av arbeidet handler om å bruke ulike analyseverktøy og modeller for å ta gode beslutninger. Undervisningen kombinerer teori med praktiske case fra næringslivet. Du kan for eksempel få i oppgave å utvikle en merkevare fra bunnen av, lage en mediestrategi for en kampanje, eller analysere hvordan en bedrift bør posisjonere seg i markedet. Gruppearbeid og presentasjoner er vanlig, siden samarbeid og kommunikasjon er sentralt i markedsføringsbransjen.
 
 ## Fagets relevans
 
-Faget gir deg et solid grunnlag for studier innen markedsføring, økonomi, ledelse og kommunikasjon. Mange velger bachelorprogrammer i markedsføring, bedriftsøkonomi eller merkevareledelse, mens andre går videre til studier i innovasjon, digital markedsføring eller internasjonal business.
-
-Markedsføringskompetanse er etterspurt i nesten alle bransjer. Du kan jobbe som markedsfører, kommunikasjonsrådgiver, merkevareansvarlig eller digital markedsfører. Med erfaring kan du ta lederroller som markedssjef eller markedsdirektør. Faget er også relevant om du drømmer om å starte egen bedrift - forståelse for markeder, kunder og konkurransemidler er avgjørende for å lykkes.
+Faget gir deg et solid grunnlag for studier innen markedsføring, økonomi, ledelse og kommunikasjon. Mange velger bachelorprogrammer i markedsføring, bedriftsøkonomi eller merkevareledelse, mens andre går videre til studier i innovasjon, digital markedsføring eller internasjonal business. Markedsføringskompetanse er etterspurt i nesten alle bransjer. Du kan jobbe som markedsfører, kommunikasjonsrådgiver, merkevareansvarlig eller digital markedsfører. Med erfaring kan du ta lederroller som markedssjef eller markedsdirektør. Faget er også relevant om du drømmer om å starte egen bedrift. Forståelse for markeder, kunder og konkurransemidler er avgjørende for å lykkes.
 
 ## Kompetansemål
 

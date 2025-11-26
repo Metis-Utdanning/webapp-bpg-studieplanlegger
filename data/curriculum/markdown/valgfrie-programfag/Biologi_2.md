@@ -18,19 +18,11 @@ Biologi handler om livet på jorden og om sammenhenger mellom biologisk mangfold
 
 ## Hvordan arbeider man i faget
 
-I Biologi 2 fordyper du deg i livets grunnleggende mekanismer. Faget kan tas uavhengig av Biologi 1 og gir deg solid kompetanse innen genetikk, evolusjon og bioteknologi.
-
-Du lærer om genetisk kode og hvordan genuttrykk reguleres i celler. Gjennom laboratoriearbeid undersøker du hvordan genteknikk kan styre og endre biologiske prosesser. Evolusjonsteori står sentralt, der du utforsker hvordan evolusjonære prosesser påvirker populasjoners genpool og hvilke mekanismer som driver artsdannelse.
-
-Undervisningen kombinerer teori med varierte praktiske og utforskende arbeidsmåter. Du gjennomfører feltarbeid for å dokumentere artsmangfold, samler inn data og presenterer funn kritisk. En viktig del av faget er å vurdere etiske problemstillinger knyttet til kommersiell bruk av genteknologi i medisin og matproduksjon.
+I Biologi 2 fordyper du deg i livets grunnleggende mekanismer. Faget kan tas uavhengig av Biologi 1 og gir deg solid kompetanse innen genetikk, evolusjon og bioteknologi. Du lærer om genetisk kode og hvordan genuttrykk reguleres i celler. Gjennom laboratoriearbeid undersøker du hvordan genteknikk kan styre og endre biologiske prosesser. Evolusjonsteori står sentralt, der du utforsker hvordan evolusjonære prosesser påvirker populasjoners genpool og hvilke mekanismer som driver artsdannelse. Undervisningen kombinerer teori med varierte praktiske og utforskende arbeidsmåter. Du gjennomfører feltarbeid for å dokumentere artsmangfold, samler inn data og presenterer funn kritisk. En viktig del av faget er å vurdere etiske problemstillinger knyttet til kommersiell bruk av genteknologi i medisin og matproduksjon.
 
 ## Fagets relevans
 
-Biologi 2 gir deg et solid grunnlag for videre studier innen medisin, odontologi, veterinærmedisin, farmasi og bioteknologi. Faget er også relevant for studier i biologi, molekylærbiologi, genetikk og økologi.
-
-Kompetansen du tilegner deg er ettertraktet i mange yrker. Som biolog kan du arbeide med forskning på laboratorier eller ute i felt, innen spesialiseringer som mikrobiologi, marinbiologi, genetikk eller økologi. Biologer er ansatt i forskningsmiljøer, offentlig forvaltning, miljøorganisasjoner, konsulentfirmaer og industrien.
-
-Forståelse av genetikk og bioteknologi blir stadig viktigere i helsesektoren, der bioingeniører og forskere utvikler nye behandlingsmetoder og legemidler. Faget gir deg også grunnlag for arbeid med miljøovervåking, naturforvaltning og bærekraftig utvikling.
+Biologi 2 gir deg et solid grunnlag for videre studier innen medisin, odontologi, veterinærmedisin, farmasi og bioteknologi. Faget er også relevant for studier i biologi, molekylærbiologi, genetikk og økologi. Kompetansen du tilegner deg er ettertraktet i mange yrker. Som biolog kan du arbeide med forskning på laboratorier eller ute i felt, innen spesialiseringer som mikrobiologi, marinbiologi, genetikk eller økologi. Biologer er ansatt i forskningsmiljøer, offentlig forvaltning, miljøorganisasjoner, konsulentfirmaer og industrien. Forståelse av genetikk og bioteknologi blir stadig viktigere i helsesektoren, der bioingeniører og forskere utvikler nye behandlingsmetoder og legemidler. Faget gir deg også grunnlag for arbeid med miljøovervåking, naturforvaltning og bærekraftig utvikling.
 
 ## Kompetansemål
 

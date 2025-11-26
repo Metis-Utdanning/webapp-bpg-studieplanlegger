@@ -18,19 +18,11 @@ Entreprenørskap og bedriftsutvikling handler om innsikt i etablering og videreu
 
 ## Hvordan arbeider man i faget
 
-I dette faget starter du en ungdomsbedrift sammen med fire til fem medelever. Dere utvikler en forretningsidé, etablerer bedriften, driver den gjennom skoleåret og avvikler den ved årets slutt. Forretningsidéen kan spenne fra produktutvikling til tjenesteyting.
-
-Undervisningen veksler mellom teori og praktisk arbeid. Du lærer om forretningsmodeller, markedsanalyse og økonomi, og anvender kunnskapen direkte i egen bedrift. Bærekraft er integrert i alle faser av arbeidet.
-
-Bedriften tildeles roller som daglig leder, økonomiansvarlig og markedsføringsansvarlig. Du deltar på kurs tilpasset din rolle, og samarbeider med eksterne aktører fra næringslivet. Arbeidet kulminerer med deltakelse på Fylkesmessen, der ungdomsbedrifter fra hele Vestland konkurrerer. De beste går videre til NM.
+I dette faget starter du en ungdomsbedrift sammen med fire til fem medelever. Dere utvikler en forretningsidé, etablerer bedriften, driver den gjennom skoleåret og avvikler den ved årets slutt. Forretningsidéen kan spenne fra produktutvikling til tjenesteyting. Undervisningen veksler mellom teori og praktisk arbeid. Du lærer om forretningsmodeller, markedsanalyse og økonomi, og anvender kunnskapen direkte i egen bedrift. Bærekraft er integrert i alle faser av arbeidet. Bedriften tildeles roller som daglig leder, økonomiansvarlig og markedsføringsansvarlig. Du deltar på kurs tilpasset din rolle, og samarbeider med eksterne aktører fra næringslivet. Arbeidet kulminerer med deltakelse på Fylkesmessen, der ungdomsbedrifter fra hele Vestland konkurrerer. De beste går videre til NM.
 
 ## Fagets relevans
 
-Entreprenørskap og bedriftsutvikling 1 gir praktisk erfaring med å etablere og drive en virksomhet. Du utvikler ferdigheter innen kreativ problemløsning, økonomistyring og strategisk tenkning.
-
-Faget krever samarbeidsevne og evne til å overholde frister. Du tar ansvar for din del av bedriftens arbeid, og lærer hvordan teamarbeid fungerer i praksis. Dette er ferdigheter som er direkte overførbare til arbeidslivet.
-
-Faget er relevant for videre studier innen økonomi, markedsføring, ledelse og kreative fagområder. Det gir også et godt grunnlag for alle studieretninger der samarbeid, presentasjonsteknikk og prosjektarbeid står sentralt.
+Entreprenørskap og bedriftsutvikling 1 gir praktisk erfaring med å etablere og drive en virksomhet. Du utvikler ferdigheter innen kreativ problemløsning, økonomistyring og strategisk tenkning. Faget krever samarbeidsevne og evne til å overholde frister. Du tar ansvar for din del av bedriftens arbeid, og lærer hvordan teamarbeid fungerer i praksis. Dette er ferdigheter som er direkte overførbare til arbeidslivet. Faget er relevant for videre studier innen økonomi, markedsføring, ledelse og kreative fagområder. Det gir også et godt grunnlag for alle studieretninger der samarbeid, presentasjonsteknikk og prosjektarbeid står sentralt.
 
 ## Kompetansemål
 

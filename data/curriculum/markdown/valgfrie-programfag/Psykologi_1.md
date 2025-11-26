@@ -18,7 +18,7 @@ Psykologi handler om å forstå menneskets tanker, emosjoner og atferd. Faget sk
 
 ## Hvordan arbeider man i faget
 
-Undervisningen kombinerer teoretisk fordypning med praktisk utforskning. Du lærer sentrale psykologiske teorier og perspektiver, og anvender dem gjennom diskusjoner, case-analyser og egne undersøkelser. Faget legger vekt på vitenskapelig og kritisk tenkning: Du gjennomfører mindre forskningsprosjekter, analyserer psykologiske studier og vurderer ulike forklaringsmodeller. Arbeidet veksler mellom individuelt arbeid og samarbeid i grupper, med vekt på muntlig refleksjon og faglig argumentasjon.
+Undervisningen kombinerer teoretisk fordypning med praktisk utforskning. Du lærer sentrale psykologiske teorier og perspektiver, og anvender dem gjennom diskusjoner, case-analyser og egne undersøkelser. Faget legger vekt på vitenskapelig og kritisk tenkning der du gjennomfører mindre forskningsprosjekter, analyserer psykologiske studier og vurderer ulike forklaringsmodeller. Arbeidet veksler mellom individuelt arbeid og samarbeid i grupper, med vekt på muntlig refleksjon og faglig argumentasjon.
 
 ## Fagets relevans
 

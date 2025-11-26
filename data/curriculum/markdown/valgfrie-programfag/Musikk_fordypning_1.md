@@ -18,7 +18,7 @@ Musikk fordypning handler om å fordype seg i skapende prosesser ved å utvikle 
 
 ## Hvordan arbeider man i faget
 
-Undervisningen kombinerer teori og praktisk arbeid. Du lærer arrangeringsteknikker og komponering gjennom prosjekter der du skaper egen musikk og fremfører den for medelever. Notasjonsprogrammet Sibelius brukes til å skrive og redigere noter digitalt. En vesentlig del av faget er gehørtrening, der du øver på prima vista-lesing (notelesing fra bladet), rytmetrening og melodisk diktat - det vil si å lytte til musikk og skrive ned det du hører. Du arbeider både individuelt og i samarbeid med andre, og får erfaring med å gi og motta konstruktiv respons på kreativt arbeid.
+Undervisningen kombinerer teori og praktisk arbeid. Du lærer arrangeringsteknikker og komponering gjennom prosjekter der du skaper egen musikk og fremfører den for medelever. Notasjonsprogrammet Sibelius brukes til å skrive og redigere noter digitalt. En vesentlig del av faget er gehørtrening, der du øver på prima vista-lesing (notelesing fra bladet), rytmetrening og melodisk diktat. Det vil si å lytte til musikk og skrive ned det du hører. Du arbeider både individuelt og i samarbeid med andre, og får erfaring med å gi og motta konstruktiv respons på kreativt arbeid.
 
 ## Fagets relevans
 

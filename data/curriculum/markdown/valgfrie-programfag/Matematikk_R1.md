@@ -18,19 +18,11 @@ Matematikk R handler om å forstå moderne anvendelser av matematikk i realfagli
 
 ## Hvordan arbeider man i faget
 
-I R1 jobber du mye med problemløsning der du selv må finne strategien. Du møter oppgaver som ikke har en ferdig oppskrift, og lærer å bryte ned komplekse problemer i mindre deler du kan løse systematisk. Derivasjon, vektorer og funksjonsanalyse står sentralt, og du bruker disse verktøyene til å analysere alt fra fysiske fenomener til økonomiske modeller.
-
-En viktig del av faget er å jobbe med reelle datasett fra naturvitenskap og samfunn. Du lærer å lage matematiske modeller som beskriver virkeligheten, og å vurdere når modellene fungerer og når de kommer til kort. Digitale verktøy som GeoGebra og programmering brukes aktivt for å utforske sammenhenger og visualisere løsninger.
-
-Samarbeid og diskusjon er også viktig. Du jobber ofte sammen med andre for å finne løsninger, og må kunne forklare og begrunne tankegangen din matematisk. Det handler ikke bare om å få riktig svar, men om å forstå hvorfor løsningen fungerer.
+I R1 jobber du mye med problemløsning der du selv må finne strategien. Du møter oppgaver som ikke har en ferdig oppskrift, og lærer å bryte ned komplekse problemer i mindre deler du kan løse systematisk. Derivasjon, vektorer og funksjonsanalyse står sentralt, og du bruker disse verktøyene til å analysere alt fra fysiske fenomener til økonomiske modeller. En viktig del av faget er å jobbe med reelle datasett fra naturvitenskap og samfunn. Du lærer å lage matematiske modeller som beskriver virkeligheten, og å vurdere når modellene fungerer og når de kommer til kort. Digitale verktøy som GeoGebra og programmering brukes aktivt for å utforske sammenhenger og visualisere løsninger. Samarbeid og diskusjon er også viktig. Du jobber ofte sammen med andre for å finne løsninger, og må kunne forklare og begrunne tankegangen din matematisk. Det handler ikke bare om å få riktig svar, men om å forstå hvorfor løsningen fungerer.
 
 ## Fagets relevans
 
-R1 er inngangsbilletten til de fleste teknologi- og realfagsstudier. Sivilingeniør, fysikk, informatikk, matematikk og økonomi krever alle R-matte fra videregående. Faget gir deg verktøyene for å forstå hvordan verden fungerer matematisk, fra hvordan broer tåler belastning til hvordan algoritmer optimaliserer søkeresultater.
-
-Yrker som sivilingeniør, forsker, dataforsker, aktuar og arkitekt bygger direkte på kunnskapen fra R1. Men den analytiske tenkemåten du utvikler er verdifull langt utover disse yrkene. Evnen til å bryte ned komplekse problemer, tenke logisk og modellere situasjoner matematisk er etterspurt i alt fra finans og konsulentbransjen til medisin og samfunnsplanlegging.
-
-Velger du R1, holder du mange dører åpne. Det er krevende, men gir deg et solid fundament uansett om du vil bygge bærekraftige byer, utvikle kunstig intelligens eller forstå universets lover.
+R1 er inngangsbilletten til de fleste teknologi- og realfagsstudier. Sivilingeniør, fysikk, informatikk, matematikk og økonomi krever alle R-matte fra videregående. Faget gir deg verktøyene for å forstå hvordan verden fungerer matematisk, fra hvordan broer tåler belastning til hvordan algoritmer optimaliserer søkeresultater. Yrker som sivilingeniør, forsker, dataforsker, aktuar og arkitekt bygger direkte på kunnskapen fra R1. Men den analytiske tenkemåten du utvikler er verdifull langt utover disse yrkene. Evnen til å bryte ned komplekse problemer, tenke logisk og modellere situasjoner matematisk er etterspurt i alt fra finans og konsulentbransjen til medisin og samfunnsplanlegging. Velger du R1, holder du mange dører åpne. Det er krevende, men gir deg et solid fundament uansett om du vil bygge bærekraftige byer, utvikle kunstig intelligens eller forstå universets lover.
 
 ## Kompetansemål
 

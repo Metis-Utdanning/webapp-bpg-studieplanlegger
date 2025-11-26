@@ -18,15 +18,11 @@ Grafisk design handlar om kreativt arbeid og visuelle løysingar i ulike medium.
 
 ## Hvordan arbeider man i faget
 
-Faget har en praktisk og prosjektbasert tilnærming. Du arbeider med realistiske oppdrag der du følger en designprosess fra idéutvikling til ferdig produkt. Arbeidet starter ofte med skisser for hånd, før du går over til digital utforming i profesjonelle verktøy som Adobe Illustrator, Photoshop og XD.
-
-Gjennom året jobber du med varierte prosjekter: plakater, logoer, grafiske profiler, magasinlayout, webdesign og enkel animasjon. Du lærer å begrunne valgene dine ved hjelp av fagterminologi, og presenterer arbeidene både skriftlig og muntlig. Underveis utvikler du ferdigheter i visuell kommunikasjon og kritisk vurdering av design.
+Faget har en praktisk og prosjektbasert tilnærming. Du arbeider med realistiske oppdrag der du følger en designprosess fra idéutvikling til ferdig produkt. Arbeidet starter ofte med skisser for hånd, før du går over til digital utforming i profesjonelle verktøy som Adobe Illustrator, Photoshop og XD. Gjennom året jobber du med varierte prosjekter: plakater, logoer, grafiske profiler, magasinlayout, webdesign og enkel animasjon. Du lærer å begrunne valgene dine ved hjelp av fagterminologi, og presenterer arbeidene både skriftlig og muntlig. Underveis utvikler du ferdigheter i visuell kommunikasjon og kritisk vurdering av design.
 
 ## Fagets relevans
 
-Grafisk design passer for deg som liker å kombinere kreativitet med problemløsning. Faget gir en praktisk motvekt til teoretiske fag, og du trenger ingen forkunnskaper. Det som kjennetegner elever i faget, er nysgjerrighet, vilje til å prøve ut idéer og evne til å arbeide grundig med detaljer.
-
-Kompetansen er relevant for videre studier innen visuell kommunikasjon, interaksjonsdesign, arkitektur, markedsføring, medievitenskap og kunstfag. I arbeidslivet er grafisk design etterspurt i bransjer som reklame, kommunikasjon, forlagsbransjen og digital produktutvikling.
+Grafisk design passer for deg som liker å kombinere kreativitet med problemløsning. Faget gir en praktisk motvekt til teoretiske fag, og du trenger ingen forkunnskaper. Det som kjennetegner elever i faget, er nysgjerrighet, vilje til å prøve ut idéer og evne til å arbeide grundig med detaljer. Kompetansen er relevant for videre studier innen visuell kommunikasjon, interaksjonsdesign, arkitektur, markedsføring, medievitenskap og kunstfag. I arbeidslivet er grafisk design etterspurt i bransjer som reklame, kommunikasjon, forlagsbransjen og digital produktutvikling.
 
 ## Kompetansemål
 

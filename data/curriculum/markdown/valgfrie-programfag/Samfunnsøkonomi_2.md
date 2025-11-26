@@ -17,15 +17,11 @@ Samfunnsøkonomi handler om å forstå det økonomiske samspillet mellom ulike a
 
 ## Hvordan arbeider man i faget
 
-I Samfunnsøkonomi 2 jobber du mye med å analysere økonomiske sammenhenger ved hjelp av teori, modeller og grafer. Du lærer å lese og tolke statistikk, diagrammer og tabeller, og bruker dette til å forstå hvordan økonomien faktisk fungerer. Det handler om å se de store linjene: Hva skjer når renta går opp? Hvorfor har noen land høy arbeidsledighet? Hvordan påvirker oljeprisen norsk økonomi?
-
-Undervisningen er variert. Du jobber med caseoppgaver der du analyserer aktuelle økonomiske problemstillinger, skriver drøftingsoppgaver og presenterer funn for klassen. Digitale verktøy brukes aktivt for å hente inn data fra kilder som SSB og Norges Bank. Du lærer også å vurdere kilder kritisk og argumentere faglig for dine konklusjoner. Faget krever at du er nysgjerrig på samfunnet rundt deg og liker å forstå hvorfor ting henger sammen.
+I Samfunnsøkonomi 2 jobber du mye med å analysere økonomiske sammenhenger ved hjelp av teori, modeller og grafer. Du lærer å lese og tolke statistikk, diagrammer og tabeller, og bruker dette til å forstå hvordan økonomien faktisk fungerer. Det handler om å se de store linjene. Hva skjer når renta går opp? Hvorfor har noen land høy arbeidsledighet? Hvordan påvirker oljeprisen norsk økonomi? Undervisningen er variert. Du jobber med caseoppgaver der du analyserer aktuelle økonomiske problemstillinger, skriver drøftingsoppgaver og presenterer funn for klassen. Digitale verktøy brukes aktivt for å hente inn data fra kilder som SSB og Norges Bank. Du lærer også å vurdere kilder kritisk og argumentere faglig for dine konklusjoner. Faget krever at du er nysgjerrig på samfunnet rundt deg og liker å forstå hvorfor ting henger sammen.
 
 ## Fagets relevans
 
-Samfunnsøkonomi 2 er et godt utgangspunkt hvis du vil studere økonomi, statsvitenskap, jus eller andre samfunnsvitenskapelige fag. Faget gir deg analytiske ferdigheter og økonomisk forståelse som er verdifullt i mange studieretninger. For deg som sikter mot siviløkonomstudier eller profesjonsstudiet i samfunnsøkonomi, gir faget et solid fundament.
-
-Som samfunnsøkonom kan du jobbe med å analysere økonomisk utvikling og gi faglige råd. Typiske arbeidsgivere er Finansdepartementet, Norges Bank, SSB, NAV, banker, konsulentfirmaer og forskningsinstitutter. Du kan bli finansanalytiker, økonomikonsulent eller rådgiver for politiske beslutningstakere. Omtrent halvparten av samfunnsøkonomene jobber i staten, mens resten fordeler seg mellom kommunal sektor og privat næringsliv. Det er sjelden vanskelig for samfunnsøkonomer å finne relevant jobb etter endt utdanning.
+Samfunnsøkonomi 2 er et godt utgangspunkt hvis du vil studere økonomi, statsvitenskap, jus eller andre samfunnsvitenskapelige fag. Faget gir deg analytiske ferdigheter og økonomisk forståelse som er verdifullt i mange studieretninger. For deg som sikter mot siviløkonomstudier eller profesjonsstudiet i samfunnsøkonomi, gir faget et solid fundament. Som samfunnsøkonom kan du jobbe med å analysere økonomisk utvikling og gi faglige råd. Typiske arbeidsgivere er Finansdepartementet, Norges Bank, SSB, NAV, banker, konsulentfirmaer og forskningsinstitutter. Du kan bli finansanalytiker, økonomikonsulent eller rådgiver for politiske beslutningstakere. Omtrent halvparten av samfunnsøkonomene jobber i staten, mens resten fordeler seg mellom kommunal sektor og privat næringsliv. Det er sjelden vanskelig for samfunnsøkonomer å finne relevant jobb etter endt utdanning.
 
 ## Kompetansemål
 

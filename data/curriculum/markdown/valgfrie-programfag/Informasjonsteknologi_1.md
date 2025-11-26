@@ -17,15 +17,11 @@ Informasjonsteknologi handler om å forstå og utvikle informasjonssystemer. Pro
 
 ## Hvordan arbeider man i faget
 
-I Informasjonsteknologi 1 jobber du praktisk med å lage nettsider og programmer. Du lærer HTML og CSS for å bygge nettsider fra bunnen av, og du får prøve deg på programmering der du lager kode som løser konkrete problemer. Undervisningen veksler mellom teori om hvordan datamaskiner og nettverk fungerer, og praktiske prosjekter der du faktisk lager ting.
-
-Mye av arbeidet handler om kreativ problemløsning. Du får en oppgave eller et problem, og så må du finne ut hvordan du kan løse det med teknologi. Kanskje du skal lage en nettside for en fiktiv bedrift, eller et program som behandler data og viser resultatet på en oversiktlig måte. Du lærer også å tenke kritisk om teknologi og diskuterer temaer som personvern, datasikkerhet og hvordan IT påvirker samfunnet rundt oss.
+I Informasjonsteknologi 1 jobber du praktisk med å lage nettsider og programmer. Du lærer HTML og CSS for å bygge nettsider fra bunnen av, og du får prøve deg på programmering der du lager kode som løser konkrete problemer. Undervisningen veksler mellom teori om hvordan datamaskiner og nettverk fungerer, og praktiske prosjekter der du faktisk lager ting. Mye av arbeidet handler om kreativ problemløsning. Du får en oppgave eller et problem, og så må du finne ut hvordan du kan løse det med teknologi. Kanskje du skal lage en nettside for en fiktiv bedrift, eller et program som behandler data og viser resultatet på en oversiktlig måte. Du lærer også å tenke kritisk om teknologi og diskuterer temaer som personvern, datasikkerhet og hvordan IT påvirker samfunnet rundt oss.
 
 ## Fagets relevans
 
-IT-kompetanse er etterspurt i nesten alle bransjer. Faget gir deg et solid grunnlag for studier innen informatikk, datavitenskap, informasjonsteknologi eller ingeniørfag ved universitet og høyskole. Du kan bli programvareutvikler, webutvikler, IT-konsulent, systemarkitekt eller jobbe med cybersikkerhet. Mange velger også å kombinere IT med andre fagfelt som helse, økonomi eller design.
-
-Selv om du ikke sikter mot en ren IT-karriere, er ferdighetene du lærer verdifulle. Evnen til å tenke systematisk, løse problemer og forstå hvordan digitale systemer fungerer er nyttig i de fleste yrker. I en verden der teknologi spiller en stadig viktigere rolle, gir faget deg verktøy til å forstå og påvirke den digitale utviklingen rundt deg.
+IT-kompetanse er etterspurt i nesten alle bransjer. Faget gir deg et solid grunnlag for studier innen informatikk, datavitenskap, informasjonsteknologi eller ingeniørfag ved universitet og høyskole. Du kan bli programvareutvikler, webutvikler, IT-konsulent, systemarkitekt eller jobbe med cybersikkerhet. Mange velger også å kombinere IT med andre fagfelt som helse, økonomi eller design. Selv om du ikke sikter mot en ren IT-karriere, er ferdighetene du lærer verdifulle. Evnen til å tenke systematisk, løse problemer og forstå hvordan digitale systemer fungerer er nyttig i de fleste yrker. I en verden der teknologi spiller en stadig viktigere rolle, gir faget deg verktøy til å forstå og påvirke den digitale utviklingen rundt deg.
 
 ## Kompetansemål
 

@@ -19,7 +19,7 @@ Rettslære handler om å forstå hvordan rettsregler bidrar til å bygge opp og 
 
 ## Hvordan arbeider man i faget
 
-Undervisningen er case-basert. Du analyserer konkrete juridiske konflikter, slik som tvister om arv, kjøpsrettigheter, arbeidsforhold eller foreldreansvar ved samlivsbrudd. Gjennom juridisk metode lærer du å identifisere partenes krav, finne relevant lovgivning og argumentere systematisk frem til en begrunnet konklusjon. Arbeidet veksler mellom individuelle oppgaver, gruppediskusjoner og muntlige drøftinger. I løpet av skoleåret legges det opp til besøk i tingretten, der du får se hvordan en reell rettssak gjennomføres.
+Undervisningen er case-basert der du analyserer konkrete juridiske konflikter, slik som tvister om arv, kjøpsrettigheter, arbeidsforhold eller foreldreansvar ved samlivsbrudd. Gjennom juridisk metode lærer du å identifisere partenes krav, finne relevant lovgivning og argumentere systematisk frem til en begrunnet konklusjon. Arbeidet veksler mellom individuelle oppgaver, gruppediskusjoner og muntlige drøftinger. I løpet av skoleåret legges det opp til besøk i tingretten, der du får se hvordan en reell rettssak gjennomføres.
 
 ## Fagets relevans
 

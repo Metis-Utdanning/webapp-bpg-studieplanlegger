@@ -17,19 +17,11 @@ Entreprenørskap og bedriftsutvikling handler om innsikt i etablering og videreu
 
 ## Hvordan arbeider man i faget
 
-I Entreprenørskap og bedriftsutvikling 2 arbeider du praktisk med å videreutvikle og analysere virksomheter. Du lærer å vurdere forretningsmodeller, utvikle vekststrategier og forstå hvordan ledelse påvirker en organisasjon. Undervisningen kombinerer teoretisk kunnskap med praktiske oppgaver der du anvender ulike markeds- og konkurransestrategier.
-
-Du utforsker innovasjonsprosesser og drøfter hvordan innovasjon bidrar til verdiskaping. Arbeid med prosjekter og nettverksbygging står sentralt, og du lærer å vurdere kapitalbehov og lønnsomhet for bedrifter. Faget gir også innsikt i samfunnsansvar og bærekraftig utvikling, samt internasjonale forretningskulturer og støtteordninger.
-
-Faget kan tas uavhengig av andre entreprenørskapsfag og passer for deg som vil fordype deg i hvordan etablerte virksomheter utvikles og ledes.
+I Entreprenørskap og bedriftsutvikling 2 arbeider du praktisk med å videreutvikle og analysere virksomheter. Du lærer å vurdere forretningsmodeller, utvikle vekststrategier og forstå hvordan ledelse påvirker en organisasjon. Undervisningen kombinerer teoretisk kunnskap med praktiske oppgaver der du anvender ulike markeds- og konkurransestrategier. Du utforsker innovasjonsprosesser og drøfter hvordan innovasjon bidrar til verdiskaping. Arbeid med prosjekter og nettverksbygging står sentralt, og du lærer å vurdere kapitalbehov og lønnsomhet for bedrifter. Faget gir også innsikt i samfunnsansvar og bærekraftig utvikling, samt internasjonale forretningskulturer og støtteordninger. Faget kan tas uavhengig av andre entreprenørskapsfag og passer for deg som vil fordype deg i hvordan etablerte virksomheter utvikles og ledes.
 
 ## Fagets relevans
 
-Entreprenørskap og bedriftsutvikling 2 gir deg kompetanse som er verdifull i en rekke yrker og studieretninger. Faget forbereder deg for høyere utdanning innen økonomi og administrasjon, innovasjon og entreprenørskap, markedsføring eller ledelse.
-
-Med denne bakgrunnen kan du sikte mot karrierer som bedriftsrådgiver, prosjektleder, markedssjef eller økonomiansvarlig. Du kan også arbeide med forretningsutvikling i etablerte bedrifter eller i det offentlige virkemiddelapparatet som støtter næringslivet.
-
-Kunnskapen er særlig relevant dersom du ønsker å starte egen virksomhet senere, eller jobbe med innovasjon og strategisk utvikling. I en verden der omstilling og bærekraft blir stadig viktigere, er evnen til å forstå organisasjoner og utvikle nye løsninger en etterspurt kompetanse.
+Entreprenørskap og bedriftsutvikling 2 gir deg kompetanse som er verdifull i en rekke yrker og studieretninger. Faget forbereder deg for høyere utdanning innen økonomi og administrasjon, innovasjon og entreprenørskap, markedsføring eller ledelse. Med denne bakgrunnen kan du sikte mot karrierer som bedriftsrådgiver, prosjektleder, markedssjef eller økonomiansvarlig. Du kan også arbeide med forretningsutvikling i etablerte bedrifter eller i det offentlige virkemiddelapparatet som støtter næringslivet. Kunnskapen er særlig relevant dersom du ønsker å starte egen virksomhet senere, eller jobbe med innovasjon og strategisk utvikling. I en verden der omstilling og bærekraft blir stadig viktigere, er evnen til å forstå organisasjoner og utvikle nye løsninger en etterspurt kompetanse.
 
 ## Kompetansemål
 

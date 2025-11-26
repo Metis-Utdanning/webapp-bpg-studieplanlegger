@@ -25,14 +25,11 @@ Vil du studere videre, kan du bygge på med spansk på universitet eller høgsko
 
 ## Timefordeling
 
-- **VG1**: 113 timer
-- **VG2**: 112 timer
-- **VG3**: 140 timer
-- **Totalt**: 365 timer
+VG1: 113 timer, VG2: 112 timer, VG3: 140 timer. Totalt 365 timer over tre år.
 
 ## Målgruppe
 
-Dette faget er **betinget obligatorisk** for elever som ikke har hatt fremmedspråk (nivå I eller II) fra ungdomsskolen.
+Dette faget er betinget obligatorisk for elever som ikke har hatt fremmedspråk (nivå I eller II) fra ungdomsskolen.
 
 ## Kompetansemål
 

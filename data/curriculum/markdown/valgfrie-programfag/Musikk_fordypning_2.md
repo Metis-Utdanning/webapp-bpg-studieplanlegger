@@ -18,19 +18,11 @@ Musikk fordypning handler om å fordype seg i skapende prosesser ved å utvikle 
 
 ## Hvordan arbeider man i faget
 
-I Musikk fordypning 2 arbeider du praktisk og skapende med musikk. Faget kan tas uavhengig av Musikk fordypning 1, og fokuserer på å utvikle dine ferdigheter innen komposisjon, arrangering og musikalsk uttrykk.
-
-Du lærer å komponere og arrangere musikk for ulike besetninger, og bruker moderne musikkteknologi til lydopptak, redigering og produksjon. Undervisningen veksler mellom individuelt arbeid og samspill med andre, der du improviserer, øver inn og presenterer egne verk.
-
-En sentral del av faget er å analysere musikk fra ulike kilder og reflektere over kunstnerisk intensjon. Du trener gehøret gjennom å lese notert musikk og notere musikalske forløp. Arbeidet kulminerer ofte i prosjekter der du planlegger, gjennomfører og presenterer kunstneriske prosesser. Gjennom faget utfordres du til å finne ditt eget musikalske uttrykk.
+I Musikk fordypning 2 arbeider du praktisk og skapende med musikk. Faget kan tas uavhengig av Musikk fordypning 1, og fokuserer på å utvikle dine ferdigheter innen komposisjon, arrangering og musikalsk uttrykk. Du lærer å komponere og arrangere musikk for ulike besetninger, og bruker moderne musikkteknologi til lydopptak, redigering og produksjon. Undervisningen veksler mellom individuelt arbeid og samspill med andre, der du improviserer, øver inn og presenterer egne verk. En sentral del av faget er å analysere musikk fra ulike kilder og reflektere over kunstnerisk intensjon. Du trener gehøret gjennom å lese notert musikk og notere musikalske forløp. Arbeidet kulminerer ofte i prosjekter der du planlegger, gjennomfører og presenterer kunstneriske prosesser. Gjennom faget utfordres du til å finne ditt eget musikalske uttrykk.
 
 ## Fagets relevans
 
-Musikk fordypning 2 gir et solid grunnlag for videre studier innen musikk. Faget forbereder deg på høyere utdanning som utøvende musikk, komposisjon, musikkvitenskap eller musikkproduksjon ved musikkonservatorier og universiteter.
-
-Yrkesmulighetene spenner bredt. Som musiker kan du opptre som solist eller i ensemble, jobbe med studioinnspillinger eller turnere. Komponister skaper musikk for alt fra orkestre og kor til film, TV, dataspill og reklame. Andre karriereveier inkluderer musikkprodusent, lydtekniker, musikklærer eller arbeid med kulturformidling.
-
-Faget utvikler overførbare ferdigheter som kreativitet, prosjektarbeid og bruk av digital teknologi. Evnen til å samarbeide, ta kunstneriske valg og presentere eget arbeid er verdifull i mange yrker.
+Musikk fordypning 2 gir et solid grunnlag for videre studier innen musikk. Faget forbereder deg på høyere utdanning som utøvende musikk, komposisjon, musikkvitenskap eller musikkproduksjon ved musikkonservatorier og universiteter. Yrkesmulighetene spenner bredt. Som musiker kan du opptre som solist eller i ensemble, jobbe med studioinnspillinger eller turnere. Komponister skaper musikk for alt fra orkestre og kor til film, TV, dataspill og reklame. Andre karriereveier inkluderer musikkprodusent, lydtekniker, musikklærer eller arbeid med kulturformidling. Faget utvikler overførbare ferdigheter som kreativitet, prosjektarbeid og bruk av digital teknologi. Evnen til å samarbeide, ta kunstneriske valg og presentere eget arbeid er verdifull i mange yrker.
 
 ## Kompetansemål
 
