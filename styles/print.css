@@ -22,11 +22,11 @@
   }
 
   /* ===========================================
-     SIDE-INNSTILLINGER (A4)
+     SIDE-INNSTILLINGER (A4 liggende, smale marger)
      =========================================== */
   @page {
-    size: A4 portrait;
-    margin: 15mm;
+    size: A4 landscape;
+    margin: 8mm;
   }
 
   /* ===========================================
@@ -36,8 +36,8 @@
     margin: 0;
     padding: 0;
     background: white !important;
-    font-size: 11pt;
-    line-height: 1.4;
+    font-size: 10pt;
+    line-height: 1.3;
     -webkit-print-color-adjust: exact;
     print-color-adjust: exact;
   }
@@ -80,8 +80,8 @@
   .sp-vg-grid {
     display: grid !important;
     grid-template-columns: 1fr 1fr 1fr !important;
-    gap: 8px !important;
-    margin-bottom: 15px !important;
+    gap: 6px !important;
+    margin-bottom: 8px !important;
   }
 
   /* ===========================================
@@ -106,9 +106,9 @@
   .sp-vg-header {
     background: #1F4739 !important;
     color: white !important;
-    padding: 8px !important;
+    padding: 5px 8px !important;
     min-height: auto !important;
-    font-size: 12pt !important;
+    font-size: 11pt !important;
     -webkit-print-color-adjust: exact;
     print-color-adjust: exact;
   }
@@ -130,7 +130,7 @@
      VG CONTENT
      =========================================== */
   .sp-vg-content {
-    padding: 8px !important;
+    padding: 5px !important;
     background: white !important;
   }
 
@@ -138,13 +138,13 @@
      FAG SEKSJONER
      =========================================== */
   .sp-fag-section {
-    margin-bottom: 8px !important;
+    margin-bottom: 4px !important;
   }
 
   .sp-fag-section-title {
-    font-size: 8pt !important;
+    font-size: 7pt !important;
     color: #666 !important;
-    margin-bottom: 4px !important;
+    margin-bottom: 2px !important;
   }
 
   /* ===========================================
@@ -152,10 +152,10 @@
      =========================================== */
   .sp-fag-item {
     border: 1px solid #ddd !important;
-    border-radius: 3px !important;
-    padding: 4px 8px !important;
-    margin-bottom: 3px !important;
-    font-size: 9pt !important;
+    border-radius: 2px !important;
+    padding: 2px 6px !important;
+    margin-bottom: 2px !important;
+    font-size: 8pt !important;
     box-shadow: none !important;
   }
 
@@ -177,11 +177,11 @@
   }
 
   .sp-fag-item-title {
-    font-size: 9pt !important;
+    font-size: 8pt !important;
   }
 
   .sp-fag-item-timer {
-    font-size: 8pt !important;
+    font-size: 7pt !important;
     color: #666 !important;
   }
 
@@ -190,23 +190,23 @@
      =========================================== */
   .sp-validering {
     display: block !important;
-    margin-top: 10px !important;
-    padding: 10px !important;
+    margin-top: 6px !important;
+    padding: 6px !important;
     border: 1px solid #1F4739 !important;
-    border-radius: 4px !important;
+    border-radius: 3px !important;
     background: #f9f9f9 !important;
     page-break-inside: avoid;
   }
 
   .sp-validering-title {
-    font-size: 10pt !important;
+    font-size: 9pt !important;
     font-weight: bold !important;
     color: #1F4739 !important;
-    margin-bottom: 8px !important;
+    margin-bottom: 4px !important;
   }
 
   .sp-fordypning-status {
-    font-size: 9pt !important;
+    font-size: 8pt !important;
   }
 
   /* ===========================================

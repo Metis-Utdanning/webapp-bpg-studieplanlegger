@@ -5,6 +5,7 @@ fagkode: SAM3054
 lareplan: POS04-01
 vimeo: ""
 generert: 2025-11-14
+bilde: /public/images/fag/sosiologi-og-sosialantropologi.jpg
 ---
 
 # Sosiologi og sosialantropologi

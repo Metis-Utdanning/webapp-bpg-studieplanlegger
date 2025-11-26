@@ -5,6 +5,7 @@ fagkode: REA3056
 lareplan: MAT03-02
 vimeo: ""
 generert: 2025-11-14
+bilde: /public/images/fag/matematikk-r1.jpg
 ---
 
 # Matematikk R1

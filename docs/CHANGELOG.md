@@ -12,6 +12,55 @@
 
 ---
 
+## [2025-11-26] - Bugfixes og UI-komprimering
+
+### Fikset
+
+#### Katalog-modal for fellesfag
+- **Problem:** Samfunnskunnskap, Geografi og fremmedsprak apnet ikke katalog-modal ved klikk
+- **Arsak:** ID-mismatch mellom `geografi-vg1` (i data) og `geografi` (i showFagDetails)
+- **Losning:** Oppdatert showFagDetails() til a handtere begge ID-formater (studieplanlegger.js:1546-1550)
+
+#### Forutsetning-validering for "bygger pa"-fag
+- **Problem:** Fag som Kjemi 2, Fysikk 2, R2 kunne velges uten at forutsetningsfaget var valgt
+- **Arsak:** updateBlokkValidation() brukte `dataset.fagkode` istedenfor `dataset.id`
+- **Losning:** Endret til `dataset.id` for korrekt matching mot forutsetninger (studieplanlegger.js:1048, 1207)
+
+#### Print-layout forbedret
+- **Problem:** Studieplan passet ikke pa en A4-side ved utskrift
+- **Losning:**
+  - Endret til liggende A4-format (landscape)
+  - Smale marger (8mm)
+  - Komprimerte fontstorrelser og padding
+  - Alt innhold far na plass pa en side (print.css)
+
+#### Bildestier oppdatert
+- Lagt til `bilde` felt i frontmatter for 15 programfag som manglet det:
+  - Engelsk, Kjemi 1, Kjemi 2, Psykologi 1, Psykologi 2
+  - Matematikk R1, R2, S1, S2
+  - Fysikk 2, Biologi 1, Biologi 2
+  - Rettslare 1, Rettslare 2
+  - Og flere
+
+### Endret
+
+#### UI-komprimering
+- **Kompakte fag-bokser:** Redusert hoyde pa fag-items i hovedvisning (padding: 4px 10px, margin-bottom: 2px)
+- **Fjernet timetall fra headers:** VG1/VG2/VG3 headers viser ikke lenger "842 timer" osv.
+- **Kompakt header:** Redusert header-hoyde (min-height: 36px, font-size: 1.1rem)
+- **Mindre whitespace:** Redusert margin mellom fag-kategorier (spacing-sm)
+
+### Filer endret
+
+**Kode:**
+- `src/studieplanlegger.js` - showFagDetails(), updateBlokkValidation()
+- `styles/print.css` - Liggende A4-format, komprimert layout
+
+**Data (markdown frontmatter):**
+- Diverse programfag i `data/curriculum/markdown/valgfrie-programfag/` - bilde-felt
+
+---
+
 ## [2024-11-25] - Katalog-modal redesign
 
 ### Lagt til

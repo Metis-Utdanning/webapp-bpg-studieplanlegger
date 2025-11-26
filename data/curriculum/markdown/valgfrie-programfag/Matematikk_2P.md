@@ -9,6 +9,7 @@ erstatbar: true
 trinn: vg2
 vimeo: ""
 generert: 2025-11-14
+bilde: /public/images/fag/matematikk-2p.jpg
 ---
 
 # Matematikk 2P

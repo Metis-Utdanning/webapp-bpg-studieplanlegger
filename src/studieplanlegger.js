@@ -1045,7 +1045,7 @@ export class Studieplanlegger {
 
     // Validate each fag item using ValidationService
     allFagItems.forEach(item => {
-      const fagId = item.dataset.fagkode;
+      const fagId = item.dataset.id;  // BUGFIX: Use curriculum id (e.g., 'kjemi-2') instead of fagkode (e.g., 'KJE1002')
       const blokk = item.closest('.sp-blokk');
       const blokkId = blokk?.dataset.blokkId;
 
@@ -1204,7 +1204,7 @@ export class Studieplanlegger {
       );
       if (mathConflict && mathConflict.fagIds) {
         allFagItems.forEach(item => {
-          const fagId = item.dataset.fagkode?.toLowerCase();
+          const fagId = item.dataset.id?.toLowerCase();  // BUGFIX: Use curriculum id instead of fagkode
           if (mathConflict.fagIds.includes(fagId)) {
             item.classList.add('blocked');
             item.title = mathConflict.message + '\n\n💡 ' + mathConflict.suggestion;
@@ -1542,6 +1542,12 @@ export class Studieplanlegger {
     // Search in fellesfag if not found
     if (!fag && curriculum.fellesfag) {
       fag = curriculum.fellesfag.find(f => f.id === fagId);
+
+      // Fallback: try without -vg1/-vg2/-vg3 suffix (handles ID mismatch between data sources)
+      if (!fag) {
+        const strippedId = fagId.replace(/-vg[123]$/, '');
+        fag = curriculum.fellesfag.find(f => f.id === strippedId);
+      }
     }
 
     if (fag) {

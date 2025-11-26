@@ -205,7 +205,6 @@ export class UIRenderer {
       <div class="sp-vg-column">
         <div class="sp-vg-header">
           VG1
-          <div class="sp-vg-timer">842 timer</div>
         </div>
         <div class="sp-vg-content">
           <div class="sp-fag-section">
@@ -305,7 +304,6 @@ export class UIRenderer {
       <div class="sp-vg-column">
         <div class="sp-vg-header">
           VG2
-          <div class="sp-vg-timer">840 timer</div>
         </div>
         <div class="sp-vg-content">
           <div class="sp-fag-section">
@@ -413,7 +411,6 @@ export class UIRenderer {
       <div class="sp-vg-column">
         <div class="sp-vg-header">
           VG3
-          <div class="sp-vg-timer">841 timer</div>
         </div>
         <div class="sp-vg-content">
           <div class="sp-fag-section">

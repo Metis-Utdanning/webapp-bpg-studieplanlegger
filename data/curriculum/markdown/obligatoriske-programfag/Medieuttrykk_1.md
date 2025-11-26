@@ -7,6 +7,7 @@ type: obligatorisk-programfag
 program: medier-kommunikasjon
 vimeo: ""
 generert: 2025-11-24
+bilde: /public/images/fag/medieuttrykk-1.jpg
 ---
 
 # Medieuttrykk 1

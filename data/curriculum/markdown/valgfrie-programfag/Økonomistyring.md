@@ -5,6 +5,7 @@ fagkode: SAM3068
 lareplan: NOK02-03
 vimeo: ""
 generert: 2025-11-14
+bilde: /public/images/fag/okonomistyring.jpg
 ---
 
 # Økonomistyring

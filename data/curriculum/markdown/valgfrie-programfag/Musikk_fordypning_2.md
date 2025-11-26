@@ -5,6 +5,7 @@ fagkode: MUS3008
 lareplan: MUS08‑02
 vimeo: ""
 generert: 2025-11-14
+bilde: /public/images/fag/musikk-fordypning-2.jpg
 ---
 
 # Musikk fordypning 2

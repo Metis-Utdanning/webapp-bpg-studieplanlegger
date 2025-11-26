@@ -5,6 +5,7 @@ fagkode: SPR3031
 lareplan: ENG04‑02
 vimeo: ""
 generert: 2025-11-14
+bilde: /public/images/fag/engelsk-2.jpg
 ---
 
 # Engelsk 2

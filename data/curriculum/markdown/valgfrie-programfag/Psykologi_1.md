@@ -5,6 +5,7 @@ fagkode: SAM3072
 lareplan: PSY01‑04
 vimeo: ""
 generert: 2025-11-14
+bilde: /public/images/fag/psykologi-1.jpg
 ---
 
 # Psykologi 1

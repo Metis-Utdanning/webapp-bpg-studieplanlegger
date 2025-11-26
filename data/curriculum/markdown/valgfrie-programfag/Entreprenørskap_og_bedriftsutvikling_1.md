@@ -5,6 +5,7 @@ fagkode: SAM3063
 lareplan: ENT01-04
 vimeo: ""
 generert: 2025-11-14
+bilde: /public/images/fag/entreprenorskap-1.jpg
 ---
 
 # Entreprenørskap og bedriftsutvikling 1

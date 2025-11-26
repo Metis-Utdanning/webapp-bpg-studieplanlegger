@@ -5,6 +5,7 @@ fagkode: REA3045
 lareplan: KJE01-02
 vimeo: ""
 generert: 2025-11-14
+bilde: /public/images/fag/kjemi-1.jpg
 ---
 
 # Kjemi 1

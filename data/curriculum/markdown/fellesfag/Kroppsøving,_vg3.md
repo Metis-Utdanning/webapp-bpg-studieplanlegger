@@ -7,6 +7,7 @@ lareplan: KRO01-05
 type: fellesfag
 vimeo: ""
 generert: 2025-11-24
+bilde: /public/images/fag/kroppsoving-3.jpg
 ---
 
 # Kroppsøving Vg3

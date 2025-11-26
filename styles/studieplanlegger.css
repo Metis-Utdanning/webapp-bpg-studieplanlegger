@@ -198,13 +198,13 @@
 .sp-vg-header {
   background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-hover) 100%);
   color: white;
-  padding: var(--spacing-md);  /* Reduced from spacing-lg */
+  padding: var(--spacing-sm) var(--spacing-md);  /* COMPACT: Reduced padding */
   text-align: center;
   font-weight: 700;
-  font-size: 1.25rem;
+  font-size: 1.1rem;  /* COMPACT: Slightly smaller font */
   text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
   position: relative;
-  min-height: 50px;  /* Reduced from 80px - no timer text needed */
+  min-height: 36px;  /* COMPACT: Reduced from 50px - no timer text needed */
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -275,7 +275,7 @@
    FAG SECTIONS
    ============================================ */
 .sp-fag-section {
-  margin-bottom: var(--spacing-md);  /* Reduced from spacing-lg */
+  margin-bottom: var(--spacing-sm);  /* COMPACT: Reduced whitespace between categories */
 }
 
 .sp-fag-section:last-child {
@@ -298,9 +298,9 @@
   background: white;
   border: 2px solid var(--border-light);
   border-radius: var(--radius-md);
-  padding: 6px 12px; /* Reduced for compact view */
-  margin-bottom: 3px;
-  font-size: 0.9rem;
+  padding: 4px 10px; /* COMPACT: Reduced height for laptop view */
+  margin-bottom: 2px;
+  font-size: 0.85rem;
   transition: all var(--transition-fast);
   /* Compact layout: title and timer on same row */
   display: flex;

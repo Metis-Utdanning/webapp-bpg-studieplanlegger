@@ -5,6 +5,7 @@ fagkode: SPR3029
 lareplan: ENG04‑02
 vimeo: ""
 generert: 2025-11-14
+bilde: /public/images/fag/engelsk-1.jpg
 ---
 
 # Engelsk 1

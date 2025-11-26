@@ -7,6 +7,7 @@ lareplan: KRO01-05;STUDIESPESIALISERING,MEDIER-KOMMUNIKASJON
 type: fellesfag
 vimeo: ""
 generert: 2025-11-24
+bilde: /public/images/fag/kroppsoving-2.jpg
 ---
 
 # Kroppsøving vg2
