@@ -22,6 +22,30 @@
   }
 
   /* ===========================================
+     SKJUL SQUARESPACE ELEMENTER (header/footer/nav)
+     =========================================== */
+  header,
+  footer,
+  nav,
+  .header,
+  .footer,
+  .Header,
+  .Footer,
+  .site-header,
+  .site-footer,
+  .sqs-announcement-bar,
+  .sqs-cookie-banner,
+  #header,
+  #footer,
+  [data-section-type="header"],
+  [data-section-type="footer"],
+  [role="navigation"],
+  [role="banner"],
+  [role="contentinfo"] {
+    display: none !important;
+  }
+
+  /* ===========================================
      SIDE-INNSTILLINGER (A4 liggende, smale marger)
      =========================================== */
   @page {

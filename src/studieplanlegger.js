@@ -1581,9 +1581,13 @@ export class Studieplanlegger {
       : '';
 
     // Hero section with image (or fallback without)
-    const heroHTML = fag.bilde
+    // Convert relative image path to absolute URL for embedded usage
+    const baseUrl = this.options.apiBaseUrl?.replace('/dist/api/v2', '') || '';
+    const imageUrl = fag.bilde ? `${baseUrl}${fag.bilde}` : null;
+
+    const heroHTML = imageUrl
       ? `<div class="modal-hero">
-          <img src="${fag.bilde}" alt="${fag.shortTitle || fag.title}" class="modal-hero-image" />
+          <img src="${imageUrl}" alt="${fag.shortTitle || fag.title}" class="modal-hero-image" />
           <div class="modal-hero-overlay"></div>
           <div class="modal-hero-content">
             <h2>${fag.shortTitle || fag.title}</h2>
