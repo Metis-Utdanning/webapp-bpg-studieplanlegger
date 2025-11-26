@@ -17,11 +17,15 @@ Sosialkunnskap handler om å styrke elevenes forståelse av og kritiske bevissth
 
 ## Hvordan arbeider man i faget
 
-<!-- Innhold legges til senere -->
+I sosialkunnskap jobber du mye med å utforske samfunnet rundt deg. Du lærer samfunnsvitenskapelige metoder og gjennomfører egne undersøkelser - kanskje intervjuer du folk i lokalmiljøet, analyserer statistikk om sosial ulikhet, eller undersøker hvordan velferdstjenester fungerer i praksis. Gruppearbeid og diskusjoner er sentralt, der dere drøfter temaer som marginalisering, identitet og menneskerettigheter.
+
+Faget kombinerer teori med praktiske case-studier. Du analyserer reelle samfunnsutfordringer som utenforskap blant ungdom, integrering i arbeidslivet eller hvordan kriser håndteres på ulike nivåer. Kritisk tenkning står sentralt - du lærer å finne og vurdere informasjon, stille gode spørsmål og se saker fra flere perspektiver
 
 ## Fagets relevans
 
-<!-- Innhold legges til senere -->
+Sosialkunnskap gir et solid grunnlag for studier innen sosialt arbeid, barnevern, vernepleie, sosiologi og statsvitenskap. Faget passer deg som vurderer utdanninger der du skal jobbe med mennesker i ulike livssituasjoner - enten det er på NAV, i barnevernet, på krisesenter, i rusomsorgen eller i psykisk helsevern.
+
+Yrkene du kan sikte mot inkluderer sosionom, barnevernspedagog, vernepleier, miljøterapeut eller rådgiver i offentlig forvaltning. Felles for disse er at du hjelper folk med å mestre livet sitt og navigere velferdssamfunnet. Sosialkunnskap gir deg også verdifull innsikt hvis du vil jobbe med politikk, humanitært arbeid eller i frivillige organisasjoner
 
 ## Kompetansemål
 

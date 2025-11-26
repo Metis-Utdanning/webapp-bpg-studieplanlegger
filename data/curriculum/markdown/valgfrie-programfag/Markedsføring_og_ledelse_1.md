@@ -17,11 +17,11 @@ Markedsføring og ledelse handler om å tilpasse produkter og tjenester til mark
 
 ## Hvordan arbeider man i faget
 
-<!-- Innhold legges til senere -->
+Undervisningen kombinerer teori og praksis. Du lærer sentrale modeller og begreper innen markedsføring og ledelse, og anvender dem på realistiske caseoppgaver. Arbeidet foregår både individuelt og i grupper, der du blant annet gjennomfører situasjonsanalyser og utvikler kreative løsninger på bedrifters utfordringer. Faget legger vekt på kontakt med næringslivet gjennom bedriftsbesøk og ekskursjoner.
 
 ## Fagets relevans
 
-<!-- Innhold legges til senere -->
+Markedsføring og ledelse gir deg innsikt i hvordan virksomheter når ut til kunder og tar strategiske beslutninger. Faget er relevant for deg som interesserer deg for kommunikasjon, salg, entreprenørskap eller kreative yrker. Det gir et godt grunnlag for videre studier innen markedsføring, økonomi, mediefag, ledelse eller andre samfunnsfaglige retninger.
 
 ## Kompetansemål
 

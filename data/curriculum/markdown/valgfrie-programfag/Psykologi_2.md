@@ -18,11 +18,17 @@ Psykologi handler om å forstå menneskets tanker, emosjoner og atferd. Faget sk
 
 ## Hvordan arbeider man i faget
 
-<!-- Innhold legges til senere -->
+I Psykologi 2 arbeider du praktisk og utforskende med sentrale psykologiske temaer. Du lærer å finne, vurdere og analysere faglig informasjon, og du får planlegge og gjennomføre egne psykologiske undersøkelser. Faget legger vekt på å sammenligne ulike vitenskapelige teorier og perspektiver for å forstå menneskelig atferd og utvikling.
+
+Undervisningen kombinerer teori med diskusjoner og refleksjon. Du utforsker hvordan gruppeinteraksjon påvirker holdninger og identitet, og hvordan kommunikasjon kan løse konflikter. Psykisk helse er et sentralt tema der du drøfter hva som er "normalt", hvordan samfunnets syn på psykiske lidelser har endret seg, og hvordan biologiske, psykologiske og sosiale faktorer spiller sammen.
+
+Faget kan tas uavhengig av Psykologi 1, og gir deg verktøy til å forstå deg selv og andre bedre.
 
 ## Fagets relevans
 
-<!-- Innhold legges til senere -->
+Psykologi 2 er et verdifullt grunnlag for studier innen helse, samfunn og atferdsfag. Faget er særlig relevant dersom du vurderer profesjonsstudiet i psykologi, som er en seksårig utdanning med klinisk praksis. Andre aktuelle studieretninger inkluderer sykepleie, helsesykepleie, sosialt arbeid, pedagogikk og medisin.
+
+Kompetansen du tilegner deg er etterspurt i mange yrker: psykologer arbeider med behandling og forebyggende helsearbeid ved sykehus, i kommunehelsetjenesten eller i privat praksis. Helsesykepleiere veileder barn og unge om psykisk helse og utvikling. Andre relevante yrker er rådgiver, sosionom, lærer, personalarbeider og coach.
 
 ## Kompetansemål
 

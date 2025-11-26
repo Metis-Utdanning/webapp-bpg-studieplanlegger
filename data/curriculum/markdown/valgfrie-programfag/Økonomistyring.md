@@ -18,11 +18,11 @@ Næringslivsøkonomi handler om økonomisk styring og ledelse av virksomheter. F
 
 ## Hvordan arbeider man i faget
 
-<!-- Innhold legges til senere -->
+Faget kombinerer teori med praktisk oppgaveløsning. Arbeidet er i stor grad databasert, og du lærer å bruke regneark og økonomiske modeller som verktøy for analyse og beregning. Fokus ligger på å tolke og forklare resultatene, ikke å pugge formler. Undervisningen veksler mellom individuelt arbeid, samarbeid i grupper og diskusjoner rundt reelle case fra næringslivet.
 
 ## Fagets relevans
 
-<!-- Innhold legges til senere -->
+Økonomistyring gir deg innsikt i hvordan virksomheter styres og hvordan økonomiske beslutninger tas. Du lærer å lese og analysere regnskap, utarbeide budsjetter og vurdere lønnsomhet - kompetanse som er verdifull både i videre studier innen økonomi og i arbeidslivet. Faget passer for deg som er nysgjerrig på hvordan bedrifter fungerer, og som liker å arbeide systematisk med tall og modeller.
 
 ## Kompetansemål
 

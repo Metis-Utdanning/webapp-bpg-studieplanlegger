@@ -17,11 +17,11 @@ Historie og filosofi handler om å utvikle selvstendig filosofisk tenkning og fo
 
 ## Hvordan arbeider man i faget
 
-<!-- Innhold legges til senere -->
+Den filosofiske samtalen er fagets kjerne. Elevene trener på å formulere egne standpunkter, lytte til motargumenter og vurdere argumenters gyldighet. Arbeidet veksler mellom muntlige diskusjoner, tekstanalyse og skriftlige refleksjoner. Kildene spenner fra antikke filosofiske tekster til moderne samfunnsdebatt, og fra kunsthistoriske verk til vitenskapelige gjennombrudd. Elevene lærer å stille presise spørsmål, identifisere skjulte premisser og bygge begrunnede resonnementer.
 
 ## Fagets relevans
 
-<!-- Innhold legges til senere -->
+Historie og filosofi gir verktøy for å forstå hvordan idéer former samfunn og hvordan fortiden preger nåtiden. Faget utvikler evnen til kritisk lesning, presis argumentasjon og refleksjon over grunnleggende spørsmål om kunnskap, makt og verdier. Dette er ferdigheter som er verdifulle i videre studier innen humaniora, samfunnsvitenskap, jus og medisin, men også i yrker som krever analytisk tenkning og evne til å se saker fra flere perspektiver. Faget passer for elever som ønsker å utforske hvordan vestlig tenkning har utviklet seg fra antikken til i dag, og som er motivert for å delta aktivt i faglige samtaler.
 
 ## Kompetansemål
 

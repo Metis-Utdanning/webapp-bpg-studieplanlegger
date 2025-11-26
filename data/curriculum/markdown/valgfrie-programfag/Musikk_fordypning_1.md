@@ -18,11 +18,11 @@ Musikk fordypning handler om å fordype seg i skapende prosesser ved å utvikle 
 
 ## Hvordan arbeider man i faget
 
-<!-- Innhold legges til senere -->
+Undervisningen kombinerer teori og praktisk arbeid. Du lærer arrangeringsteknikker og komponering gjennom prosjekter der du skaper egen musikk og fremfører den for medelever. Notasjonsprogrammet Sibelius brukes til å skrive og redigere noter digitalt. En vesentlig del av faget er gehørtrening, der du øver på prima vista-lesing (notelesing fra bladet), rytmetrening og melodisk diktat - det vil si å lytte til musikk og skrive ned det du hører. Du arbeider både individuelt og i samarbeid med andre, og får erfaring med å gi og motta konstruktiv respons på kreativt arbeid.
 
 ## Fagets relevans
 
-<!-- Innhold legges til senere -->
+Faget passer for deg som har interesse for musikk og behersker grunnleggende notelære og musikkteori. Faget bygger videre på Musikk 1 (vg1-nivå), og denne eller tilsvarende bakgrunn anbefales. Musikk fordypning 1 er særlig relevant hvis du vurderer høyere utdanning innen utøvende musikk, musikkproduksjon eller musikkvitenskap, der opptaksprøver ofte inkluderer teori og gehør. Faget gir deg også et solid grunnlag for å jobbe med arrangering, komponering eller musikkformidling i kulturlivet.
 
 ## Kompetansemål
 

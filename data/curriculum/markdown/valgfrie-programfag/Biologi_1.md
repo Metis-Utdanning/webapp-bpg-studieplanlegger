@@ -18,11 +18,15 @@ Biologi handler om livet på jorden og om sammenhenger mellom biologisk mangfold
 
 ## Hvordan arbeider man i faget
 
-<!-- Innhold legges til senere -->
+Biologi kombinerer teori med praktisk arbeid. Undervisningen veksler mellom forelesninger, gruppearbeid og laboratorieaktiviteter. Du lærer å bruke mikroskop for å studere celler, dissekere organer for å forstå anatomi, og gjennomføre forsøk der du måler og analyserer fysiologiske prosesser. Ekskursjoner gir deg erfaring med feltarbeid og kartlegging av økosystemer. Visuell fremstilling er sentralt i faget: du lager skjematiske tegninger av celler, grafiske fremstillinger av biologiske prosesser, og skisser av strukturer i vev og organer. Gjennom varierte arbeidsmetoder utvikler du ferdigheter i naturvitenskapelig tenkning og utforskning.
 
 ## Fagets relevans
 
-<!-- Innhold legges til senere -->
+Biologi 1 gir deg innsikt i hvordan levende organismer fungerer, fra cellenivået til hele økosystemer. Du lærer om menneskekroppens fysiologi, sykdomsmekanismer og samspillet mellom arter og miljø. Faget er relevant for deg som interesserer deg for helse, natur eller miljøspørsmål.
+
+Biologi 1 er et godt grunnlag for videre studier innen medisin, sykepleie, odontologi, veterinærmedisin, ernæringsfysiologi og biologiske fag. Selv om faget ikke er opptakskrav til norske studier, kan det være det ved enkelte utenlandske universiteter. Faget gir realfagspoeng.
+
+Du bør trives med å lese fagtekster og lære nye begreper. Evne til å lage enkle skisser er nyttig, men du trenger ikke være flink til å tegne. Likte du økologi, fordøyelse og arv i naturfag, vil du sannsynligvis trives med biologi.
 
 ## Kompetansemål
 

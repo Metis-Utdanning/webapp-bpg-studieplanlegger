@@ -17,11 +17,15 @@ Politikk og menneskerettigheter handler om hvordan vårt eget og andre samfunn b
 
 ## Hvordan arbeider man i faget
 
-<!-- Innhold legges til senere -->
+I politikk og menneskerettigheter jobber du mye med å analysere dagsaktuelle saker og politiske problemstillinger. Du lærer å bruke statsvitenskapelige teorier og modeller for å forstå hvordan makt fungerer og hvordan politiske beslutninger tas. Faget kombinerer teori med praktiske arbeidsformer som gruppearbeid, diskusjoner og prosjektarbeid.
+
+En sentral del av faget er langtidsoppgaven, der du fordyper deg i et tema over lengre tid og presenterer arbeidet både skriftlig og muntlig. Du vil også jobbe med akademisk skriving og kildebruk, og lære å vurdere informasjon kritisk. Ekskursjoner til Stortinget, rettssaler eller organisasjoner kan være en del av undervisningen.
 
 ## Fagets relevans
 
-<!-- Innhold legges til senere -->
+Faget gir et solid grunnlag for studier innen statsvitenskap, jus, journalistikk, sosiologi og internasjonale relasjoner. Du utvikler ferdigheter i analyse, argumentasjon og akademisk skriving som er verdifulle på universitetet uansett studieretning.
+
+Yrker der denne kompetansen er relevant inkluderer politisk rådgiver, journalist, diplomat, saksbehandler i offentlig forvaltning, bistandsarbeider og forsker. Mange statsvitere jobber i departementer, kommuner, humanitære organisasjoner eller internasjonale organisasjoner som FN og EU. Faget passer for deg som er nysgjerrig på samfunnet og vil forstå hvordan politiske beslutninger påvirker hverdagen vår.
 
 ## Kompetansemål
 

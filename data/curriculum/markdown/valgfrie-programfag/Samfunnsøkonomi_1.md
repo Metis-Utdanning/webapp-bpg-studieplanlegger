@@ -17,11 +17,11 @@ Samfunnsøkonomi handler om å forstå det økonomiske samspillet mellom ulike a
 
 ## Hvordan arbeider man i faget
 
-<!-- Innhold legges til senere -->
+I samfunnsøkonomi kobles teori til virkeligheten gjennom analyse av dagsaktuelle økonomiske problemstillinger. Arbeidet innebærer bruk av økonomiske modeller og grafiske fremstillinger, kildevurdering, og diskusjoner om økonomisk politikk. Elevene arbeider både selvstendig med faglige analyser og i grupper med drøftingsoppgaver. Faget legger vekt på å forstå sammenhenger mellom markeder, politiske beslutninger og samfunnsøkonomiske konsekvenser.
 
 ## Fagets relevans
 
-<!-- Innhold legges til senere -->
+Samfunnsøkonomi gir et solid grunnlag for høyere utdanning innen økonomi, statsvitenskap, jus og ledelse, både i Norge og internasjonalt. Faget er relevant for elever som ønsker å forstå hvordan økonomiske mekanismer påvirker samfunnet - fra renter og inflasjon til arbeidsmarked og global handel. Kompetansen er etterspurt i næringsliv, offentlig forvaltning og organisasjoner. Det kreves ingen forkunnskaper, og faget vektlegger forståelse av sammenhenger fremfor avansert tallbehandling.
 
 ## Kompetansemål
 

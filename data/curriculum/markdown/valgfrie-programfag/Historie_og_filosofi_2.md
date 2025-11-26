@@ -17,11 +17,15 @@ Historie og filosofi handler om å utvikle selvstendig filosofisk tenkning og fo
 
 ## Hvordan arbeider man i faget
 
-<!-- Innhold legges til senere -->
+I Historie og filosofi 2 står den filosofiske samtalen sentralt. Du deltar i åpne diskusjoner der du utforsker egne oppfatninger, møter motargumenter og lærer å vurdere gyldigheten av ulike påstander. En viktig del av faget er å jobbe med originaltekster fra filosofer og historiske kilder, der du øver på å lese kritisk og forstå hvordan ulike perspektiver preger fremstillinger av virkeligheten.
+
+Faget kombinerer teoretisk fordypning med praktisk anvendelse. Du analyserer ideologier, økonomiske teorier og moderne fenomener som sosiale medier og desinformasjon. Gjennom prosjektarbeid og drøftingsoppgaver undersøker du hvordan historiske prosesser har formet dagens samfunn, og du reflekterer over store spørsmål om frihet, ansvar og det gode liv. Mye av arbeidet handler om å se sammenhenger mellom fortid og nåtid, og å utvikle din egen historiebevissthet.
 
 ## Fagets relevans
 
-<!-- Innhold legges til senere -->
+Historie og filosofi 2 gir deg ferdigheter som er etterspurt i mange yrker og studier. Du lærer å tenke kritisk, analysere kompleks informasjon og formidle innsikt på en klar måte. Dette er verdifullt i utdanninger som juss, statsvitenskap, journalistikk, historie, filosofi og andre samfunnsvitenskapelige fag. Faget er også relevant for deg som vurderer lærerutdanning eller studier i kultur og kommunikasjon.
+
+I arbeidslivet er ferdighetene fra faget nyttige i yrker som journalist, rådgiver, arkivar, kulturhistoriker, museum- og kulturformidler, eller i offentlig forvaltning. Evnen til å forstå sammenhenger, vurdere kilder kritisk og kommunisere tydelig er også viktig i mange andre bransjer, fra organisasjonsarbeid til politikk og næringsliv. Faget gir deg et solid grunnlag for å forstå samfunnet rundt deg og ta del i demokratiske prosesser som en reflektert medborger.
 
 ## Kompetansemål
 

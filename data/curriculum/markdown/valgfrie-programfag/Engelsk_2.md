@@ -18,11 +18,15 @@ Engelsk programfag handler om språk- og kommunikasjonsutvikling, og skal bidra 
 
 ## Hvordan arbeider man i faget
 
-<!-- Innhold legges til senere -->
+I Engelsk 2 jobber du mye med å analysere og diskutere engelskspråklige tekster, alt fra klassisk litteratur til moderne medier og politiske taler. Du lærer å tolke tekster i lys av historiske og kulturelle sammenhenger, og du trener på å uttrykke deg presist og nyansert både muntlig og skriftlig. Forvent debatter, presentasjoner og dypere tekstanalyser enn du er vant med fra fellesfaget.
+
+En viktig del av faget er å utforske hvordan engelskspråklige land har påvirket verden politisk, kulturelt og språklig. Du sammenligner samfunnsforhold i ulike land og graver deg ned i historiske sammenhenger. I tillegg jobber du med et selvvalgt fordypningsemne der du bruker engelskspråklige kilder kritisk og presenterer funnene dine for klassen.
 
 ## Fagets relevans
 
-<!-- Innhold legges til senere -->
+Avanserte engelskferdigheter er etterspurt i de fleste bransjer. Faget er særlig relevant hvis du sikter mot studier i språk, litteratur, statsvitenskap, jus eller kommunikasjon. Mange internasjonale studieprogram krever at du behersker akademisk engelsk på høyt nivå, og Engelsk 2 gir deg akkurat denne treningen.
+
+I arbeidslivet åpner gode engelskkunnskaper dører til yrker som diplomat, journalist, oversetter eller kommunikasjonsrådgiver. Også innen næringsliv, forskning og internasjonale organisasjoner er evnen til å kommunisere presist på engelsk en nøkkelkompetanse. Uansett hvilken retning du velger, vil fordypningen i engelsk gi deg et fortrinn i en stadig mer globalisert verden.
 
 ## Kompetansemål
 

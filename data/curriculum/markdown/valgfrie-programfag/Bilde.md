@@ -17,11 +17,11 @@ Faget bilde handler om å arbeide med visuell kommunikasjon og innholdsproduksjo
 
 ## Hvordan arbeider man i faget
 
-<!-- Innhold legges til senere -->
+Undervisningen kombinerer individuelt arbeid med samarbeidsprosjekter. Du starter med å bli kjent med kamerautstyr, lyssetting og bildebehandlingsprogrammer. Etter hvert arbeider du med større produksjoner der du utvikler idéer, planlegger gjennomføring og ferdigstiller produkter for ulike formater og kanaler. Gjennom hele prosessen får du veiledning og trening i å vurdere egne og andres arbeider med et kritisk blikk.
 
 ## Fagets relevans
 
-<!-- Innhold legges til senere -->
+Bilde passer for deg som vil utforske visuell kommunikasjon i praksis. Faget gir kompetanse som er etterspurt i bransjer som reklame, medieproduksjon, forlagsvirksomhet og sosiale medier. Det er også relevant forberedelse til høyere utdanning innen design, kommunikasjon, journalistikk eller kunst- og kulturfag. I tillegg utvikler du ferdigheter i å analysere hvordan bilder påvirker holdninger og meninger, noe som er verdifullt uansett hvilken retning du velger.
 
 ## Kompetansemål
 

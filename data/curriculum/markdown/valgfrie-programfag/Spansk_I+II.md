@@ -13,11 +13,15 @@ Spansk I+II er et sammenhengende fremmedspråkfag over tre år (VG1-VG3) for ele
 
 ## Hvordan arbeider man i faget
 
-<!-- Innhold legges til senere -->
+I spansk jobber du praktisk med språket fra første time. Du lærer å kommunisere muntlig og skriftlig gjennom samtaler, rollespill og presentasjoner. Undervisningen legger vekt på at du skal tørre å bruke språket aktivt, selv om du gjør feil underveis.
+
+Du utforsker også spansktalende kulturer gjennom film, musikk, nyheter og litteratur. Digitale verktøy og språkapper er en naturlig del av læringen, og du bruker ordbøker og oversettelsesverktøy som hjelpemidler. Gruppearbeid og parøvelser er vanlig, der dere øver på hverdagssituasjoner som å bestille mat, spørre om veien eller diskutere aktuelle temaer.
 
 ## Fagets relevans
 
-<!-- Innhold legges til senere -->
+Spansk er verdens fjerde mest talte språk, og språkkompetanse åpner dører i arbeidslivet. Med spansk kan du jobbe i internasjonale organisasjoner, næringsliv, reiseliv eller diplomati. Norge har økende forbindelser med spansktalende land, noe som gjør kompetansen verdifull i mange bransjer.
+
+Vil du studere videre, kan du bygge på med spansk på universitet eller høgskole. Kombinert med praktisk-pedagogisk utdanning kan du bli spansklærer, der etterspørselen er stor. Språkkunnskaper er også et fortrinn i yrker som journalist, oversetter, guide eller i bedrifter med internasjonalt samarbeid.
 
 ## Timefordeling
 

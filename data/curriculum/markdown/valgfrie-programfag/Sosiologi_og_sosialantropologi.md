@@ -18,11 +18,11 @@ Sosiologi og sosialantropologi handler om å gi elevene samfunnsvitenskapelig in
 
 ## Hvordan arbeider man i faget
 
-<!-- Innhold legges til senere -->
+I sosiologi og sosialantropologi kombineres teori med praktisk utforskning av samfunnet. Undervisningen veksler mellom forelesninger, diskusjoner og selvstendig arbeid med faglige problemstillinger. Elevene lærer å anvende samfunnsvitenskapelige metoder og analyseverktøy, blant annet gjennom egne undersøkelser der de samler inn og vurderer informasjon fra ulike kilder. Feltarbeid og observasjon i lokalmiljøet kan inngå som en del av arbeidet. Faget legger vekt på kritisk tenkning og evnen til å se sammenhenger mellom individ, kultur og samfunn.
 
 ## Fagets relevans
 
-<!-- Innhold legges til senere -->
+Sosiologi og sosialantropologi gir innsikt i hvordan samfunn er organisert, hvordan mennesker påvirkes av sosiale strukturer, og hvordan kultur former våre liv. Denne kunnskapen er verdifull for å forstå aktuelle samfunnsutfordringer som sosial ulikhet, kulturelt mangfold og teknologiske endringer. Faget utvikler analytiske ferdigheter og interkulturell kompetanse som er etterspurt i mange yrker, blant annet innen offentlig forvaltning, medier, bistandsarbeid og personalarbeid. For videre studier gir faget et solid grunnlag for universitetsutdanninger som statsvitenskap, sosiologi, sosialantropologi, psykologi og sammenliknende politikk.
 
 ## Kompetansemål
 

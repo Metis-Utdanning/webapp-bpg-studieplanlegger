@@ -18,11 +18,19 @@ Fysikk handler om å forstå den fysiske verden, fra de minste partiklene til he
 
 ## Hvordan arbeider man i faget
 
-<!-- Innhold legges til senere -->
+Fysikk 2 bygger videre på Fysikk 1 og tar deg dypere inn i den matematiske beskrivelsen av naturen. Du arbeider med klassisk fysikk som bevegelse i to dimensjoner og elektromagnetiske felt, men også moderne fysikk som relativitetsteori og kvantefysikk.
+
+En sentral del av faget er numerisk modellering og programmering. Du bruker matematiske verktøy og kode til å simulere fysiske fenomener som ikke lar seg løse analytisk. I laboratoriet planlegger og gjennomfører du forsøk der du analyserer data og beregner usikkerhet for å vurdere gyldigheten av resultatene dine.
+
+Faget krever evne til abstrakt tenkning og systematisk arbeid. Du lærer å koble teori og eksperiment, og får mulighet til å fordype deg i en selvvalgt problemstilling.
 
 ## Fagets relevans
 
-<!-- Innhold legges til senere -->
+Fysikk 2 er grunnmuren for tekniske og naturvitenskapelige studier. Faget er ofte et opptakskrav til sivilingeniørutdanninger innen elektronikk, maskin, bygg og energi. Det gir også et solid fundament for universitetsstudier i fysikk, astrofysikk, geofysikk og materialvitenskap.
+
+Som fysiker eller ingeniør kan du jobbe med alt fra utvikling av medisinsk teknologi og miljøovervåkning til forskning på partikkelfysikk eller fornybar energi. Arbeidsmarkedet spenner fra teknologiselskaper og konsulentfirmaer til forskningsinstitusjoner og offentlig forvaltning.
+
+Faget trener deg i problemløsning, analytisk tenkning og matematisk modellering - ferdigheter som er etterspurt i et arbeidsliv preget av teknologisk utvikling og komplekse utfordringer.
 
 ## Kompetansemål
 
