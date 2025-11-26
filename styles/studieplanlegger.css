@@ -1567,6 +1567,19 @@
   background: rgba(232, 245, 163, 0.5);
 }
 
+#programfag-modal .accordion .accordion-header:focus,
+#programfag-modal .accordion .accordion-header:focus-visible {
+  outline: 2px solid var(--primary-color);
+  outline-offset: -2px;
+  border-radius: 10px 10px 0 0;  /* Matcher .accordion sin 12px minus 2px for outline-offset */
+}
+
+/* Fokus-styling for lukket accordion - avrundede hjørner hele veien rundt */
+#programfag-modal .accordion:not(.open) .accordion-header:focus,
+#programfag-modal .accordion:not(.open) .accordion-header:focus-visible {
+  border-radius: 10px;  /* Matcher .accordion sin 12px minus 2px for outline-offset */
+}
+
 #programfag-modal .accordion-header h3 {
   margin: 0;
   padding: 0;
@@ -1650,9 +1663,17 @@
   background: rgba(232, 245, 163, 0.5);
 }
 
-#programfag-modal .fag-accordion .accordion-header:focus {
+#programfag-modal .fag-accordion .accordion-header:focus,
+#programfag-modal .fag-accordion .accordion-header:focus-visible {
   outline: 2px solid var(--primary-color);
   outline-offset: -2px;
+  border-radius: 10px 10px 0 0;  /* Matcher .fag-accordion sin 12px minus 2px for outline-offset */
+}
+
+/* Fokus-styling for lukket accordion - avrundede hjørner hele veien rundt */
+#programfag-modal .fag-accordion:not(.open) .accordion-header:focus,
+#programfag-modal .fag-accordion:not(.open) .accordion-header:focus-visible {
+  border-radius: 10px;  /* Matcher .fag-accordion sin 12px minus 2px for outline-offset */
 }
 
 #programfag-modal .fag-accordion .accordion-header h3 {
