@@ -114,7 +114,15 @@ function loadCurriculumData() {
   // Combine all for lookups
   const allFag = [...valgfrieProgramfag, ...obligatoriskeProgramfag, ...fellesfag];
 
-  // Build læreplan mapping for related subjects
+  // Create id->title lookup
+  const idToTitle = new Map();
+  allFag.forEach(fag => {
+    if (fag.id && fag.title) {
+      idToTitle.set(fag.id, fag.title);
+    }
+  });
+
+  // Build læreplan mapping for related subjects (same læreplan = same subject series)
   const lareplanMapping = new Map();
   allFag.forEach(fag => {
     if (fag.lareplan) {
@@ -125,14 +133,47 @@ function loadCurriculumData() {
     }
   });
 
-  // Add related subjects
+  // Load fagomrader from regler.yml for additional "related" groupings
+  const reglerPath = path.join(CURRICULUM_DIR, 'regler.yml');
+  const regler = loadYAML(reglerPath);
+  const fagomradeMapping = new Map(); // fag-id -> [related titles]
+
+  if (regler && regler.fagomrader) {
+    Object.values(regler.fagomrader).forEach(fagomrade => {
+      if (fagomrade.fag && Array.isArray(fagomrade.fag)) {
+        // For each fag in this fagområde, map to all OTHER fag titles in same område
+        fagomrade.fag.forEach(fagId => {
+          const relatedTitles = fagomrade.fag
+            .filter(otherId => otherId !== fagId)
+            .map(otherId => idToTitle.get(otherId))
+            .filter(Boolean); // Remove undefined
+
+          if (relatedTitles.length > 0) {
+            fagomradeMapping.set(fagId, relatedTitles);
+          }
+        });
+      }
+    });
+  }
+
+  // Add related subjects (combine læreplan + fagområde sources)
   allFag.forEach(fag => {
+    const relatedSet = new Set();
+
+    // Source 1: Same læreplan code (e.g., Fysikk 1 + Fysikk 2)
     if (fag.lareplan && lareplanMapping.has(fag.lareplan)) {
-      const related = lareplanMapping.get(fag.lareplan).filter(title => title !== fag.title);
-      fag.related = related.length > 0 ? related : [];
-    } else {
-      fag.related = [];
+      lareplanMapping.get(fag.lareplan)
+        .filter(title => title !== fag.title)
+        .forEach(title => relatedSet.add(title));
     }
+
+    // Source 2: Same fagområde from regler.yml (e.g., Sosiologi + Politikk + Sosialkunnskap)
+    if (fag.id && fagomradeMapping.has(fag.id)) {
+      fagomradeMapping.get(fag.id)
+        .forEach(title => relatedSet.add(title));
+    }
+
+    fag.related = Array.from(relatedSet);
   });
 
   return { valgfrieProgramfag, obligatoriskeProgramfag, fellesfag, allFag };
