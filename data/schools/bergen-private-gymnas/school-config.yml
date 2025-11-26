@@ -66,12 +66,14 @@ blokkskjema:
   # Tilgjengelige versjoner og deres filer
   # Legg til nye versjoner her for å gjøre dem tilgjengelige for runtime-veksling
   versions:
-    v2: "blokkskjema_v2.yml"     # Gjeldende versjon basert på faktisk fagtilbud
-    test: "blokkskjema_test.yml" # Test-versjon med færre fag (uten rettslære, psykologi, entreprenørskap, markedsføring)
+    v2: "blokkskjema_v2.yml"           # Gjeldende versjon basert på faktisk fagtilbud
+    test: "blokkskjema_test.yml"       # Test-versjon med færre fag
+    vanilla: "blokkskjema_vanilla.yml" # 25-26 med Historie i alle blokker + trinnfleksibilitet
 
   # Versjonsbeskrivelser (for dokumentasjon)
   descriptions:
     v2: "Gjeldende versjon - Faktisk fagtilbud fra bilde med eksplisitt programtilgang og timer"
+    vanilla: "Basert på 25-26 med Historie i alle blokker og trinnfleksibilitet for fag uten forutsetning"
 
   # Dokumentasjon for versjonsstyring
   documentation: |

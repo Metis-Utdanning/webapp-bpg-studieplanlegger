@@ -1,0 +1,702 @@
+# Bergen Private Gymnas - Blokkskjema Vanilla
+# Sist oppdatert: 2025-11-26
+# Basert på skoleåret 25-26, med Historie lagt til i alle blokker
+#
+# VIKTIGE PRINSIPPER:
+# - Fag uten forutsetningskrav kan velges av både VG2 og VG3
+# - Fag som "bygger på" (Fysikk 2, Kjemi 2, M&L 2, R2, S2, Engelsk 2) kun VG3
+# - Historie er obligatorisk VG3 og ligger i alle blokker
+# - Spansk I+II er betinget obligatorisk for elever uten fremmedspråk
+
+school: bergen-private-gymnas
+versjon: "vanilla"
+
+# ========================================
+# STRUKTUR
+# ========================================
+struktur:
+  antallBlokker: 4
+  navnBlokker:
+    - "Blokk 1"
+    - "Blokk 2"
+    - "Blokk 3"
+    - "Blokk 4"
+
+# ========================================
+# BLOKKER - VALGFRIE PROGRAMFAG
+# ========================================
+blokker:
+  # =====================================
+  # BLOKK 1
+  # VG2: Alle (Stud, Musikk, MK)
+  # VG3: Kun Studiespesialisering
+  # =====================================
+  blokk1:
+    navn: "Blokk 1"
+    beskrivelse: "Matematikk"
+    tilgjengeligFor:
+      vg2: ["studiespesialisering", "musikk-dans-drama", "medier-kommunikasjon"]
+      vg3: ["studiespesialisering"]
+
+    fag:
+      # ===== MATEMATIKK (kun relevant trinn) =====
+      - id: matematikk-2p
+        timer: 84
+        trinn: vg2
+        tilgjengeligFor: ["studiespesialisering", "musikk-dans-drama", "medier-kommunikasjon"]
+        merknad: "Fellesfag som kan erstattes av R1 eller S1"
+
+      - id: matematikk-r1
+        timer: 140
+        trinn: vg2
+        tilgjengeligFor: ["studiespesialisering", "musikk-dans-drama", "medier-kommunikasjon"]
+        merknad: "Erstatter Matematikk 2P hvis valgt"
+
+      - id: matematikk-s1
+        timer: 140
+        trinn: vg2
+        tilgjengeligFor: ["studiespesialisering", "musikk-dans-drama", "medier-kommunikasjon"]
+        merknad: "Erstatter Matematikk 2P hvis valgt"
+
+      - id: matematikk-r2
+        timer: 140
+        trinn: vg3
+        tilgjengeligFor: ["studiespesialisering"]
+        krever: ["matematikk-r1"]
+
+      - id: matematikk-s2
+        timer: 140
+        trinn: vg3
+        tilgjengeligFor: ["studiespesialisering"]
+        krever: ["matematikk-s1"]
+
+      # ===== HISTORIE (obligatorisk VG3) =====
+      - id: historie-vg3
+        timer: 113
+        trinn: vg3
+        tilgjengeligFor: ["studiespesialisering"]
+        obligatorisk: true
+        merknad: "OBLIGATORISK for alle VG3"
+
+  # =====================================
+  # BLOKK 2
+  # VG2: Kun Studiespesialisering
+  # VG3: Studiespesialisering, Musikk, MK
+  # =====================================
+  blokk2:
+    navn: "Blokk 2"
+    beskrivelse: "Realfag, Økonomi, Samfunnsfag, Språk"
+    tilgjengeligFor:
+      vg2: ["studiespesialisering"]
+      vg3: ["studiespesialisering", "musikk-dans-drama", "medier-kommunikasjon"]
+
+    fag:
+      # ===== FAG UTEN FORUTSETNING (VG2 + VG3) =====
+      - id: kjemi-1
+        timer: 140
+        trinn: vg2
+        tilgjengeligFor: ["studiespesialisering"]
+
+      - id: kjemi-1
+        timer: 140
+        trinn: vg3
+        tilgjengeligFor: ["studiespesialisering", "musikk-dans-drama", "medier-kommunikasjon"]
+        merknad: "Kan tas i VG3 hvis ikke tatt i VG2"
+
+      - id: okonomistyring
+        timer: 140
+        trinn: vg2
+        tilgjengeligFor: ["studiespesialisering"]
+
+      - id: okonomistyring
+        timer: 140
+        trinn: vg3
+        tilgjengeligFor: ["studiespesialisering", "musikk-dans-drama", "medier-kommunikasjon"]
+        merknad: "Kan tas i VG3 hvis ikke tatt i VG2"
+
+      - id: rettslaere-1
+        timer: 140
+        trinn: vg2
+        tilgjengeligFor: ["studiespesialisering"]
+
+      - id: rettslaere-1
+        timer: 140
+        trinn: vg3
+        tilgjengeligFor: ["studiespesialisering", "musikk-dans-drama", "medier-kommunikasjon"]
+        merknad: "Kan tas i VG3 hvis ikke tatt i VG2"
+
+      - id: engelsk-1
+        timer: 140
+        trinn: vg2
+        tilgjengeligFor: ["studiespesialisering"]
+
+      - id: engelsk-1
+        timer: 140
+        trinn: vg3
+        tilgjengeligFor: ["studiespesialisering", "musikk-dans-drama", "medier-kommunikasjon"]
+        merknad: "Kan tas i VG3 hvis ikke tatt i VG2"
+
+      - id: psykologi-2
+        timer: 140
+        trinn: vg2
+        tilgjengeligFor: ["studiespesialisering"]
+        merknad: "Bygger ikke på Psykologi 1"
+
+      - id: psykologi-2
+        timer: 140
+        trinn: vg3
+        tilgjengeligFor: ["studiespesialisering", "musikk-dans-drama", "medier-kommunikasjon"]
+        merknad: "Bygger ikke på Psykologi 1"
+
+      - id: entreprenorskap-og-bedriftsutvikling-2
+        timer: 140
+        trinn: vg2
+        tilgjengeligFor: ["studiespesialisering"]
+        merknad: "Bygger ikke på Entreprenørskap 1"
+
+      - id: entreprenorskap-og-bedriftsutvikling-2
+        timer: 140
+        trinn: vg3
+        tilgjengeligFor: ["studiespesialisering", "musikk-dans-drama", "medier-kommunikasjon"]
+        merknad: "Bygger ikke på Entreprenørskap 1"
+
+      - id: grafisk-design
+        timer: 140
+        trinn: vg2
+        tilgjengeligFor: ["studiespesialisering"]
+
+      - id: grafisk-design
+        timer: 140
+        trinn: vg3
+        tilgjengeligFor: ["studiespesialisering", "musikk-dans-drama", "medier-kommunikasjon"]
+        merknad: "Kan tas i VG3 hvis ikke tatt i VG2"
+
+      - id: musikk-fordypning-2
+        timer: 140
+        trinn: vg2
+        tilgjengeligFor: ["studiespesialisering"]
+        merknad: "Bygger ikke på Musikk fordypning 1"
+
+      - id: musikk-fordypning-2
+        timer: 140
+        trinn: vg3
+        tilgjengeligFor: ["studiespesialisering", "musikk-dans-drama", "medier-kommunikasjon"]
+        merknad: "Bygger ikke på Musikk fordypning 1"
+
+      # ===== FAG MED FORUTSETNING (kun VG3) =====
+      - id: fysikk-2
+        timer: 140
+        trinn: vg3
+        tilgjengeligFor: ["studiespesialisering", "musikk-dans-drama", "medier-kommunikasjon"]
+        krever: ["fysikk-1"]
+
+      # ===== SPANSK I+II (betinget obligatorisk, kun VG3) =====
+      - id: spansk-i-ii
+        fagkode: FSP6237
+        timer: 140
+        trinn: vg3
+        tilgjengeligFor: ["studiespesialisering", "musikk-dans-drama", "medier-kommunikasjon"]
+        merknad: "BETINGET OBLIGATORISK for elever uten fremmedspråk fra ungdomsskolen"
+        betingetObligatorisk: true
+        betingelse: "Elev har ikke hatt fremmedspråk på ungdomstrinnet"
+
+      # ===== HISTORIE (obligatorisk VG3) =====
+      - id: historie-vg3
+        timer: 113
+        trinn: vg3
+        tilgjengeligFor: ["studiespesialisering", "musikk-dans-drama", "medier-kommunikasjon"]
+        obligatorisk: true
+        merknad: "OBLIGATORISK for alle VG3"
+
+  # =====================================
+  # BLOKK 3
+  # VG2: Studiespesialisering, Musikk, MK
+  # VG3: Studiespesialisering, MK
+  # =====================================
+  blokk3:
+    navn: "Blokk 3"
+    beskrivelse: "Realfag, Bedriftsledelse, Samfunnsfag, Musikk"
+    tilgjengeligFor:
+      vg2: ["studiespesialisering", "musikk-dans-drama", "medier-kommunikasjon"]
+      vg3: ["studiespesialisering", "medier-kommunikasjon"]
+
+    fag:
+      # ===== FAG UTEN FORUTSETNING (VG2 + VG3) =====
+      - id: fysikk-1
+        timer: 140
+        trinn: vg2
+        tilgjengeligFor: ["studiespesialisering", "musikk-dans-drama", "medier-kommunikasjon"]
+
+      - id: fysikk-1
+        timer: 140
+        trinn: vg3
+        tilgjengeligFor: ["studiespesialisering", "medier-kommunikasjon"]
+        merknad: "Kan tas i VG3 hvis ikke tatt i VG2"
+
+      - id: psykologi-1
+        timer: 140
+        trinn: vg2
+        tilgjengeligFor: ["studiespesialisering", "musikk-dans-drama", "medier-kommunikasjon"]
+
+      - id: psykologi-1
+        timer: 140
+        trinn: vg3
+        tilgjengeligFor: ["studiespesialisering", "medier-kommunikasjon"]
+        merknad: "Kan tas i VG3 hvis ikke tatt i VG2"
+
+      - id: entreprenorskap-og-bedriftsutvikling-1
+        timer: 140
+        trinn: vg2
+        tilgjengeligFor: ["studiespesialisering", "musikk-dans-drama", "medier-kommunikasjon"]
+
+      - id: entreprenorskap-og-bedriftsutvikling-1
+        timer: 140
+        trinn: vg3
+        tilgjengeligFor: ["studiespesialisering", "medier-kommunikasjon"]
+        merknad: "Kan tas i VG3 hvis ikke tatt i VG2"
+
+      - id: bilde
+        timer: 140
+        trinn: vg2
+        tilgjengeligFor: ["studiespesialisering", "musikk-dans-drama", "medier-kommunikasjon"]
+
+      - id: bilde
+        timer: 140
+        trinn: vg3
+        tilgjengeligFor: ["studiespesialisering", "medier-kommunikasjon"]
+        merknad: "Kan tas i VG3 hvis ikke tatt i VG2"
+
+      - id: musikk-fordypning-1
+        timer: 140
+        trinn: vg2
+        tilgjengeligFor: ["studiespesialisering", "musikk-dans-drama", "medier-kommunikasjon"]
+
+      - id: musikk-fordypning-1
+        timer: 140
+        trinn: vg3
+        tilgjengeligFor: ["studiespesialisering", "medier-kommunikasjon"]
+        merknad: "Kan tas i VG3 hvis ikke tatt i VG2"
+
+      - id: biologi-2
+        timer: 140
+        trinn: vg2
+        tilgjengeligFor: ["studiespesialisering", "musikk-dans-drama", "medier-kommunikasjon"]
+        merknad: "Bygger ikke på Biologi 1"
+
+      - id: biologi-2
+        timer: 140
+        trinn: vg3
+        tilgjengeligFor: ["studiespesialisering", "medier-kommunikasjon"]
+        merknad: "Bygger ikke på Biologi 1"
+
+      - id: sosialkunnskap
+        timer: 140
+        trinn: vg2
+        tilgjengeligFor: ["studiespesialisering", "musikk-dans-drama", "medier-kommunikasjon"]
+
+      - id: sosialkunnskap
+        timer: 140
+        trinn: vg3
+        tilgjengeligFor: ["studiespesialisering", "medier-kommunikasjon"]
+        merknad: "Kan tas i VG3 hvis ikke tatt i VG2"
+
+      - id: politikk-og-menneskerettigheter
+        timer: 140
+        trinn: vg2
+        tilgjengeligFor: ["studiespesialisering", "musikk-dans-drama", "medier-kommunikasjon"]
+
+      - id: politikk-og-menneskerettigheter
+        timer: 140
+        trinn: vg3
+        tilgjengeligFor: ["studiespesialisering", "medier-kommunikasjon"]
+        merknad: "Kan tas i VG3 hvis ikke tatt i VG2"
+
+      # ===== FAG MED FORUTSETNING (kun VG3) =====
+      - id: markedsforing-og-ledelse-2
+        timer: 140
+        trinn: vg3
+        tilgjengeligFor: ["studiespesialisering", "medier-kommunikasjon"]
+        krever: ["markedsforing-og-ledelse-1"]
+
+      # ===== HISTORIE (obligatorisk VG3) =====
+      - id: historie-vg3
+        timer: 113
+        trinn: vg3
+        tilgjengeligFor: ["studiespesialisering", "medier-kommunikasjon"]
+        obligatorisk: true
+        merknad: "OBLIGATORISK for alle VG3"
+
+  # =====================================
+  # BLOKK 4
+  # VG2: Kun Studiespesialisering
+  # VG3: Studiespesialisering, Musikk, MK
+  # =====================================
+  blokk4:
+    navn: "Blokk 4"
+    beskrivelse: "Realfag, Økonomi, Samfunnsfag"
+    tilgjengeligFor:
+      vg2: ["studiespesialisering"]
+      vg3: ["studiespesialisering", "musikk-dans-drama", "medier-kommunikasjon"]
+
+    fag:
+      # ===== FAG UTEN FORUTSETNING (VG2 + VG3) =====
+      - id: biologi-1
+        timer: 140
+        trinn: vg2
+        tilgjengeligFor: ["studiespesialisering"]
+
+      - id: biologi-1
+        timer: 140
+        trinn: vg3
+        tilgjengeligFor: ["studiespesialisering", "musikk-dans-drama", "medier-kommunikasjon"]
+        merknad: "Kan tas i VG3 hvis ikke tatt i VG2"
+
+      - id: sosiologi-og-sosialantropologi
+        timer: 140
+        trinn: vg2
+        tilgjengeligFor: ["studiespesialisering"]
+
+      - id: sosiologi-og-sosialantropologi
+        timer: 140
+        trinn: vg3
+        tilgjengeligFor: ["studiespesialisering", "musikk-dans-drama", "medier-kommunikasjon"]
+        merknad: "Kan tas i VG3 hvis ikke tatt i VG2"
+
+      - id: markedsforing-og-ledelse-1
+        timer: 140
+        trinn: vg2
+        tilgjengeligFor: ["studiespesialisering"]
+
+      - id: markedsforing-og-ledelse-1
+        timer: 140
+        trinn: vg3
+        tilgjengeligFor: ["studiespesialisering", "musikk-dans-drama", "medier-kommunikasjon"]
+        merknad: "Kan tas i VG3 hvis ikke tatt i VG2"
+
+      - id: okonomi-og-ledelse
+        timer: 140
+        trinn: vg2
+        tilgjengeligFor: ["studiespesialisering"]
+
+      - id: okonomi-og-ledelse
+        timer: 140
+        trinn: vg3
+        tilgjengeligFor: ["studiespesialisering", "musikk-dans-drama", "medier-kommunikasjon"]
+        merknad: "Kan tas i VG3 hvis ikke tatt i VG2"
+
+      - id: rettslaere-2
+        timer: 140
+        trinn: vg2
+        tilgjengeligFor: ["studiespesialisering"]
+        merknad: "Bygger ikke på Rettslære 1"
+
+      - id: rettslaere-2
+        timer: 140
+        trinn: vg3
+        tilgjengeligFor: ["studiespesialisering", "musikk-dans-drama", "medier-kommunikasjon"]
+        merknad: "Bygger ikke på Rettslære 1"
+
+      # ===== FAG MED FORUTSETNING (kun VG3) =====
+      - id: kjemi-2
+        timer: 140
+        trinn: vg3
+        tilgjengeligFor: ["studiespesialisering", "musikk-dans-drama", "medier-kommunikasjon"]
+        krever: ["kjemi-1"]
+
+      # ===== HISTORIE (obligatorisk VG3) =====
+      - id: historie-vg3
+        timer: 113
+        trinn: vg3
+        tilgjengeligFor: ["studiespesialisering", "musikk-dans-drama", "medier-kommunikasjon"]
+        obligatorisk: true
+        merknad: "OBLIGATORISK for alle VG3"
+
+# ========================================
+# VALGREGLER PER PROGRAMOMRÅDE
+# ========================================
+valgregler:
+  # =====================================
+  # STUDIESPESIALISERING
+  # =====================================
+  studiespesialisering:
+    vg2:
+      beskrivelse: "VG2 Studiespesialisering: Velg 3 programfag + matematikk"
+      tilgjengeligeBlokker: ["blokk1", "blokk2", "blokk3", "blokk4"]
+      minAntallFag: 3
+      maxAntallFag: 3
+
+      krav:
+        - type: "minimum-timer-uten-matte"
+          timer: 420
+          beskrivelse: "Totalt 420 timer programfag (ikke medregnet matematikk)"
+          feilmelding: "Du må velge 3 programfag (420 timer) i tillegg til matematikk"
+
+        - type: "matematikk-obligatorisk"
+          beskrivelse: "Du MÅ velge enten Matematikk 2P, R1 eller S1"
+          feilmelding: "Du må velge matematikk: enten 2P, R1 eller S1"
+          valg:
+            - id: "matematikk-2p"
+              timer: 84
+              type: "fellesfag"
+            - id: "matematikk-r1"
+              timer: 140
+              type: "programfag"
+              erstatter: "matematikk-2p"
+            - id: "matematikk-s1"
+              timer: 140
+              type: "programfag"
+              erstatter: "matematikk-2p"
+
+      infomeldinger:
+        - "Velg 3 programfag (420 timer) + matematikk"
+        - "Matematikk: Velg enten 2P (84t), R1 (140t) eller S1 (140t)"
+        - "Du bør planlegge for fordypning (to fag fra samme fagområde)"
+
+    vg3:
+      beskrivelse: "VG3 Studiespesialisering: Velg 3 programfag + Historie (4 fag totalt)"
+      tilgjengeligeBlokker: ["blokk1", "blokk2", "blokk3", "blokk4"]
+      minAntallFag: 4
+      maxAntallFag: 4
+
+      krav:
+        - type: "minimum-timer"
+          timer: 420
+          beskrivelse: "Totalt 420 timer programfag"
+
+        - type: "obligatorisk-fag"
+          fagId: "historie-vg3"
+          beskrivelse: "Historie VG3 er obligatorisk"
+          feilmelding: "Du må velge Historie VG3"
+
+        - type: "fordypning-krav"
+          beskrivelse: "Du må ha fordypning i to fagområder"
+          minimer: 280
+          fagtype: "fordypning-niva-2"
+
+        - type: "spansk-betinget"
+          fagId: "spansk-i-ii"
+          betingelse: "Elev har ikke hatt fremmedspråk på ungdomstrinnet"
+
+      infomeldinger:
+        - "Velg 3 programfag + Historie (obligatorisk)"
+        - "Du må ha fordypning: 2 fagområder med nivå 1+2"
+        - "Hvis du ikke hadde fremmedspråk på ungdomsskolen, må du velge Spansk I+II"
+
+  # =====================================
+  # MUSIKK, DANS OG DRAMA
+  # =====================================
+  musikk-dans-drama:
+    vg2:
+      beskrivelse: "VG2 Musikk: Velg 1 valgfritt programfag + matematikk"
+      tilgjengeligeBlokker: ["blokk1", "blokk3"]
+      minAntallFag: 1
+      maxAntallFag: 1
+
+      krav:
+        - type: "minimum-timer-uten-matte"
+          timer: 140
+          beskrivelse: "Totalt 140 timer valgfritt programfag"
+          feilmelding: "Du må velge 1 valgfritt programfag (140 timer)"
+
+        - type: "matematikk-obligatorisk"
+          beskrivelse: "Du MÅ velge enten Matematikk 2P, R1 eller S1"
+          feilmelding: "Du må velge matematikk"
+          valg:
+            - id: "matematikk-2p"
+              timer: 84
+              type: "fellesfag"
+            - id: "matematikk-r1"
+              timer: 140
+              type: "programfag"
+              erstatter: "matematikk-2p"
+            - id: "matematikk-s1"
+              timer: 140
+              type: "programfag"
+              erstatter: "matematikk-2p"
+
+      infomeldinger:
+        - "Velg 1 valgfritt programfag (140 timer) + matematikk"
+
+    vg3:
+      beskrivelse: "VG3 Musikk: Velg 2 programfag (1 valgfritt + Historie)"
+      tilgjengeligeBlokker: ["blokk2", "blokk4"]
+      minAntallFag: 2
+      maxAntallFag: 2
+
+      krav:
+        - type: "minimum-timer"
+          timer: 253
+          beskrivelse: "Totalt 253 timer (140t valgfritt + 113t historie)"
+
+        - type: "obligatorisk-fag"
+          fagId: "historie-vg3"
+          beskrivelse: "Historie VG3 er obligatorisk"
+          feilmelding: "Du må velge Historie VG3"
+
+        - type: "spansk-betinget"
+          fagId: "spansk-i-ii"
+          betingelse: "Elev har ikke hatt fremmedspråk på ungdomstrinnet"
+
+      infomeldinger:
+        - "Velg 1 valgfritt programfag + Historie (obligatorisk)"
+        - "Hvis du ikke hadde fremmedspråk på ungdomsskolen, må du velge Spansk I+II"
+
+  # =====================================
+  # MEDIER OG KOMMUNIKASJON
+  # =====================================
+  medier-kommunikasjon:
+    vg2:
+      beskrivelse: "VG2 Medier: Velg 1 valgfritt programfag + matematikk"
+      tilgjengeligeBlokker: ["blokk1", "blokk3"]
+      minAntallFag: 1
+      maxAntallFag: 1
+
+      krav:
+        - type: "minimum-timer-uten-matte"
+          timer: 140
+          beskrivelse: "Totalt 140 timer valgfritt programfag"
+          feilmelding: "Du må velge 1 valgfritt programfag (140 timer)"
+
+        - type: "matematikk-obligatorisk"
+          beskrivelse: "Du MÅ velge enten Matematikk 2P, R1 eller S1"
+          feilmelding: "Du må velge matematikk"
+          valg:
+            - id: "matematikk-2p"
+              timer: 84
+              type: "fellesfag"
+            - id: "matematikk-r1"
+              timer: 140
+              type: "programfag"
+              erstatter: "matematikk-2p"
+            - id: "matematikk-s1"
+              timer: 140
+              type: "programfag"
+              erstatter: "matematikk-2p"
+
+      infomeldinger:
+        - "Velg 1 valgfritt programfag (140 timer) + matematikk"
+
+    vg3:
+      beskrivelse: "VG3 Medier: Velg 3 programfag (2 valgfrie + Historie)"
+      tilgjengeligeBlokker: ["blokk2", "blokk3", "blokk4"]
+      minAntallFag: 3
+      maxAntallFag: 3
+
+      krav:
+        - type: "minimum-timer"
+          timer: 393
+          beskrivelse: "Totalt 393 timer (280t valgfrie + 113t historie)"
+
+        - type: "obligatorisk-fag"
+          fagId: "historie-vg3"
+          beskrivelse: "Historie VG3 er obligatorisk"
+          feilmelding: "Du må velge Historie VG3"
+
+        - type: "spansk-betinget"
+          fagId: "spansk-i-ii"
+          betingelse: "Elev har ikke hatt fremmedspråk på ungdomstrinnet"
+
+      infomeldinger:
+        - "Velg 2 valgfrie programfag + Historie (obligatorisk)"
+        - "Hvis du ikke hadde fremmedspråk på ungdomsskolen, må du velge Spansk I+II"
+
+# ========================================
+# FORUTSETNINGER OG EKSKLUSJONER
+# ========================================
+regler:
+  forutsetninger:
+    - fag: "matematikk-r2"
+      krever: ["matematikk-r1"]
+      beskrivelse: "Matematikk R2 krever R1"
+      feilmelding: "For å velge Matematikk R2 må du ha hatt R1"
+
+    - fag: "matematikk-s2"
+      krever: ["matematikk-s1"]
+      beskrivelse: "Matematikk S2 krever S1"
+      feilmelding: "For å velge Matematikk S2 må du ha hatt S1"
+
+    - fag: "fysikk-2"
+      krever: ["fysikk-1"]
+      beskrivelse: "Fysikk 2 krever Fysikk 1"
+      feilmelding: "For å velge Fysikk 2 må du ha hatt Fysikk 1"
+
+    - fag: "kjemi-2"
+      krever: ["kjemi-1"]
+      beskrivelse: "Kjemi 2 krever Kjemi 1"
+      feilmelding: "For å velge Kjemi 2 må du ha hatt Kjemi 1"
+
+    - fag: "markedsforing-og-ledelse-2"
+      krever: ["markedsforing-og-ledelse-1"]
+      beskrivelse: "Markedsføring og ledelse 2 krever nivå 1"
+      feilmelding: "For å velge Markedsføring og ledelse 2 må du ha hatt nivå 1"
+
+    - fag: "engelsk-2"
+      krever: ["engelsk-1"]
+      beskrivelse: "Engelsk 2 krever Engelsk 1"
+      feilmelding: "For å velge Engelsk 2 må du ha hatt Engelsk 1"
+
+  eksklusjoner:
+    - gruppe: ["matematikk-r1", "matematikk-r2", "matematikk-2p"]
+      beskrivelse: "Kan ikke kombinere R-matte og 2P-matte"
+      feilmelding: "Du kan ikke kombinere R-matematikk med 2P"
+
+    - gruppe: ["matematikk-s1", "matematikk-s2", "matematikk-2p"]
+      beskrivelse: "Kan ikke kombinere S-matte og 2P-matte"
+      feilmelding: "Du kan ikke kombinere S-matematikk med 2P"
+
+    - gruppe: ["matematikk-r1", "matematikk-r2", "matematikk-s1", "matematikk-s2"]
+      beskrivelse: "Kan ikke kombinere R-matte og S-matte"
+      feilmelding: "Du kan ikke kombinere R-matematikk og S-matematikk"
+
+  erstatter:
+    - fag: "matematikk-r1"
+      erstatter: "matematikk-2p"
+      beskrivelse: "Matematikk R1 erstatter 2P"
+      timer-frigjort: 84
+
+    - fag: "matematikk-s1"
+      erstatter: "matematikk-2p"
+      beskrivelse: "Matematikk S1 erstatter 2P"
+      timer-frigjort: 84
+
+# ========================================
+# METADATA
+# ========================================
+metadata:
+  versjon: "vanilla"
+  opprettet: "2025-11-26"
+  sistOppdatert: "2025-11-26"
+  basertPå: "Blokkskjema 25-26 med Historie i alle blokker"
+  kommentar: |
+    Blokkskjema "vanilla" - basert på 25-26 med følgende tilpasninger:
+
+    HOVEDPRINSIPP:
+    - Fag uten forutsetningskrav kan velges av både VG2 og VG3
+    - Fag som "bygger på" er kun tilgjengelig for VG3
+    - Historie er lagt til i alle blokker for VG3
+
+    FAG SOM BYGGER PÅ (kun VG3):
+    - Fysikk 2 (krever Fysikk 1)
+    - Kjemi 2 (krever Kjemi 1)
+    - Matematikk R2 (krever R1)
+    - Matematikk S2 (krever S1)
+    - Markedsføring og ledelse 2 (krever nivå 1)
+    - Engelsk 2 (krever Engelsk 1)
+
+    FAG UTEN FORUTSETNING (VG2 + VG3):
+    - Biologi 1 og 2
+    - Psykologi 1 og 2
+    - Rettslære 1 og 2
+    - Entreprenørskap 1 og 2
+    - Musikk fordypning 1 og 2
+    - Økonomi og ledelse, Økonomistyring
+    - Sosialkunnskap, Sosiologi og sosialantropologi
+    - Politikk og menneskerettigheter
+    - Grafisk design, Bilde
+    - Engelsk 1
+
+    BLOKKTILGANG:
+    - Blokk 1: VG2 alle, VG3 kun Stud
+    - Blokk 2: VG2 kun Stud, VG3 alle
+    - Blokk 3: VG2 alle, VG3 Stud+MK
+    - Blokk 4: VG2 kun Stud, VG3 alle
