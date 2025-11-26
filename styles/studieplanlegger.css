@@ -1929,3 +1929,321 @@
   font-size: 0.75rem;
   font-family: monospace;
 }
+
+/* ============================================
+   CATALOG BUTTON
+   ============================================ */
+.sp-catalog-btn {
+  background: transparent;
+  border: 1px solid #ccc;
+  border-radius: var(--radius-sm);
+  padding: 6px 12px;
+  color: #666;
+  font-size: 0.85rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  font-family: var(--font-family, helvetica, arial, sans-serif);
+}
+
+.sp-catalog-btn:hover {
+  border-color: var(--primary-color);
+  color: var(--primary-color);
+  background: rgba(31, 71, 57, 0.05);
+}
+
+/* ============================================
+   CATALOG MODAL
+   ============================================ */
+.sp-modal-catalog-content {
+  max-width: 900px;
+  max-height: 85vh;
+  background: #f8f9fa; /* Subtle gray background for better contrast with white cards */
+}
+
+/* Search input */
+.sp-catalog-search {
+  margin-bottom: var(--spacing-lg);
+  background: white; /* Distinguish from gray background */
+  padding: 12px;
+  border-radius: var(--radius-md);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+}
+
+.sp-catalog-search-input {
+  width: 100%;
+  padding: 14px 18px; /* Slightly larger touch target */
+  font-size: 1rem;
+  border: 2px solid #e0e0e0; /* Softer default border */
+  border-radius: var(--radius-md);
+  transition: all var(--transition-fast);
+  box-sizing: border-box;
+  background: #fafafa; /* Subtle inner background */
+}
+
+.sp-catalog-search-input::placeholder {
+  color: #999;
+  font-weight: 400;
+}
+
+.sp-catalog-search-input:focus {
+  outline: none;
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 3px rgba(31, 71, 57, 0.1);
+  background: white; /* Brighter on focus */
+}
+
+/* Filter buttons */
+.sp-catalog-filters {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-bottom: var(--spacing-lg);
+  padding-bottom: var(--spacing-md);
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.sp-catalog-filter-btn {
+  padding: 8px 18px; /* Slightly wider for better proportions */
+  border: 1px solid #e0e0e0; /* Softer border */
+  background: white;
+  border-radius: 20px;
+  font-size: 0.85rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1); /* Material Design easing */
+  color: #5a5a5a;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04); /* Subtle shadow */
+}
+
+.sp-catalog-filter-btn:hover {
+  border-color: var(--primary-color);
+  color: var(--primary-color);
+  background: rgba(31, 71, 57, 0.04);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
+  transform: translateY(-1px); /* Micro-interaction */
+}
+
+.sp-catalog-filter-btn.active {
+  background: var(--primary-color);
+  border-color: var(--primary-color);
+  color: white;
+  box-shadow: 0 2px 6px rgba(31, 71, 57, 0.25);
+  font-weight: 600; /* Emphasize active state */
+}
+
+/* Catalog content area */
+.sp-catalog-content {
+  max-height: 50vh;
+  overflow-y: auto;
+  padding-right: 8px;
+  background: #f8f9fa; /* Match modal background */
+}
+
+/* Custom scrollbar styling */
+.sp-catalog-content::-webkit-scrollbar {
+  width: 8px;
+}
+
+.sp-catalog-content::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.sp-catalog-content::-webkit-scrollbar-thumb {
+  background: #ccc;
+  border-radius: 4px;
+}
+
+.sp-catalog-content::-webkit-scrollbar-thumb:hover {
+  background: #999;
+}
+
+/* Catalog group */
+.sp-catalog-group {
+  margin-bottom: var(--spacing-xl);
+}
+
+.sp-catalog-group-title {
+  font-size: 1.15rem; /* Slightly larger */
+  font-weight: 700; /* Bolder */
+  color: var(--primary-color);
+  margin: var(--spacing-md) 0 var(--spacing-md) 0;
+  padding-bottom: 10px;
+  border-bottom: 3px solid rgba(31, 71, 57, 0.15); /* Green-tinted divider */
+  position: relative;
+}
+
+/* Add accent bar under group title */
+.sp-catalog-group-title::before {
+  content: '';
+  position: absolute;
+  bottom: -3px;
+  left: 0;
+  width: 60px;
+  height: 3px;
+  background: var(--primary-color);
+  border-radius: 2px;
+}
+
+/* Catalog grid */
+.sp-catalog-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: var(--spacing-md);
+}
+
+@media (max-width: 600px) {
+  .sp-catalog-grid {
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  }
+}
+
+/* Catalog card */
+.sp-catalog-card {
+  background: white;
+  border: 1px solid #e0e0e0; /* Thinner, softer border */
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1); /* Material Design easing */
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08); /* Subtle resting shadow */
+}
+
+.sp-catalog-card:hover {
+  border-color: var(--primary-color);
+  box-shadow: 0 4px 16px rgba(31, 71, 57, 0.15), 0 2px 8px rgba(31, 71, 57, 0.08); /* Layered shadow */
+  transform: translateY(-4px); /* More pronounced lift */
+}
+
+.sp-catalog-card:focus,
+.sp-catalog-card:focus-visible {
+  outline: none;
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 3px rgba(31, 71, 57, 0.15), 0 4px 12px rgba(31, 71, 57, 0.15);
+}
+
+/* Fordypning level styling for catalog cards */
+.sp-catalog-card.fordypning-1 {
+  border-left: 4px solid #2196F3;
+}
+
+.sp-catalog-card.fordypning-2 {
+  border-left: 4px solid #4CAF50;
+}
+
+/* Card image */
+.sp-catalog-card-image {
+  height: 120px; /* Slightly taller for better proportions */
+  overflow: hidden;
+  background: linear-gradient(135deg, #2a5a4a 0%, #4a7a6a 100%); /* Lighter gradient */
+  position: relative;
+}
+
+.sp-catalog-card-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0;
+  animation: fadeIn 0.3s ease forwards;
+}
+
+@keyframes fadeIn {
+  to { opacity: 1; }
+}
+
+.sp-catalog-card-image-placeholder {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.sp-catalog-card-image-placeholder span {
+  font-size: 2.8rem; /* Slightly larger */
+  font-weight: 700;
+  color: white;
+  opacity: 0.9; /* More visible */
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* Better legibility */
+}
+
+/* Card content */
+.sp-catalog-card-content {
+  padding: 14px; /* Increased from 12px */
+  background: white; /* Explicit background */
+}
+
+.sp-catalog-card-title {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--text-dark);
+  margin: 0 0 4px 0;
+  line-height: 1.4;
+}
+
+.sp-catalog-card-meta {
+  font-size: 0.8rem;
+  color: #5a5a5a; /* WCAG AA compliant - 7.0:1 contrast ratio (was #888 = 3.1:1) */
+}
+
+.sp-catalog-card-timer {
+  background: var(--secondary-color);
+  color: var(--primary-color);
+  padding: 2px 8px;
+  border-radius: 10px;
+  font-weight: 600;
+  font-size: 0.75rem;
+}
+
+.sp-catalog-card-code {
+  font-family: monospace;
+  font-size: 0.7rem;
+}
+
+.sp-catalog-card-related {
+  margin-top: 10px;
+  font-size: 0.75rem;
+  color: var(--primary-color);
+  font-weight: 600;
+  padding-top: 10px;
+  border-top: 1px solid #f0f0f0;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+/* Add icon before related fag text */
+.sp-catalog-card-related::before {
+  content: '🔗';
+  font-size: 0.9rem;
+}
+
+/* Empty state */
+.sp-catalog-empty {
+  text-align: center;
+  padding: var(--spacing-xl);
+  color: #5a5a5a; /* WCAG AA compliant (was #888) */
+}
+
+.sp-catalog-empty p {
+  margin: 0;
+  font-size: 1rem;
+}
+
+/* Responsive adjustments */
+@media (max-width: 480px) {
+  .sp-modal-catalog-content {
+    padding: 20px;
+  }
+
+  .sp-catalog-filters {
+    justify-content: center;
+  }
+
+  .sp-catalog-filter-btn {
+    padding: 6px 12px;
+    font-size: 0.8rem;
+  }
+
+  .sp-catalog-card-image {
+    height: 80px;
+  }
+}

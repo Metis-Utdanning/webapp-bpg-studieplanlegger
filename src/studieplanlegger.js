@@ -410,6 +410,11 @@ export class Studieplanlegger {
 
     // Blokkskjema modal
     this.setupBlokkskjemaModal();
+
+    // Catalog button - open catalog modal
+    this.container.querySelector('.sp-catalog-btn')?.addEventListener('click', () => {
+      this.openCatalogModal();
+    });
   }
 
   /**
@@ -1922,6 +1927,308 @@ export class Studieplanlegger {
     if (modal) {
       modal.style.display = 'none';
       document.body.style.overflow = '';
+    }
+  }
+
+  // ==========================================================================
+  // CATALOG MODAL - Browse all subjects
+  // ==========================================================================
+
+  /**
+   * Open catalog modal for browsing all subjects
+   */
+  openCatalogModal() {
+    const modal = this.container.querySelector('.sp-modal-catalog');
+    if (!modal) return;
+
+    // Render catalog content
+    this.renderCatalogContent();
+
+    // Setup catalog interactions (search, filter)
+    this.setupCatalogModalInteractions();
+
+    modal.style.display = 'flex';
+
+    // Focus search input for accessibility
+    const searchInput = modal.querySelector('.sp-catalog-search-input');
+    if (searchInput) {
+      searchInput.focus();
+    }
+  }
+
+  /**
+   * Close catalog modal
+   */
+  closeCatalogModal() {
+    const modal = this.container.querySelector('.sp-modal-catalog');
+    if (modal) {
+      modal.style.display = 'none';
+    }
+  }
+
+  /**
+   * Get all subjects from curriculum data grouped by fagområde
+   */
+  getAllSubjectsGrouped() {
+    if (!this.dataHandler.data?.curriculum) return {};
+
+    const curriculum = this.dataHandler.data.curriculum;
+    const grouped = {};
+
+    // Define fagområder mapping (from regler.yml fagomrader)
+    const fagomradeMap = {
+      'realfag': { name: 'Realfag', fag: ['biologi', 'fysikk', 'geofag', 'informasjonsteknologi', 'kjemi', 'teknologi-og-forskningslare'] },
+      'matematikk': { name: 'Matematikk', fag: ['matematikk'] },
+      'sprak': { name: 'Språkfag', fag: ['spansk', 'tysk', 'fransk', 'engelsk', 'kommunikasjon-og-kultur'] },
+      'samfunn': { name: 'Samfunnsfag', fag: ['historie', 'politikk', 'rettslaere', 'sosialkunnskap', 'sosiologi', 'psykologi'] },
+      'okonomi': { name: 'Økonomi', fag: ['okonomistyring', 'markedsforing', 'samfunnsokonomi', 'entrepreneurskap', 'okonomi-og-ledelse'] },
+      'mediefag': { name: 'Mediefag', fag: ['bilde', 'grafisk-design'] },
+      'musikkfag': { name: 'Musikkfag', fag: ['musikk-fordypning'] }
+    };
+
+    // Initialize groups
+    Object.keys(fagomradeMap).forEach(key => {
+      grouped[key] = { name: fagomradeMap[key].name, subjects: [] };
+    });
+    grouped['andre'] = { name: 'Andre fag', subjects: [] };
+
+    // Process valgfrieProgramfag
+    (curriculum.valgfrieProgramfag || []).forEach(fag => {
+      const fagId = fag.id?.toLowerCase() || '';
+      let placed = false;
+
+      // Find matching fagområde
+      for (const [key, config] of Object.entries(fagomradeMap)) {
+        if (config.fag.some(prefix => fagId.startsWith(prefix))) {
+          grouped[key].subjects.push(fag);
+          placed = true;
+          break;
+        }
+      }
+
+      // If not matched, put in "Andre"
+      if (!placed) {
+        grouped['andre'].subjects.push(fag);
+      }
+    });
+
+    // Remove empty groups
+    Object.keys(grouped).forEach(key => {
+      if (grouped[key].subjects.length === 0) {
+        delete grouped[key];
+      }
+    });
+
+    return grouped;
+  }
+
+  /**
+   * Render catalog content with all subjects
+   */
+  renderCatalogContent() {
+    const container = this.container.querySelector('#catalog-content');
+    if (!container) return;
+
+    const groupedSubjects = this.getAllSubjectsGrouped();
+    const allSubjects = Object.values(groupedSubjects).flatMap(g => g.subjects);
+
+    // Store all subjects for filtering
+    this.catalogAllSubjects = allSubjects;
+    this.catalogGroupedSubjects = groupedSubjects;
+
+    // Render all subjects by default
+    this.renderCatalogSubjects(allSubjects, 'alle');
+  }
+
+  /**
+   * Render catalog subjects grid
+   */
+  renderCatalogSubjects(subjects, filter = 'alle') {
+    const container = this.container.querySelector('#catalog-content');
+    if (!container) return;
+
+    if (subjects.length === 0) {
+      container.innerHTML = `
+        <div class="sp-catalog-empty">
+          <p>Ingen fag funnet</p>
+        </div>
+      `;
+      return;
+    }
+
+    // Group by fagområde or show flat list
+    if (filter === 'alle') {
+      // Show grouped view
+      const grouped = this.catalogGroupedSubjects;
+      let html = '';
+
+      Object.entries(grouped).forEach(([key, group]) => {
+        const filteredSubjects = group.subjects.filter(s =>
+          subjects.some(sub => sub.id === s.id)
+        );
+
+        if (filteredSubjects.length === 0) return;
+
+        html += `
+          <div class="sp-catalog-group" data-group="${key}">
+            <h3 class="sp-catalog-group-title">${group.name} (${filteredSubjects.length})</h3>
+            <div class="sp-catalog-grid">
+              ${filteredSubjects.map(fag => this.renderCatalogCard(fag)).join('')}
+            </div>
+          </div>
+        `;
+      });
+
+      container.innerHTML = html;
+    } else {
+      // Show flat filtered list
+      container.innerHTML = `
+        <div class="sp-catalog-grid">
+          ${subjects.map(fag => this.renderCatalogCard(fag)).join('')}
+        </div>
+      `;
+    }
+  }
+
+  /**
+   * Render a single catalog card
+   */
+  renderCatalogCard(fag) {
+    const shortTitle = fag.shortTitle || fag.title || fag.id;
+    const baseUrl = this.options.apiBaseUrl?.replace('/dist/api/v2', '') || '';
+    const imageUrl = fag.bilde ? `${baseUrl}${fag.bilde}` : null;
+
+    // Determine fordypning level
+    const fordypningLevel = fag.id?.endsWith('-1') ? '1' : (fag.id?.endsWith('-2') ? '2' : null);
+    const fordypningClass = fordypningLevel ? `fordypning-${fordypningLevel}` : '';
+
+    return `
+      <div class="sp-catalog-card ${fordypningClass}" data-fag-id="${sanitizeHTML(fag.id)}">
+        ${imageUrl ? `
+          <div class="sp-catalog-card-image">
+            <img src="${imageUrl}" alt="${sanitizeHTML(shortTitle)}" loading="lazy">
+          </div>
+        ` : `
+          <div class="sp-catalog-card-image sp-catalog-card-image-placeholder">
+            <span>${sanitizeHTML(shortTitle.charAt(0))}</span>
+          </div>
+        `}
+        <div class="sp-catalog-card-content">
+          <h4 class="sp-catalog-card-title">${sanitizeHTML(shortTitle)}</h4>
+          <div class="sp-catalog-card-meta">
+            <span class="sp-catalog-card-code">${sanitizeHTML(fag.fagkode || '')}</span>
+          </div>
+          ${fag.related && fag.related.length > 0 ? `
+            <div class="sp-catalog-card-related">
+              Fordypning med: ${fag.related.join(', ')}
+            </div>
+          ` : ''}
+        </div>
+      </div>
+    `;
+  }
+
+  /**
+   * Setup catalog modal interactions
+   */
+  setupCatalogModalInteractions() {
+    const modal = this.container.querySelector('.sp-modal-catalog');
+    if (!modal) return;
+
+    // Close button
+    const closeBtn = modal.querySelector('.sp-modal-close');
+    const cancelBtn = modal.querySelector('.sp-btn-secondary');
+
+    closeBtn?.addEventListener('click', () => this.closeCatalogModal());
+    cancelBtn?.addEventListener('click', () => this.closeCatalogModal());
+
+    // Click outside to close
+    modal.addEventListener('click', (e) => {
+      if (e.target === modal) this.closeCatalogModal();
+    });
+
+    // Escape key to close
+    modal.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') this.closeCatalogModal();
+    });
+
+    // Search functionality
+    const searchInput = modal.querySelector('.sp-catalog-search-input');
+    if (searchInput) {
+      searchInput.addEventListener('input', (e) => {
+        this.filterCatalogBySearch(e.target.value);
+      });
+    }
+
+    // Filter buttons
+    modal.querySelectorAll('.sp-catalog-filter-btn').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        // Update active state
+        modal.querySelectorAll('.sp-catalog-filter-btn').forEach(b => b.classList.remove('active'));
+        e.target.classList.add('active');
+
+        // Apply filter
+        const filter = e.target.dataset.filter;
+        this.filterCatalogByCategory(filter);
+      });
+    });
+
+    // Card click - show fag details
+    modal.querySelector('#catalog-content')?.addEventListener('click', (e) => {
+      const card = e.target.closest('.sp-catalog-card');
+      if (card) {
+        const fagId = card.dataset.fagId;
+        if (fagId) {
+          this.showFagDetails(fagId);
+        }
+      }
+    });
+  }
+
+  /**
+   * Filter catalog by search term
+   */
+  filterCatalogBySearch(searchTerm) {
+    if (!this.catalogAllSubjects) return;
+
+    const term = searchTerm.toLowerCase().trim();
+
+    if (!term) {
+      this.renderCatalogSubjects(this.catalogAllSubjects, 'alle');
+      return;
+    }
+
+    const filtered = this.catalogAllSubjects.filter(fag => {
+      const title = (fag.title || '').toLowerCase();
+      const shortTitle = (fag.shortTitle || '').toLowerCase();
+      const fagkode = (fag.fagkode || '').toLowerCase();
+      const id = (fag.id || '').toLowerCase();
+
+      return title.includes(term) ||
+             shortTitle.includes(term) ||
+             fagkode.includes(term) ||
+             id.includes(term);
+    });
+
+    this.renderCatalogSubjects(filtered, 'search');
+  }
+
+  /**
+   * Filter catalog by category
+   */
+  filterCatalogByCategory(category) {
+    if (!this.catalogGroupedSubjects) return;
+
+    if (category === 'alle') {
+      this.renderCatalogSubjects(this.catalogAllSubjects, 'alle');
+      return;
+    }
+
+    const group = this.catalogGroupedSubjects[category];
+    if (group) {
+      this.renderCatalogSubjects(group.subjects, category);
+    } else {
+      this.renderCatalogSubjects([], category);
     }
   }
 }

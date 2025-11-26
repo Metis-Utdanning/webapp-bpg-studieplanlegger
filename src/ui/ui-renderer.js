@@ -69,6 +69,10 @@ export class UIRenderer {
           Skriv ut studieplan
         </button>
         <span class="sp-feedback-divider">|</span>
+        <button class="sp-catalog-btn" title="Bla gjennom alle programfag">
+          Bla i fagkatalog
+        </button>
+        <span class="sp-feedback-divider">|</span>
         <a href="https://forms.office.com/e/Y7ekhKc9GD" target="_blank" rel="noopener" class="sp-feedback-link">
           Gi tilbakemelding
         </a>
@@ -555,6 +559,50 @@ export class UIRenderer {
       ${this.renderVG1Modal('matematikk')}
       ${this.renderVG1Modal('fremmedsprak')}
       ${this.renderBlokkskjemaModal()}
+      ${this.renderCatalogModal()}
+    `;
+  }
+
+  /**
+   * Render catalog modal for browsing all subjects
+   */
+  renderCatalogModal() {
+    return `
+      <div class="sp-modal sp-modal-catalog" style="display: none;">
+        <div class="sp-modal-content sp-modal-catalog-content">
+          <button class="sp-modal-close">×</button>
+
+          <div class="sp-modal-header">
+            <h2 class="sp-modal-title">Fagkatalog</h2>
+            <p class="sp-modal-subtitle">Utforsk alle tilgjengelige programfag</p>
+          </div>
+
+          <div class="sp-catalog-search">
+            <input type="text" class="sp-catalog-search-input" placeholder="Søk etter fag..." aria-label="Søk i fagkatalog">
+          </div>
+
+          <div class="sp-catalog-filters">
+            <button class="sp-catalog-filter-btn active" data-filter="alle">Alle fag</button>
+            <button class="sp-catalog-filter-btn" data-filter="realfag">Realfag</button>
+            <button class="sp-catalog-filter-btn" data-filter="matematikk">Matematikk</button>
+            <button class="sp-catalog-filter-btn" data-filter="sprak">Språkfag</button>
+            <button class="sp-catalog-filter-btn" data-filter="samfunn">Samfunnsfag</button>
+            <button class="sp-catalog-filter-btn" data-filter="okonomi">Økonomi</button>
+            <button class="sp-catalog-filter-btn" data-filter="mediefag">Mediefag</button>
+            <button class="sp-catalog-filter-btn" data-filter="musikkfag">Musikkfag</button>
+          </div>
+
+          <div class="sp-catalog-content" id="catalog-content">
+            <!-- Will be populated dynamically -->
+          </div>
+
+          <div class="sp-modal-footer">
+            <div class="sp-modal-actions">
+              <button class="sp-btn sp-btn-secondary">Lukk</button>
+            </div>
+          </div>
+        </div>
+      </div>
     `;
   }
 
