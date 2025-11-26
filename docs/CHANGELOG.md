@@ -12,6 +12,18 @@
 
 ---
 
+## [2025-11-26] - Fagbeskrivelser og UI-forbedringer
+
+### Innhold
+- Lagt til "Hvordan arbeider man i faget" og "Fagets relevans" for alle 34 valgfrie programfag
+- Tekstene beskriver arbeidsmater, relevante studier og yrkesmuligheter
+
+### Fikser
+- Fjernet markdown-formatering (**, -) som vistes som ra tekst pa nettsiden
+- Fikset avrundede hjorner pa fokus-markering i katalog-modal trekkspillmenyer
+
+---
+
 ## [2025-11-26] - Forbedret katalog-modal med trekkspillmenyer
 
 ### Lagt til
