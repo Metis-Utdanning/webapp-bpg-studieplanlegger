@@ -12,6 +12,68 @@
 
 ---
 
+## [2025-11-26] - Forbedret katalog-modal med trekkspillmenyer
+
+### Lagt til
+
+#### Trekkspillmenyer for valgfrie programfag
+Fag-detaljer modalen viser na 4 trekkspillmenyer for valgfrie programfag:
+1. **"Hvordan arbeider man i faget?"** - Ny seksjon med informasjon om arbeidsmetoder
+2. **"Fagets relevans"** - Ny seksjon om fagets betydning og bruksomrader
+3. **"I dette faget lærer du a ..."** - Eksisterende kompetansemal, na i trekkspill
+4. **"Kjerneelementer"** - Eksisterende innhold, na i trekkspill
+
+#### Trekkspillmenyer for fellesfag og obligatoriske programfag
+Forenklet visning med 2 trekkspillmenyer:
+1. **"I dette faget lærer du a ..."** - Kompetansemal
+2. **"Kjerneelementer"** - Kjerneelementer
+
+#### UX-forbedringer
+- Alle trekkspillmenyer er lukket som standard for ryddig forsteinntrykk
+- Tomme seksjoner viser "Innhold kommer snart" placeholder-tekst
+- Full keyboard-stotte med Enter/Space for a apne/lukke
+- Responsivt design tilpasset mobilvisning
+
+### Tekniske endringer
+
+#### Build-script (`scripts/build-api.cjs`)
+- Ny funksjon `extractSection()` - Ekstraherer navngitte seksjoner fra markdown
+- Ny funksjon `extractKjerneelementer()` - Parser kjerneelementer-listen
+- API-output inkluderer na `arbeidsmater`, `relevans`, `kompetansemal`, `kjerneelementer`
+
+#### Hovedmodul (`src/studieplanlegger.js`)
+- Ny funksjon `isValgfriProgramfag()` - Sjekker fagtype for a bestemme visning
+- Ny funksjon `renderAccordion()` - Genererer trekkspill HTML-markup
+- Ny funksjon `renderValgfriProgramfagBody()` - Renderer 4-trekkspill layout
+- Ny funksjon `renderStandardFagBody()` - Renderer 2-trekkspill layout
+- Ny funksjon `setupFagAccordionHandlers()` - Event handlers for trekkspill
+
+#### Styling (`styles/studieplanlegger.css`)
+- `.fag-accordions` - Container for trekkspill-gruppe
+- `.fag-accordion` - Individuelt trekkspill med header og body
+- `.kjerneelement` - Styling for kjerneelement-items
+- `.placeholder-text` - Styling for "Innhold kommer snart" tekst
+
+### Endret
+
+#### Innholdsfiler
+- Alle 34 valgfrie-programfag markdown-filer oppdatert med nye seksjoner:
+  - "Hvordan arbeider man i faget?"
+  - "Fagets relevans"
+- Innhold hentet fra UDIR lareplaner og tilpasset malgruppa
+
+### Filer endret
+
+**Kode:**
+- `scripts/build-api.cjs` - extractSection(), extractKjerneelementer()
+- `src/studieplanlegger.js` - Modal rendering og trekkspill-logikk
+- `styles/studieplanlegger.css` - Trekkspill CSS
+
+**Data:**
+- 34 filer i `data/curriculum/markdown/valgfrie-programfag/` - Nye seksjoner
+
+---
+
 ## [2025-11-26] - Bugfixes og UI-komprimering
 
 ### Fikset

@@ -16,6 +16,14 @@ bilde: /public/images/fag/psykologi-2.jpg
 
 Psykologi handler om å forstå menneskets tanker, emosjoner og atferd. Faget skal gi et vitenskapelig perspektiv på psykologiske prosesser og mekanismer, i og mellom mennesker, og bidra til at elevene utvikler en sammensatt og mer helhetlig forståelse av mennesket. Psykologi handler om det fellesmenneskelige, det som gjør oss like, men også det som gjør oss ulike og unike. I en verden preget av stadige endringer og utfordringer, kan faget bidra til økt medborgerskap gjennom bevisstgjøring og forståelse av seg selv og andre, på individ-, gruppe- og samfunnsnivå. Faget danner også grunnlag for samhandling på ulike arenaer, som skole, studier og arbeidsliv.
 
+## Hvordan arbeider man i faget
+
+<!-- Innhold legges til senere -->
+
+## Fagets relevans
+
+<!-- Innhold legges til senere -->
+
 ## Kompetansemål
 
 - finne og vurdere informasjon for å analysere faglige spørsmål og problemstillinger

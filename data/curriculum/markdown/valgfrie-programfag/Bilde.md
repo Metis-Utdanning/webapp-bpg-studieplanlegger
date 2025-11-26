@@ -15,6 +15,14 @@ generert: 2025-11-14
 
 Faget bilde handler om å arbeide med visuell kommunikasjon og innholdsproduksjon som en del av mediemangfoldet i samfunnet. Faget skal bidra til å utvikle elevenes ferdigheter i kreativitet, planlegging og produksjon og gi innsikt i hvordan billeduttrykk kommuniserer og tolkes. Bilde forbereder elevene på videre studier og på et arbeidsliv hvor det stilles krav til produksjonskvalitet og kommunikasjon.
 
+## Hvordan arbeider man i faget
+
+<!-- Innhold legges til senere -->
+
+## Fagets relevans
+
+<!-- Innhold legges til senere -->
+
 ## Kompetansemål
 
 - anvende ulike virkemidler og teknikker i egne billedproduksjoner for å formidle et budskap

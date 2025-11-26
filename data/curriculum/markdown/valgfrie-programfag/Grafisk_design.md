@@ -16,6 +16,14 @@ bilde: /public/images/fag/grafisk-design.jpg
 
 Grafisk design handlar om kreativt arbeid og visuelle løysingar i ulike medium. Faget gir høve til å utvikle det visuelle språket og utforme sjølvstendige visuelle uttrykk. Grafisk design bidreg i samfunnet gjennom visualisering og tydeleggjering av bodskapar. Faget førebur elevane på vidare studium og eit arbeidsliv som stiller krav til kompetanse i visuell kommunikasjon og design.
 
+## Hvordan arbeider man i faget
+
+<!-- Innhold legges til senere -->
+
+## Fagets relevans
+
+<!-- Innhold legges til senere -->
+
 ## Kompetansemål
 
 - identifisere behov og utforme og presentere grafiske designløysingar

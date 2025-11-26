@@ -17,6 +17,14 @@ generert: 2025-11-24
 
 Rettslære handler om å forstå hvordan rettsregler bidrar til å bygge opp og ivareta et demokratisk samfunn. Faget skal bidra til at elevene får kompetanse om gjeldende rett og om hvilke rettigheter og plikter den enkelte har. I tillegg skal faget bidra til at elevene kan se en sak fra flere sider og komme med relevante argumenter. Dette er kompetanse som elevene vil få bruk for i videre utdanning og i arbeidslivet.
 
+## Hvordan arbeider man i faget
+
+<!-- Innhold legges til senere -->
+
+## Fagets relevans
+
+<!-- Innhold legges til senere -->
+
 ## Kompetansemål
 
 - reflektere over Norge som rettsstat og vurdere maktfordeling, rettssikkerhet og legalitetsprinsippet i Norge

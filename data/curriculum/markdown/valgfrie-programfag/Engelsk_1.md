@@ -16,6 +16,14 @@ bilde: /public/images/fag/engelsk-1.jpg
 
 Engelsk programfag handler om språk- og kommunikasjonsutvikling, og skal bidra til danning og identitetsutvikling. Faget skal bidra til å utvikle elevenes interkulturelle forståelse, økt forståelse av allsidigheten i det engelske språket og av betydningen av å bruke et situasjonstilpasset språk. Det å lære engelsk har stor betydning for elevene i utdanning, i arbeidslivet og i samhandling med mennesker fra hele verden.
 
+## Hvordan arbeider man i faget
+
+<!-- Innhold legges til senere -->
+
+## Fagets relevans
+
+<!-- Innhold legges til senere -->
+
 ## Kompetansemål
 
 - bruke egnede lese-, lytte-, tale- og skrivestrategier tilpasset situasjon og formål

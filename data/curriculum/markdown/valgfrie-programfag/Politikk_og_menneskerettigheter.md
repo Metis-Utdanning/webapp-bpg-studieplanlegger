@@ -15,6 +15,14 @@ generert: 2025-11-14
 
 Politikk og menneskerettigheter handler om hvordan vårt eget og andre samfunn blir styrt gjennom politiske beslutninger. Faget skal gi innsikt i menneskerettighetenes betydning individuelt, nasjonalt og internasjonalt. Faget skal også gi grunnlag for aktiv samfunnsdeltakelse og forståelse av og respekt for andre menneskers synspunkter, verdier og kulturuttrykk. Arbeid i faget skal bidra til å utvikle kompetanse som er nyttig for videre studier og arbeidsliv.
 
+## Hvordan arbeider man i faget
+
+<!-- Innhold legges til senere -->
+
+## Fagets relevans
+
+<!-- Innhold legges til senere -->
+
 ## Kompetansemål
 
 - vurdere informasjon for å analysere faglige spørsmål og problemstillinger

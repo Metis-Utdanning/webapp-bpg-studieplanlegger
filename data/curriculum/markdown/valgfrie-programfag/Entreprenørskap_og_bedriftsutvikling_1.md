@@ -16,6 +16,14 @@ bilde: /public/images/fag/entreprenorskap-1.jpg
 
 Entreprenørskap og bedriftsutvikling handler om innsikt i etablering og videreutvikling av virksomheter. Faget skal gi elevene en teoretisk og praktisk forståelse av hvordan mennesker og virksomheter kan påvirke utviklingen av næringsliv og samfunn. Faget handler videre om hvordan entreprenørskap kan skape nye og utvikle eksisterende arbeidsplasser og forberede elevene på videre studier og framtidig arbeidsliv.
 
+## Hvordan arbeider man i faget
+
+<!-- Innhold legges til senere -->
+
+## Fagets relevans
+
+<!-- Innhold legges til senere -->
+
 ## Kompetansemål
 
 - bruke kilder, teorier og modeller i arbeid med faglige spørsmål, emner og problemstillinger

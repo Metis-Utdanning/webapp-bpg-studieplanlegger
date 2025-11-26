@@ -15,6 +15,14 @@ generert: 2025-11-14
 
 Sosialkunnskap handler om å styrke elevenes forståelse av og kritiske bevissthet om velferdssamfunnet. Faget skal gi elevene verktøy til å forstå seg selv som en del av samfunnet og reflektere over utfordringer og muligheter knyttet til identitet og livsmestring. Sosialkunnskap skal danne grunnlag for å drøfte hvordan individer, grupper, organisasjoner og institusjoner fungerer sammen, og gi innsikt i årsaker til sosiale problemer, marginalisering og utenforskap. Sammen med kunnskaper om inkludering i arbeidslivet, skal dette forberede elevene til videre studier og arbeidsliv.
 
+## Hvordan arbeider man i faget
+
+<!-- Innhold legges til senere -->
+
+## Fagets relevans
+
+<!-- Innhold legges til senere -->
+
 ## Kompetansemål
 
 - finne og vurdere informasjon for å analysere faglige spørsmål og problemstillinger

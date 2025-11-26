@@ -15,6 +15,14 @@ generert: 2025-11-13
 
 Informasjonsteknologi handler om å forstå og utvikle informasjonssystemer. Programfaget skal gi elevene kunnskaper og ferdigheter innenfor informasjonsteknologi, og skal også bidra til forståelse av hvordan informasjonsteknologi påvirker individ og samfunn. Faget skal styrke elevenes digitale kompetanse og forberede dem til å ta begrunnede valg for å benytte informasjonsteknologi i videre studier og arbeidsliv. Faget skal videre forberede elevene til et framtidig samfunns- og arbeidsliv som krever at de kan forstå, bruke og utvikle informasjonsteknologi.
 
+## Hvordan arbeider man i faget
+
+<!-- Innhold legges til senere -->
+
+## Fagets relevans
+
+<!-- Innhold legges til senere -->
+
 ## Kompetansemål
 
 - drøfte dagsaktuelle temaer knyttet til hvordan informasjonsteknologi påvirker individet og samfunnet

@@ -16,6 +16,14 @@ bilde: /public/images/fag/sosiologi-og-sosialantropologi.jpg
 
 Sosiologi og sosialantropologi handler om å gi elevene samfunnsvitenskapelig innsikt i det moderne samfunnet og samfunnsutviklingen. Gjennom faget skal elevene utvikle forståelse av hvilken betydning sosiale og kulturelle prosesser har for individet og samfunnet. Faget skal også gi forståelse av ulike levemåter og perspektiver, og slik utvikle demokratisk medborgerskap i det mangfoldige samfunnet. Faget skal videre gi elevene innsikt i hvordan samfunn, kultur og individ preges av mangfold, globalisering og raske teknologiske endringer, og slik legge til rette for videre studier og arbeidsliv.
 
+## Hvordan arbeider man i faget
+
+<!-- Innhold legges til senere -->
+
+## Fagets relevans
+
+<!-- Innhold legges til senere -->
+
 ## Kompetansemål
 
 - finne og vurdere informasjon for å analysere faglige spørsmål og problemstillinger

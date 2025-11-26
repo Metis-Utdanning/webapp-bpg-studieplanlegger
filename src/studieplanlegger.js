@@ -1513,6 +1513,182 @@ export class Studieplanlegger {
   }
 
   /**
+   * Check if a fag is a valgfri programfag
+   * @param {string} fagId - Subject ID
+   * @returns {boolean}
+   */
+  isValgfriProgramfag(fagId) {
+    const curriculum = this.dataHandler.data?.curriculum;
+    if (!curriculum) return false;
+    return curriculum.valgfrieProgramfag?.some(f => f.id === fagId) || false;
+  }
+
+  /**
+   * Render a single accordion component
+   * @param {string} id - Unique ID for accordion
+   * @param {string} title - Accordion header text
+   * @param {string} content - HTML content inside accordion
+   * @param {number|null} count - Optional count to show in header
+   * @returns {string} HTML string
+   */
+  renderAccordion(id, title, content, count = null) {
+    const countBadge = count !== null ? `<span class="accordion-count">(${count})</span>` : '';
+
+    return `
+      <div class="fag-accordion" data-accordion-id="${id}">
+        <div class="accordion-header" role="button" tabindex="0" aria-expanded="false">
+          <h3>${title} ${countBadge}</h3>
+          <span class="accordion-icon" aria-hidden="true">▼</span>
+        </div>
+        <div class="accordion-content">
+          ${content}
+        </div>
+      </div>
+    `;
+  }
+
+  /**
+   * Render kjerneelementer as HTML
+   * @param {Array|null} kjerneelementer - Array of {title, content} objects
+   * @returns {string} HTML string
+   */
+  renderKjerneelementerHTML(kjerneelementer) {
+    if (!kjerneelementer || kjerneelementer.length === 0) {
+      return '<p class="placeholder-text">Innhold kommer snart</p>';
+    }
+
+    return kjerneelementer.map(el => `
+      <div class="kjerneelement">
+        <h4>${sanitizeHTML(el.title)}</h4>
+        <p>${sanitizeHTML(el.content)}</p>
+      </div>
+    `).join('');
+  }
+
+  /**
+   * Extract "Om faget" section from beskrivelseHTML
+   * @param {string} beskrivelseHTML - Full HTML content
+   * @returns {string} HTML string
+   */
+  extractOmFagetHTML(beskrivelseHTML) {
+    const match = beskrivelseHTML.match(/<h2[^>]*>Om faget<\/h2>([\s\S]*?)(?=<h2|$)/i);
+    return match ? match[1].trim() : '';
+  }
+
+  /**
+   * Extract "Kompetansemål" section from beskrivelseHTML
+   * @param {string} beskrivelseHTML - Full HTML content
+   * @returns {string} HTML string
+   */
+  extractKompetansemalHTML(beskrivelseHTML) {
+    const match = beskrivelseHTML.match(/<h2[^>]*>Kompetansemål<\/h2>([\s\S]*?)(?=<h2|$)/i);
+    return match ? match[1].trim() : '';
+  }
+
+  /**
+   * Render modal body for valgfrie programfag with 4 accordions
+   * @param {Object} fag - Fag data
+   * @returns {string} HTML string
+   */
+  renderValgfriProgramfagBody(fag) {
+    // Extract "Om faget" from beskrivelseHTML
+    const omFagetHTML = this.extractOmFagetHTML(fag.beskrivelseHTML || '');
+
+    // Accordion 1: Hvordan arbeider man i faget
+    const hvordanHTML = fag.hvordanArbeiderMan
+      ? `<p>${sanitizeHTML(fag.hvordanArbeiderMan)}</p>`
+      : '<p class="placeholder-text">Innhold kommer snart</p>';
+
+    // Accordion 2: Fagets relevans
+    const relevansHTML = fag.fagetsRelevans
+      ? `<p>${sanitizeHTML(fag.fagetsRelevans)}</p>`
+      : '<p class="placeholder-text">Innhold kommer snart</p>';
+
+    // Accordion 3: I dette faget lærer du å ... (kompetansemål)
+    const kompetanseHTML = this.extractKompetansemalHTML(fag.beskrivelseHTML || '');
+    const kompetanseCount = (kompetanseHTML.match(/<li>/g) || []).length;
+
+    // Accordion 4: Kjerneelementer
+    const kjerneHTML = this.renderKjerneelementerHTML(fag.kjerneelementer);
+    const kjerneCount = fag.kjerneelementer?.length || 0;
+
+    return `
+      <div class="om-faget">
+        <h2>Om faget</h2>
+        ${omFagetHTML || '<p>Ingen beskrivelse tilgjengelig.</p>'}
+      </div>
+
+      <div class="fag-accordions">
+        ${this.renderAccordion('hvordan', 'Hvordan arbeider man i faget?', hvordanHTML, null)}
+        ${this.renderAccordion('relevans', 'Fagets relevans', relevansHTML, null)}
+        ${kompetanseHTML ? this.renderAccordion('kompetanse', 'I dette faget lærer du å ...', kompetanseHTML, kompetanseCount) : ''}
+        ${this.renderAccordion('kjerne', 'Kjerneelementer', kjerneHTML, kjerneCount > 0 ? kjerneCount : null)}
+      </div>
+    `;
+  }
+
+  /**
+   * Render modal body for fellesfag and obligatoriske programfag
+   * Simple view: Om faget, Kompetansemål accordion, Kjerneelementer accordion
+   * @param {Object} fag - Fag data
+   * @returns {string} HTML string
+   */
+  renderStandardFagBody(fag) {
+    // Extract "Om faget" from beskrivelseHTML
+    const omFagetHTML = this.extractOmFagetHTML(fag.beskrivelseHTML || '');
+
+    // Kompetansemål
+    const kompetanseHTML = this.extractKompetansemalHTML(fag.beskrivelseHTML || '');
+    const kompetanseCount = (kompetanseHTML.match(/<li>/g) || []).length;
+
+    // Kjerneelementer
+    const kjerneHTML = this.renderKjerneelementerHTML(fag.kjerneelementer);
+    const kjerneCount = fag.kjerneelementer?.length || 0;
+
+    return `
+      <div class="om-faget">
+        <h2>Om faget</h2>
+        ${omFagetHTML || '<p>Ingen beskrivelse tilgjengelig.</p>'}
+      </div>
+
+      <div class="fag-accordions">
+        ${kompetanseHTML ? this.renderAccordion('kompetanse', 'I dette faget lærer du å ...', kompetanseHTML, kompetanseCount) : ''}
+        ${kjerneCount > 0 || fag.kjerneelementer ? this.renderAccordion('kjerne', 'Kjerneelementer', kjerneHTML, kjerneCount > 0 ? kjerneCount : null) : ''}
+      </div>
+    `;
+  }
+
+  /**
+   * Setup accordion click handlers in modal
+   * @param {HTMLElement} modal - Modal element
+   */
+  setupFagAccordionHandlers(modal) {
+    modal.querySelectorAll('.fag-accordion .accordion-header').forEach(header => {
+      header.addEventListener('click', () => {
+        const accordion = header.closest('.fag-accordion');
+        const content = accordion.querySelector('.accordion-content');
+        const isOpen = accordion.classList.contains('open');
+
+        if (isOpen) {
+          accordion.classList.remove('open');
+          header.setAttribute('aria-expanded', 'false');
+        } else {
+          accordion.classList.add('open');
+          header.setAttribute('aria-expanded', 'true');
+        }
+      });
+
+      // Keyboard support
+      header.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          header.click();
+        }
+      });
+    });
+  }
+
+  /**
    * Show fag details in modal (programfag-info modal)
    * @param {string} fagId - Subject ID
    */
@@ -1575,6 +1751,9 @@ export class Studieplanlegger {
       document.body.appendChild(modal);
     }
 
+    // Check if this is a valgfri programfag (needs 4 accordions)
+    const isValgfri = this.isValgfriProgramfag(fag.id);
+
     // Related badge (fordypning) - inline with fagkode
     const relatedBadge = fag.related && fag.related.length > 0
       ? `<span class="related-badge">Fordypning med: ${fag.related.join(', ')}</span>`
@@ -1619,15 +1798,10 @@ export class Studieplanlegger {
         </div>`
       : '';
 
-    // Use beskrivelseHTML from v2 API, remove duplicate title and "Læreplan:" text
-    let beskrivelseHTML = fag.beskrivelseHTML || fag.omFaget || '<p>Ingen beskrivelse tilgjengelig.</p>';
-
-    // Remove h1 title (duplicate)
-    beskrivelseHTML = beskrivelseHTML.replace(/<h1[^>]*>.*?<\/h1>/gi, '');
-
-    // Remove "**Læreplan:** Læreplan i [fagnavn]" line
-    beskrivelseHTML = beskrivelseHTML.replace(/<p><strong>Læreplan:<\/strong>[^<]*<\/p>/gi, '');
-    beskrivelseHTML = beskrivelseHTML.replace(/<strong>Læreplan:<\/strong>[^<]*/gi, '');
+    // Render modal body based on fag type
+    const modalBodyHTML = isValgfri
+      ? this.renderValgfriProgramfagBody(fag)
+      : this.renderStandardFagBody(fag);
 
     modal.innerHTML = `
       <div class="modal-content">
@@ -1638,7 +1812,7 @@ export class Studieplanlegger {
         ${vimeoHTML}
 
         <div class="modal-body">
-          ${beskrivelseHTML}
+          ${modalBodyHTML}
         </div>
 
         <a href="https://sokeresultat.udir.no/finn-lareplan.html?query=${fag.fagkode}&source=Laereplan&fltypefiltermulti=L%C3%A6replan&filtervalues=all" target="_blank" class="btn-lareplan">Se full læreplan på udir.no →</a>
@@ -1648,8 +1822,8 @@ export class Studieplanlegger {
     modal.style.display = 'flex';
     document.body.style.overflow = 'hidden';
 
-    // Convert competency goals to accordion
-    this.makeCompetencyAccordion(modal);
+    // Setup accordion handlers for fag-accordions
+    this.setupFagAccordionHandlers(modal);
 
     // Close button - use proper event listener instead of inline onclick
     const closeBtn = modal.querySelector('.modal-close');

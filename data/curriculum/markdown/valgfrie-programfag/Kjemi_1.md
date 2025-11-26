@@ -16,6 +16,14 @@ bilde: /public/images/fag/kjemi-1.jpg
 
 Kjemi handler om stoffers og materialers oppbygning, egenskaper og reaksjoner. Faget skal gi elevene grunnlag for å kunne forstå vår fysiske verden og innsikt i hvordan kompetanse i kjemi bidrar til endringer i samfunnet. Kjemi skal gi innsikt i hvordan naturvitenskapelig kompetanse og utforskende arbeid kan bidra til å finne løsninger og forberede elevene på videre studier og et arbeids- og samfunnsliv. 
 
+## Hvordan arbeider man i faget
+
+<!-- Innhold legges til senere -->
+
+## Fagets relevans
+
+<!-- Innhold legges til senere -->
+
 ## Kompetansemål
 
 - forstå og bruke kjemisk terminologi og regler for navnsetting i faglig kommunikasjon

@@ -20,6 +20,14 @@ bilde: /public/images/fag/matematikk-2p.jpg
 
 Matematikk 2P er et sentralt fag for å kunne forstå og beskrive forhold og sammenhenger i samfunnet gjennom matematisk modellering. Matematikk 2P skal bidra til at elevene utvikler et presist språk for kritisk tenkning og matematiske problemløsingsstrategier. Matematikk 2P skal forberede elevene på videre studier og på et samfunn og arbeidsliv i utvikling, gjennom praktisk bruk av matematikk.
 
+## Hvordan arbeider man i faget
+
+<!-- Innhold legges til senere -->
+
+## Fagets relevans
+
+<!-- Innhold legges til senere -->
+
 ## Kompetansemål
 
 - forklare og bruke prosent, prosentpoeng og vekstfaktor til modellering av praktiske situasjoner med digitale verktøy

@@ -11,6 +11,14 @@ lareplan: FSP6-01
 
 Spansk I+II er et sammenhengende fremmedspråkfag over tre år (VG1-VG3) for elever som ikke har hatt fremmedspråk på ungdomstrinnet. Faget gir grunnleggende kompetanse i spansk språk og kultur.
 
+## Hvordan arbeider man i faget
+
+<!-- Innhold legges til senere -->
+
+## Fagets relevans
+
+<!-- Innhold legges til senere -->
+
 ## Timefordeling
 
 - **VG1**: 113 timer

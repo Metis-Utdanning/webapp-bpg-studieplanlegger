@@ -16,6 +16,14 @@ generert: 2025-11-14
 
 Fysikk handler om å forstå den fysiske verden, fra de minste partiklene til hele universet. Faget gir elevene innsikt i hvordan verden er bygget opp, muligheter til å se sammenhenger i naturlige fenomener og verktøy til å forutsi utfall av fysiske prosesser. Fysikk handler også om hvordan teknologisk utvikling påvirker individet og samfunnet. Kompetanse i analytisk tenkning og problemløsing forbereder elevene til videre utdanning og arbeidsliv.
 
+## Hvordan arbeider man i faget
+
+<!-- Innhold legges til senere -->
+
+## Fagets relevans
+
+<!-- Innhold legges til senere -->
+
 ## Kompetansemål
 
 - planlegge, gjennomføre og videreutvikle forsøk, og analysere data og beregne usikkerhet for å vurdere gyldigheten av funn

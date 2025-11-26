@@ -15,6 +15,14 @@ generert: 2025-11-14
 
 Matematikk R handler om å forstå moderne anvendelser av matematikk i realfaglige og samfunnsfaglige sammenhenger. Faget gir elevene mulighet til å utvikle et presist språk for kritisk tenkning, evne til problemløsing og matematisk forståelse. Matematikk R handler om å tilegne seg og forstå matematiske verktøy og om å anvende verktøyene i utforsking og analyse av problemstillinger knyttet til realfag og samfunn. Kompetanse om teoretiske og praktiske anvendelser av matematikk forbereder elevene til videre arbeid og utdanning som stiller krav om matematisk forståelse.
 
+## Hvordan arbeider man i faget
+
+<!-- Innhold legges til senere -->
+
+## Fagets relevans
+
+<!-- Innhold legges til senere -->
+
 ## Kompetansemål
 
 - utforske egenskaper ved ulike rekker og gjøre rede for praktiske anvendelser av egenskaper ved rekker

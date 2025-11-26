@@ -63,6 +63,59 @@ function extractOmFaget(markdown) {
   return omFagetLines.join(' ');
 }
 
+// Extract a named section from markdown
+function extractSection(markdown, sectionName) {
+  const lines = markdown.split('\n');
+  let inSection = false;
+  const sectionLines = [];
+
+  for (const line of lines) {
+    if (line.startsWith(`## ${sectionName}`)) {
+      inSection = true;
+      continue;
+    }
+    if (inSection && line.startsWith('## ')) {
+      break;
+    }
+    if (inSection) {
+      // Include non-empty lines and preserve structure
+      if (line.trim() && !line.startsWith('<!--')) {
+        sectionLines.push(line);
+      }
+    }
+  }
+
+  const content = sectionLines.join('\n').trim();
+  return content || null;
+}
+
+// Extract kjerneelementer as structured array
+function extractKjerneelementer(markdown) {
+  const lines = markdown.split('\n');
+  let inKjerneelementer = false;
+  let currentElement = null;
+  const elementer = [];
+
+  for (const line of lines) {
+    if (line.startsWith('## Kjerneelementer')) {
+      inKjerneelementer = true;
+      continue;
+    }
+    if (inKjerneelementer && line.startsWith('## ') && !line.startsWith('### ')) {
+      break;
+    }
+    if (inKjerneelementer && line.startsWith('### ')) {
+      if (currentElement) elementer.push(currentElement);
+      currentElement = { title: line.replace('### ', '').trim(), content: '' };
+    } else if (inKjerneelementer && currentElement && line.trim() && !line.startsWith('<!--')) {
+      currentElement.content += (currentElement.content ? '\n' : '') + line.trim();
+    }
+  }
+  if (currentElement) elementer.push(currentElement);
+
+  return elementer.length > 0 ? elementer : null;
+}
+
 // Read markdown files from a directory
 function loadMarkdownFiles(directory, defaultType = 'programfag') {
   if (!fs.existsSync(directory)) {
@@ -93,6 +146,9 @@ function loadMarkdownFiles(directory, defaultType = 'programfag') {
       beskrivelse: markdown.trim(),
       beskrivelseHTML: marked(markdown.trim()),
       omFaget: extractOmFaget(markdown),
+      hvordanArbeiderMan: extractSection(markdown, 'Hvordan arbeider man i faget'),
+      fagetsRelevans: extractSection(markdown, 'Fagets relevans'),
+      kjerneelementer: extractKjerneelementer(markdown),
       generert: frontmatter.generert
     };
   });
@@ -405,6 +461,9 @@ function buildStudieplanleggerAPI(schoolId, curriculumData) {
         vimeo: f.vimeo,  // Vimeo video ID
         omFaget: f.omFaget,
         beskrivelseHTML: f.beskrivelseHTML,  // Full markdown HTML for modal
+        hvordanArbeiderMan: f.hvordanArbeiderMan,  // Ny seksjon for accordion
+        fagetsRelevans: f.fagetsRelevans,  // Ny seksjon for accordion
+        kjerneelementer: f.kjerneelementer,  // Strukturert array for accordion
         related: f.related
       })),
       obligatoriskeProgramfag: obligatoriskeProgramfag.map(f => ({
@@ -417,7 +476,8 @@ function buildStudieplanleggerAPI(schoolId, curriculumData) {
         bilde: f.bilde,  // Bildesti for modal
         vimeo: f.vimeo,  // Vimeo video ID
         omFaget: f.omFaget,
-        beskrivelseHTML: f.beskrivelseHTML  // Full markdown HTML for modal
+        beskrivelseHTML: f.beskrivelseHTML,  // Full markdown HTML for modal
+        kjerneelementer: f.kjerneelementer  // Strukturert array for accordion
       })),
       fellesfag: fellesfag.map(f => ({
         id: f.id,
@@ -429,7 +489,8 @@ function buildStudieplanleggerAPI(schoolId, curriculumData) {
         bilde: f.bilde,  // Bildesti for modal
         vimeo: f.vimeo,  // Vimeo video ID
         omFaget: f.omFaget,
-        beskrivelseHTML: f.beskrivelseHTML  // Full markdown HTML for modal
+        beskrivelseHTML: f.beskrivelseHTML,  // Full markdown HTML for modal
+        kjerneelementer: f.kjerneelementer  // Strukturert array for accordion
       }))
     }
   };

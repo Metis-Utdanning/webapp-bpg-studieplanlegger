@@ -15,6 +15,14 @@ generert: 2025-11-14
 
 Historie og filosofi handler om å utvikle selvstendig filosofisk tenkning og forståelse av hvordan mennesket og samfunnet er formet av historie og selv skaper historie. Faget gir elevene trening i åpen dialog, filosofisk refleksjon og historisk bevissthet, slik at de kan møte nåtidens og framtidens utfordringer med en undersøkende og nysgjerrig holdning. Faget skal også forberede elevene på et samfunns- og arbeidsliv der det er viktig å tenke kritisk og kreativt og ha evne til å møte andre mennesker med åpenhet og respekt.
 
+## Hvordan arbeider man i faget
+
+<!-- Innhold legges til senere -->
+
+## Fagets relevans
+
+<!-- Innhold legges til senere -->
+
 ## Kompetansemål
 
 - anvende filosofisk samtale for å utforske oppfatninger, undersøke argumentasjon og vurdere gyldighet
