@@ -1766,8 +1766,8 @@ export class Studieplanlegger {
 
     // Hero section with image (or fallback without)
     // Convert relative image path to absolute URL for embedded usage
-    const baseUrl = this.options.apiBaseUrl?.replace('/dist/api/v2', '') || '';
-    const imageUrl = fag.bilde ? `${baseUrl}${fag.bilde}` : null;
+    const baseUrl = this.options.apiBaseUrl?.replace('/api/v2', '') || '';
+    const imageUrl = fag.bilde ? `${baseUrl}/images/fag/${fag.bilde}` : null;
 
     const heroHTML = imageUrl
       ? `<div class="modal-hero">
@@ -2095,8 +2095,8 @@ export class Studieplanlegger {
    */
   renderCatalogCard(fag) {
     const shortTitle = fag.shortTitle || fag.title || fag.id;
-    const baseUrl = this.options.apiBaseUrl?.replace('/dist/api/v2', '') || '';
-    const imageUrl = fag.bilde ? `${baseUrl}${fag.bilde}` : null;
+    const baseUrl = this.options.apiBaseUrl?.replace('/api/v2', '') || '';
+    const imageUrl = fag.bilde ? `${baseUrl}/images/fag/${fag.bilde}` : null;
 
     // Determine fordypning level
     const fordypningLevel = fag.id?.endsWith('-1') ? '1' : (fag.id?.endsWith('-2') ? '2' : null);
