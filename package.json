@@ -1,15 +1,11 @@
 {
   "name": "studieplanlegger",
-  "version": "1.0.0",
-  "description": "Studieplanlegger for norske VGS-elever - Bergen Private Gymnas",
+  "version": "2.0.0",
+  "description": "Studieplanlegger widget - henter data fra school-data API",
   "type": "module",
   "scripts": {
     "dev": "python3 -m http.server 8000",
-    "build": "node scripts/build-api.cjs",
-    "fetch": "bash scripts/fetch-curriculum.sh valgfrie",
-    "fetch:all": "bash scripts/fetch-curriculum.sh all",
-    "test": "echo \"Testing not configured yet\"",
-    "deploy": "npm run build && echo \"Deploy to GitHub Pages\""
+    "test": "echo \"Testing not configured yet\""
   },
   "repository": {
     "type": "git",
@@ -17,10 +13,5 @@
   },
   "author": "Fredrik Eidsheim <fredeids-metis.no>",
   "license": "MIT",
-  "dependencies": {
-    "gray-matter": "^4.0.3",
-    "js-yaml": "^4.1.0",
-    "marked": "^11.0.0"
-  },
   "devDependencies": {}
 }

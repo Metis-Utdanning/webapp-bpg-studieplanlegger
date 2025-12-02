@@ -34,7 +34,7 @@ Bugs som rapporteres her er basert på versjon som ligger på github, bygget inn
 ```
 
 ## Bugs (aktive)
-
+- Bilde og Grafisk skal IKKE gi fordypning. Dette er mediefag. Samme med Musikk fordypning 1 og 2 som ikke gir fordypning for studiespesialisernde
 *Ingen kjente bugs per 26.11.2025*
 
 ## UI-forbedringer (aktive)
@@ -42,7 +42,7 @@ Bugs som rapporteres her er basert på versjon som ligger på github, bygget inn
 *Ingen aktive UI-forbedringer*
 
 ## Features (ønsket)
-
+- 
 -
 
 ## Fikset 26.11.2025
