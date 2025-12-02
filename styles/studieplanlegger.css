@@ -613,6 +613,7 @@
 
 .sp-modal-actions {
   display: flex;
+  align-items: center;
   gap: var(--spacing-sm);
 }
 

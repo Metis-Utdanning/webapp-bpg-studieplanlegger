@@ -599,6 +599,10 @@ export class UIRenderer {
           <div class="sp-modal-footer">
             <div class="sp-modal-actions">
               <button class="sp-btn sp-btn-secondary">Lukk</button>
+              <span class="sp-feedback-divider">|</span>
+              <a href="https://forms.office.com/e/Y7ekhKc9GD" target="_blank" rel="noopener" class="sp-feedback-link">
+                Gi tilbakemelding
+              </a>
             </div>
           </div>
         </div>
