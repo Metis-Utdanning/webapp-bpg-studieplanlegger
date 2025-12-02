@@ -75,7 +75,9 @@ export class DataHandler {
    * Load from v2 API (studieplanlegger.json - single endpoint)
    */
   async loadFromV2API() {
-    const url = `${this.apiBaseUrlV2}/schools/${this.schoolId}/studieplanlegger.json`;
+    // Add cache-busting parameter to prevent stale data
+    const cacheBuster = Date.now();
+    const url = `${this.apiBaseUrlV2}/schools/${this.schoolId}/studieplanlegger.json?v=${cacheBuster}`;
     console.log(`🌐 Loading from v2 API: ${url}`);
 
     try {
