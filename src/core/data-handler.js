@@ -178,6 +178,22 @@ export class DataHandler {
   }
 
   /**
+   * Get school programs from API
+   * @returns {Array} Array of { id, name, active } objects
+   */
+  getSchoolPrograms() {
+    if (this.school?.programs && this.school.programs.length > 0) {
+      return this.school.programs.filter(p => p.active !== false);
+    }
+    // Fallback to defaults
+    return [
+      { id: 'studiespesialisering', name: 'Studiespesialisering', active: true },
+      { id: 'musikk-dans-drama', name: 'Musikk, dans og drama', active: true },
+      { id: 'medier-kommunikasjon', name: 'Medier og kommunikasjon', active: true }
+    ];
+  }
+
+  /**
    * Get description for a blokkskjema version
    * @param {string} versionId - Version ID
    * @returns {string} Description or version ID as fallback
@@ -558,15 +574,31 @@ export class DataHandler {
    * Uses v2 API data from timefordeling.yml
    */
   getFellesfag(programomrade, trinn) {
-    // v2: Use fellesfagData from timefordeling.yml (preferred)
+    // v2 NEW: fellesfag structured as { programområde: { trinn: { fag: [...] } } }
+    if (this.fellesfagData && this.fellesfagData[programomrade] && this.fellesfagData[programomrade][trinn]) {
+      const trinnData = this.fellesfagData[programomrade][trinn];
+      const fagArray = trinnData.fag || [];
+
+      // Filter out VG1 valg-fag (matematikk og fremmedspråk) - these are handled separately
+      const valgFagIds = ['matematikk-vg1', 'fremmedsprak-vg1'];
+
+      return fagArray
+        .filter(fag => !valgFagIds.includes(fag.id))
+        .map(fag => ({
+          id: fag.id,
+          navn: fag.title || fag.id,
+          timer: fag.timer,
+          fagkode: fag.fagkode || fag.id
+        }));
+    }
+
+    // v2 OLD: fellesfag structured as { trinn: { fag: [...] } } (fallback)
     if (this.fellesfagData && this.fellesfagData[trinn]) {
-      // Handle both formats: { fag: [...] } (new) or direct array (old)
       const trinnData = this.fellesfagData[trinn];
       const fagArray = Array.isArray(trinnData) ? trinnData : (trinnData.fag || []);
 
       const filtered = fagArray.filter(fag => {
         const fagTilgjengelig = fag.tilgjengeligFor || [];
-        // If tilgjengeligFor is empty, assume available for all programs
         return fagTilgjengelig.length === 0 || fagTilgjengelig.includes(programomrade);
       }).map(fag => ({
         id: fag.id,

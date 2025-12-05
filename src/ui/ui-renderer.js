@@ -114,6 +114,8 @@ export class UIRenderer {
    */
   renderFilter() {
     const currentState = this.state.getState();
+    // Get programs from API (school.programs) or fallback to defaults
+    const programs = this.dataHandler.getSchoolPrograms();
 
     return `
       <div class="sp-filter-section">
@@ -121,18 +123,12 @@ export class UIRenderer {
           <div class="sp-filter-group">
             <label class="sp-filter-label">Velg programområde:</label>
             <div class="sp-filter-buttons">
-              <button class="sp-filter-btn ${currentState.programomrade === 'studiespesialisering' ? 'selected' : ''}"
-                      data-programomrade="studiespesialisering">
-                Studiespesialisering
-              </button>
-              <button class="sp-filter-btn ${currentState.programomrade === 'musikk-dans-drama' ? 'selected' : ''}"
-                      data-programomrade="musikk-dans-drama">
-                Musikk, dans og drama
-              </button>
-              <button class="sp-filter-btn ${currentState.programomrade === 'medier-kommunikasjon' ? 'selected' : ''}"
-                      data-programomrade="medier-kommunikasjon">
-                Medier og kommunikasjon
-              </button>
+              ${programs.map(program => `
+                <button class="sp-filter-btn ${currentState.programomrade === program.id ? 'selected' : ''}"
+                        data-programomrade="${sanitizeHTML(program.id)}">
+                  ${sanitizeHTML(program.name)}
+                </button>
+              `).join('')}
             </div>
           </div>
 
