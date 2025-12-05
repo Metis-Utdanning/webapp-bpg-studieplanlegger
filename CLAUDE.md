@@ -1,13 +1,39 @@
 # CLAUDE.md - Studieplanlegger
 
 > **Kontekst for Claude Code**
-> **Sist oppdatert:** 2024-11-25
+> **Sist oppdatert:** 2025-12-05
 
 ## Prosjektbeskrivelse
 
 Interaktiv studieplanlegger-widget for Bergen Private Gymnas. Elevene velger programfag for VG2 og VG3 via blokkskjema, og får automatisk validering av fordypningskrav.
 
 **GitHub:** https://github.com/fredeids-metis/studieplanlegger
+
+## API-arkitektur
+
+### Datakilder
+Appen henter data fra **school-data** prosjektet via GitHub Pages API:
+
+```
+Base URL: https://fredeids-metis.github.io/school-data/api/
+Endepunkt: /v2/schools/{skole}/studieplanlegger.json
+```
+
+### Dataflyt
+```
+school-data/data/udir/          → Nasjonale regler (eksklusjoner, forutsetninger, fordypning)
+school-data/data/skoler/{skole}/ → Skolespesifikk config (blokkskjema, tilbud)
+           ↓
+school-data/scripts/build-api-v2.js  → Bygger komplett JSON
+           ↓
+Studieplanlegger (data-handler.js)   → Henter og cacher data
+```
+
+### Blokkskjema-versjoner
+- Versjoner navngis: `{skoleår}_{variant}.yml` (f.eks. `26-27_flex.yml`)
+- Flere versjoner kan eksistere samtidig
+- Aktiv versjon settes i `school-config.yml`
+- Runtime-veksling via URL: `?blokkskjema=26-27_flex` eller `?admin=true`
 
 ## Viktige Regler
 
@@ -33,26 +59,23 @@ Selv om UDIR formelt deler studiespesialisering i "Realfag" og "Språk, samfunns
 
 ```
 studieplanlegger/
-├── data/curriculum/        # Fagdata og regler
-│   ├── regler.yml          # Valideringsregler (SINGLE SOURCE OF TRUTH)
-│   └── markdown/           # Fagbeskrivelser (med shortTitle, bilde, vimeo i frontmatter)
-├── data/schools/           # Skole-spesifikk config
-│   └── bergen-private-gymnas/
-│       └── blokkskjema_v2.yml
 ├── src/
-│   ├── studieplanlegger.js # Hovedinngang, modal-håndtering
-│   └── core/
-│       ├── state.js        # State management (unified selections[])
-│       ├── validation-service.js
-│       └── data-handler.js
+│   ├── studieplanlegger.js     # Hovedinngang, modal-håndtering
+│   ├── core/
+│   │   ├── state.js            # State management (unified selections[])
+│   │   ├── validation-service.js
+│   │   └── data-handler.js     # API-henting og caching
+│   └── ui/
+│       └── ui-renderer.js      # UI-rendering
 ├── public/
-│   ├── demo.html           # Lokal testing
-│   ├── embed.html          # Squarespace embed-kode
-│   └── images/fag/         # Fagbilder (fysikk-1.jpg, etc.)
-├── docs/                   # Dokumentasjon
-│   ├── CHANGELOG.md        # Endringslogg
-│   └── *.md                # Analyser og sesjonsdokumenter
-└── dist/api/               # Generert JSON API
+│   ├── demo.html               # Lokal testing
+│   ├── embed.html              # Squarespace embed-kode
+│   └── images/fag/             # Fagbilder (fysikk-1.jpg, etc.)
+├── styles/
+│   └── studieplanlegger.css
+├── docs/                       # Dokumentasjon
+│   └── CHANGELOG.md
+└── dist/                       # Bygget output
 ```
 
 ## State Struktur
@@ -89,7 +112,6 @@ state = {
 ```bash
 npm run dev      # Start dev server (http://localhost:8000/public/demo.html)
 npm run build    # Rebuild API fra YAML/markdown
-npm run fetch:all # Oppdater data fra UDIR
 ```
 
 ## Testing
@@ -101,10 +123,11 @@ Test disse scenarioene:
 3. **Fordypning:** Velg 2 fag fra samme fagområde → se fordypning telle opp
 4. **Matematikk-konflikt:** R1 i VG2, prøv S2 i VG3 → skal blokkeres
 5. **Fremmedspråk NEI:** Spansk I+II skal auto-velges i VG3
+6. **Versjonsbytting:** `?admin=true` → bytt mellom blokkskjema-versjoner
 
 ## Filer å Lese Ved Endringer
 
-- `data/curriculum/regler.yml` - Valideringsregler
+- `src/core/data-handler.js` - API-henting og datastrukturer
 - `src/core/state.js` - State og setTrinnSelections()
 - `src/core/validation-service.js` - Fordypning og konflikter
 - `src/studieplanlegger.js` - Modal-håndtering
@@ -113,13 +136,20 @@ Test disse scenarioene:
 
 ```javascript
 // I browser console:
-window.studieplanlegger.state.getState()  // Se state
-window.studieplanlegger.validator         // Se validator
+window.studieplanlegger.state.getState()      // Se state
+window.studieplanlegger.validator             // Se validator
+window.studieplanlegger.dataHandler           // Se data-handler
+window.studieplanlegger.dataHandler.getAvailableVersions()  // Liste versjoner
 ```
 
 ## Innbygging
 
 Se `public/embed.html` for Squarespace embed-kode. Filer serveres via jsDelivr CDN direkte fra GitHub.
+
+## Relaterte Prosjekter
+
+- **school-data**: Masterdata og API - `/Users/fredrik/Documents/school-data/`
+  - Se `CLAUDE.md` i school-data for full dokumentasjon av datastrukturer
 
 ## Masterdata-kilder (UDIR)
 

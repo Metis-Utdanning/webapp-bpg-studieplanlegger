@@ -106,8 +106,9 @@ export class DataHandler {
 
       // Check if this is the new multi-version format
       if (blokkskjemaResponse.versions) {
-        // New format: { activeVersion: 'v2', versions: { v1: {...}, v2: {...} } }
+        // New format: { activeVersion: 'v2', descriptions: {...}, versions: { v1: {...}, v2: {...} } }
         this.blokkskjemaVersions = blokkskjemaResponse.versions;
+        this.blokkskjemaDescriptions = blokkskjemaResponse.descriptions || {};
         this.currentBlokkskjemaVersion = blokkskjemaResponse.activeVersion || Object.keys(this.blokkskjemaVersions)[0];
         this.blokkskjemaData = this.blokkskjemaVersions[this.currentBlokkskjemaVersion] || { blokker: {} };
 
@@ -174,6 +175,31 @@ export class DataHandler {
    */
   getActiveVersion() {
     return this.currentBlokkskjemaVersion;
+  }
+
+  /**
+   * Get description for a blokkskjema version
+   * @param {string} versionId - Version ID
+   * @returns {string} Description or version ID as fallback
+   */
+  getVersionDescription(versionId) {
+    return this.blokkskjemaDescriptions?.[versionId] || this.formatVersionId(versionId);
+  }
+
+  /**
+   * Format a version ID for display (fallback when no description exists)
+   * E.g., "26-27_flex" -> "26-27 Flex"
+   * @param {string} versionId - Raw version ID
+   * @returns {string} Formatted display name
+   */
+  formatVersionId(versionId) {
+    if (!versionId) return '';
+    return versionId
+      .replace(/_/g, ' ')
+      .replace(/-/g, '-')
+      .split(' ')
+      .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+      .join(' ');
   }
 
   /**

@@ -59,6 +59,7 @@ export class UIRenderer {
     const showSwitcher = this.options?.showVersionSwitcher;
     const versions = this.dataHandler.getAvailableVersions();
     const currentVersion = this.dataHandler.getActiveVersion();
+    const currentDescription = this.dataHandler.getVersionDescription(currentVersion);
 
     // Only show version switcher if enabled and multiple versions exist
     const showVersionUI = showSwitcher && versions.length > 1;
@@ -79,25 +80,29 @@ export class UIRenderer {
         ${showVersionUI ? `
           <span class="sp-feedback-divider">|</span>
           <div class="sp-version-switcher">
-            <button class="sp-version-btn" aria-haspopup="listbox" aria-expanded="false">
-              Blokkskjema (${sanitizeHTML(currentVersion)})
+            <button class="sp-version-btn" aria-haspopup="listbox" aria-expanded="false" title="${sanitizeHTML(currentDescription)}">
+              Blokkskjema: ${sanitizeHTML(this.dataHandler.formatVersionId(currentVersion))}
             </button>
             <div class="sp-version-dropdown hidden" role="listbox">
-              ${versions.map(v => `
+              ${versions.map(v => {
+                const desc = this.dataHandler.getVersionDescription(v);
+                const displayName = this.dataHandler.formatVersionId(v);
+                return `
                 <button class="sp-version-option ${v === currentVersion ? 'active' : ''}"
                         role="option"
                         aria-selected="${v === currentVersion}"
-                        data-version="${sanitizeHTML(v)}">
-                  ${sanitizeHTML(v)}${v === currentVersion ? ' ✓' : ''}
+                        data-version="${sanitizeHTML(v)}"
+                        title="${sanitizeHTML(desc)}">
+                  ${sanitizeHTML(displayName)}${v === currentVersion ? ' ✓' : ''}
                 </button>
-              `).join('')}
+              `}).join('')}
             </div>
           </div>
         ` : ''}
         ${showSwitcher && versions.length === 1 ? `
           <span class="sp-feedback-divider">|</span>
-          <span class="sp-version-indicator" title="Kun én blokkskjema-versjon tilgjengelig">
-            Blokkskjema: ${sanitizeHTML(currentVersion)}
+          <span class="sp-version-indicator" title="${sanitizeHTML(currentDescription)}">
+            Blokkskjema: ${sanitizeHTML(this.dataHandler.formatVersionId(currentVersion))}
           </span>
         ` : ''}
       </div>
