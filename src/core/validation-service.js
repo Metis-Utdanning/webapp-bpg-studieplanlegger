@@ -701,15 +701,16 @@ export class ValidationService {
     // Example: R1 in VG2 + S1 in VG3 = BLOCKED (different lines)
     //          R1 in VG2 + R2 in VG3 = OK (same line)
 
-    const vg2MathFag = vg2Selections.find(f => {
-      const fagkode = (f.fagkode || f.id || '').toUpperCase();
-      return fagkode.startsWith('MAT');
-    });
+    // Helper to detect matematikk-fag (includes Statistikk and Matematikk for økonomifag)
+    const isMathFag = (f) => {
+      const id = (f.id || '').toLowerCase();
+      const fagkode = (f.fagkode || '').toUpperCase();
+      const matematikkIds = ['statistikk', 'matematikk-for-okonomifag'];
+      return id.startsWith('matematikk') || fagkode.startsWith('MAT') || matematikkIds.includes(id);
+    };
 
-    const vg3MathFag = vg3Selections.find(f => {
-      const fagkode = (f.fagkode || f.id || '').toUpperCase();
-      return fagkode.startsWith('MAT');
-    });
+    const vg2MathFag = vg2Selections.find(isMathFag);
+    const vg3MathFag = vg3Selections.find(isMathFag);
 
     if (vg2MathFag && vg3MathFag) {
       const vg2MathId = (vg2MathFag.id || vg2MathFag.fagkode).toLowerCase();

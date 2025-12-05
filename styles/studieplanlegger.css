@@ -18,45 +18,62 @@
 }
 
 /* ============================================
-   FILTER SECTION
+   FILTER SECTION - Compact horizontal layout
    ============================================ */
 .sp-filter-section {
   background: white;
   border: 2px solid var(--border-light);
   border-radius: var(--radius-lg);
-  padding: var(--spacing-lg);
-  margin-bottom: var(--spacing-xl);
+  padding: var(--spacing-md);
+  margin-bottom: var(--spacing-lg);
   box-shadow: var(--shadow-md);
-}
-
-.sp-filter-grid {
-  display: grid;
-  grid-template-columns: 2fr 1fr;
-  gap: var(--spacing-lg);
-  align-items: end;  /* Align both rows at bottom so buttons line up */
-}
-
-@media (max-width: 768px) {
-  .sp-filter-grid {
-    grid-template-columns: 1fr;
-  }
-}
-
-.sp-filter-label {
-  display: block;
-  font-weight: 600;
-  margin-bottom: var(--spacing-sm);
-  font-size: 0.95rem;
-  color: var(--text-dark);
-}
-
-.sp-filter-buttons {
   display: flex;
+  flex-direction: column;
   gap: var(--spacing-sm);
-  flex-wrap: wrap;
-  align-items: center;  /* Ensure buttons align vertically */
 }
 
+/* Filter row - horizontal layout */
+.sp-filter-row {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-md);
+  flex-wrap: wrap;
+}
+
+.sp-filter-row-secondary {
+  padding-top: var(--spacing-sm);
+  border-top: 1px solid var(--border-light);
+}
+
+/* Inline label */
+.sp-filter-label-inline {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--text-dark);
+  white-space: nowrap;
+}
+
+/* Visual divider between filter groups */
+.sp-filter-divider {
+  width: 1px;
+  height: 24px;
+  background: var(--border-light);
+  margin: 0 var(--spacing-xs);
+}
+
+/* Inline button group */
+.sp-filter-buttons-inline {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+}
+
+/* Spacer to push "fjern valg" to the right */
+.sp-filter-spacer {
+  flex: 1;
+}
+
+/* Standard filter button */
 .sp-filter-btn {
   padding: 0.75rem 1.5rem;
   border: 2px solid var(--border-medium, #ccc);
@@ -67,8 +84,15 @@
   cursor: pointer;
   transition: all var(--transition-fast);
   color: var(--text-dark);
-  /* FIXED (2024-11-24): Add shadow effect - Bug 8 */
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
+}
+
+/* Small/compact filter button */
+.sp-filter-btn-sm {
+  padding: 0.4rem 0.9rem;
+  font-size: 0.85rem;
+  border-radius: var(--radius-sm);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.06);
 }
 
 .sp-filter-btn:hover {
@@ -77,15 +101,18 @@
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.12);
 }
 
-/* FIXED (2024-11-24): Gray styling for fremmedspråk buttons - Bug 7 */
-.sp-filter-btn[data-fremmedsprak]:not(.selected) {
+.sp-filter-btn-sm:hover {
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Gray button variant (for fremmedspråk) */
+.sp-filter-btn-gray:not(.selected) {
   background: #f5f5f5;
   color: #666;
   border-color: #ddd;
 }
 
-/* Fremmedspråk selected = dark gray instead of primary green */
-.sp-filter-btn[data-fremmedsprak].selected {
+.sp-filter-btn-gray.selected {
   background: #424242;
   color: white;
   border-color: #212121;
@@ -108,22 +135,6 @@
   border-color: #00897b;
 }
 
-/* Filter group with action button inline */
-.sp-filter-group-with-action {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-end;
-  gap: var(--spacing-md);
-}
-
-.sp-filter-group-main {
-  flex: 1;
-}
-
-.sp-filter-action {
-  flex-shrink: 0;
-}
-
 /* Fjern valg button */
 .sp-fjern-valg-btn {
   padding: 0.75rem 1.5rem;
@@ -138,6 +149,14 @@
   opacity: 0.6;
 }
 
+/* Small variant */
+.sp-fjern-valg-btn-sm {
+  padding: 0.4rem 0.9rem;
+  font-size: 0.8rem;
+  border-width: 1px;
+  border-radius: var(--radius-sm);
+}
+
 .sp-fjern-valg-btn.active {
   cursor: pointer;
   opacity: 1;
@@ -150,6 +169,137 @@
   background: #ffebee;
   border-color: #d32f2f;
   color: #d32f2f;
+}
+
+/* ============================================
+   DROPDOWN FILTER (Program selector)
+   ============================================ */
+.sp-filter-dropdown {
+  position: relative;
+}
+
+.sp-filter-dropdown-btn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 0.4rem 0.75rem;
+  background: white;
+  border: 2px solid var(--border-medium, #ccc);
+  border-radius: var(--radius-sm);
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  color: var(--text-dark);
+}
+
+.sp-filter-dropdown-btn:hover {
+  border-color: var(--primary-color);
+  background: var(--background-light, #f5f5f5);
+}
+
+.sp-filter-dropdown-label {
+  color: var(--text-medium, #666);
+  font-weight: 500;
+}
+
+.sp-filter-dropdown-value {
+  color: var(--primary-color);
+  font-weight: 600;
+}
+
+.sp-filter-dropdown-arrow {
+  font-size: 0.7rem;
+  color: var(--text-medium, #666);
+  transition: transform var(--transition-fast);
+}
+
+.sp-filter-dropdown[aria-expanded="true"] .sp-filter-dropdown-arrow {
+  transform: rotate(180deg);
+}
+
+.sp-filter-dropdown-menu {
+  position: absolute;
+  top: calc(100% + 4px);
+  left: 0;
+  min-width: 100%;
+  background: white;
+  border: 2px solid var(--border-medium, #ccc);
+  border-radius: var(--radius-sm);
+  box-shadow: var(--shadow-lg, 0 4px 12px rgba(0,0,0,0.15));
+  z-index: 100;
+  overflow: hidden;
+}
+
+.sp-filter-dropdown-menu.hidden {
+  display: none;
+}
+
+.sp-filter-dropdown-item {
+  display: block;
+  width: 100%;
+  padding: 0.6rem 1rem;
+  text-align: left;
+  background: white;
+  border: none;
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: var(--text-dark);
+  cursor: pointer;
+  transition: background var(--transition-fast);
+}
+
+.sp-filter-dropdown-item:hover {
+  background: var(--background-light, #f5f5f5);
+}
+
+.sp-filter-dropdown-item.selected {
+  background: var(--primary-light, #e8f5e9);
+  color: var(--primary-color);
+  font-weight: 600;
+}
+
+.sp-filter-dropdown-item.selected::before {
+  content: '✓ ';
+}
+
+/* Responsive: Stack on mobile */
+@media (max-width: 768px) {
+  .sp-filter-row {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--spacing-sm);
+  }
+
+  .sp-filter-divider {
+    display: none;
+  }
+
+  .sp-filter-spacer {
+    display: none;
+  }
+
+  .sp-filter-row-secondary {
+    width: 100%;
+  }
+
+  .sp-fjern-valg-btn {
+    width: 100%;
+    margin-top: var(--spacing-sm);
+  }
+
+  .sp-filter-dropdown {
+    width: 100%;
+  }
+
+  .sp-filter-dropdown-btn {
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  .sp-filter-dropdown-menu {
+    width: 100%;
+  }
 }
 
 /* ============================================
@@ -465,10 +615,28 @@
   box-shadow: 0 2px 8px rgba(0,0,0,0.1);
 }
 
-/* Selected programfag */
+/* Selected programfag - blålig farge */
 .sp-fag-item.selected {
-  background: var(--secondary-color);
-  border-color: var(--primary-color);
+  background: #bbdefb;
+  border-color: #1976d2;
+}
+
+/* Matematikk-fag farge når valgt (mørkegrønn) */
+.sp-fag-item.matematikk.selected {
+  background: #a5d6a7;
+  border-color: #2e7d32;
+}
+
+/* Historie-fag farge når valgt (gul) */
+.sp-fag-item.historie.selected {
+  background: #fff9c4;
+  border-color: #f9a825;
+}
+
+/* Fremmedspråk-fag farge når valgt (mørk oransje) */
+.sp-fag-item.fremmedsprak.selected {
+  background: #ffcc80;
+  border-color: #ef6c00;
 }
 
 /* Divider between sections */
@@ -740,9 +908,22 @@
   background: #f9f9f9;
 }
 
+/* VG1-modal: Default selected - blålig (brukes ikke direkte, men som fallback) */
 .sp-vg1-fag-item.selected {
-  background: var(--secondary-color);
-  border-color: var(--primary-color);
+  background: #bbdefb;
+  border-color: #1976d2;
+}
+
+/* VG1-modal: Matematikk selected - mørkegrønn */
+.sp-vg1-fag-item.matematikk.selected {
+  background: #a5d6a7;
+  border-color: #2e7d32;
+}
+
+/* VG1-modal: Fremmedspråk selected - mørk oransje */
+.sp-vg1-fag-item.fremmedsprak.selected {
+  background: #ffcc80;
+  border-color: #ef6c00;
 }
 
 .sp-vg1-fag-item-title {
@@ -752,7 +933,7 @@
 }
 
 .sp-vg1-fag-item.selected .sp-vg1-fag-item-title {
-  color: var(--primary-color);
+  color: var(--text-dark);
 }
 
 .sp-vg1-fag-item-timer {
@@ -761,7 +942,123 @@
 }
 
 /* ============================================
-   VALIDERING (kompakt horisontal)
+   TRINN VALIDATION STRIPE (inside each VG column)
+   ============================================ */
+.sp-trinn-validation {
+  margin-top: var(--spacing-lg);
+  padding: var(--spacing-sm) var(--spacing-md);
+  border-radius: var(--radius-md);
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  font-size: 0.85rem;
+  font-weight: 600;
+  transition: all var(--transition-fast);
+}
+
+.sp-trinn-validation.complete {
+  background: linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%);
+  border: 2px solid #4CAF50;
+  color: #2e7d32;
+}
+
+.sp-trinn-validation.incomplete {
+  background: linear-gradient(135deg, #fff3e0 0%, #ffe0b2 100%);
+  border: 2px solid #ff9800;
+  color: #e65100;
+}
+
+.sp-trinn-validation-icon {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.9rem;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+
+.sp-trinn-validation.complete .sp-trinn-validation-icon {
+  background: #4CAF50;
+  color: white;
+  box-shadow: 0 2px 4px rgba(76, 175, 80, 0.3);
+}
+
+.sp-trinn-validation.incomplete .sp-trinn-validation-icon {
+  background: #ff9800;
+  color: white;
+  box-shadow: 0 2px 4px rgba(255, 152, 0, 0.3);
+}
+
+.sp-trinn-validation-text {
+  flex: 1;
+}
+
+/* ============================================
+   COMPLETION MESSAGE (all trinns valid)
+   ============================================ */
+.sp-completion-message {
+  margin-top: var(--spacing-lg);
+  padding: var(--spacing-md) var(--spacing-lg);
+  background: linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%);
+  border: 2px solid #4CAF50;
+  border-radius: var(--radius-lg);
+  display: flex;
+  align-items: flex-start;
+  gap: var(--spacing-md);
+}
+
+.sp-completion-icon {
+  width: 32px;
+  height: 32px;
+  background: #4CAF50;
+  color: white;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.2rem;
+  font-weight: bold;
+  flex-shrink: 0;
+}
+
+.sp-completion-content {
+  flex: 1;
+}
+
+.sp-completion-title {
+  font-size: 1rem;
+  font-weight: 700;
+  color: #2e7d32;
+  margin-bottom: var(--spacing-xs);
+}
+
+.sp-completion-text {
+  font-size: 0.9rem;
+  color: #1b5e20;
+  margin-bottom: var(--spacing-sm);
+}
+
+.sp-completion-btn {
+  background: #4CAF50;
+  color: white;
+  border: none;
+  padding: var(--spacing-sm) var(--spacing-md);
+  border-radius: var(--radius-md);
+  font-weight: 600;
+  cursor: pointer;
+  transition: background var(--transition-fast);
+}
+
+.sp-completion-btn:hover {
+  background: #43a047;
+}
+
+/* ============================================
+   VALIDERING (kompakt horisontal) - DEPRECATED
+   Kept for blokkskjema modal validation
    ============================================ */
 .sp-validering {
   background: var(--background-light, #f5f5f5);
@@ -904,9 +1201,21 @@
 }
 
 .sp-blokk-fag-item.selected {
-  background: var(--secondary-color);
-  border-color: var(--primary-color);
+  background: #bbdefb;
+  border-color: #1976d2;
   opacity: 0.6;
+}
+
+/* Matematikk-fag farge når valgt i blokkskjema (mørkegrønn) */
+.sp-blokk-fag-item.matematikk.selected {
+  background: #a5d6a7;
+  border-color: #2e7d32;
+}
+
+/* Fremmedspråk-fag farge når valgt i blokkskjema (mørk oransje) */
+.sp-blokk-fag-item.fremmedsprak.selected {
+  background: #ffcc80;
+  border-color: #ef6c00;
 }
 
 .sp-blokk-fag-item.disabled {
@@ -924,23 +1233,15 @@
 /* Removed star icon - takes too much space */
 /* .sp-blokk-fag-item.obligatorisk::before { content: '★ '; } */
 
-/* When obligatorisk fag IS SELECTED - show orange highlight */
+/* When obligatorisk fag (historie) IS SELECTED - show yellow highlight */
 .sp-blokk-fag-item.obligatorisk.selected {
-  background: #ffe0b2;
-  border-color: #e65100;
-  border-left: 4px solid #e65100;
+  background: #fff9c4;
+  border-color: #f9a825;
+  border-left: 4px solid #f9a825;
 }
 
-/* Fordypning nivå farger - for å skille valgte fag */
-.sp-blokk-fag-item.fordypning-1.selected {
-  background: #e3f2fd;
-  border-color: #1976d2;
-}
-
-.sp-blokk-fag-item.fordypning-2.selected {
-  background: #e8f5e9;
-  border-color: #388e3c;
-}
+/* Fordypning nivå - bruker nå samme blå farge som andre programfag */
+/* Fjernet separate farger for fordypning-1/2 for konsistent design */
 
 .sp-blokk-fag-row {
   display: flex;
@@ -2246,5 +2547,112 @@
 
   .sp-catalog-card-image {
     height: 80px;
+  }
+}
+
+/* ============================================
+   ONBOARDING MODAL
+   ============================================ */
+.sp-modal-onboarding-content {
+  max-width: 550px;
+  padding: 40px;
+}
+
+.sp-onboarding-form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-xl);
+}
+
+.sp-onboarding-question {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-md);
+}
+
+.sp-onboarding-label {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--text-dark);
+}
+
+.sp-onboarding-options {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--spacing-sm);
+}
+
+.sp-onboarding-option {
+  flex: 1 1 auto;
+  min-width: 120px;
+  padding: 14px 20px;
+  background: white;
+  border: 2px solid var(--border-medium, #ccc);
+  border-radius: var(--radius-md);
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--text-dark);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  text-align: center;
+}
+
+.sp-onboarding-option:hover {
+  border-color: var(--primary-color);
+  background: var(--background-light, #f5f5f5);
+}
+
+.sp-onboarding-option.selected {
+  background: var(--primary-color);
+  border-color: var(--primary-color);
+  color: white;
+}
+
+/* Programområde-spesifikke farger i onboarding */
+.sp-onboarding-option[data-value="studiespesialisering"].selected {
+  background: var(--primary-color);
+  border-color: var(--primary-color);
+}
+
+.sp-onboarding-option[data-value="musikk-dans-drama"].selected {
+  background: linear-gradient(135deg, #c62828 0%, #e65100 100%);
+  border-color: #c62828;
+}
+
+.sp-onboarding-option[data-value="medier-kommunikasjon"].selected {
+  background: linear-gradient(135deg, #00897b 0%, #0277bd 100%);
+  border-color: #00897b;
+}
+
+.sp-onboarding-status {
+  flex: 1;
+}
+
+.sp-onboarding-progress {
+  font-size: 0.9rem;
+  color: var(--text-medium, #666);
+  font-weight: 500;
+}
+
+.sp-onboarding-submit:disabled {
+  background: #ccc;
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+/* Responsive onboarding */
+@media (max-width: 480px) {
+  .sp-modal-onboarding-content {
+    padding: 30px 20px;
+  }
+
+  .sp-onboarding-option {
+    min-width: 100px;
+    padding: 12px 16px;
+    font-size: 0.9rem;
+  }
+
+  .sp-onboarding-label {
+    font-size: 1rem;
   }
 }

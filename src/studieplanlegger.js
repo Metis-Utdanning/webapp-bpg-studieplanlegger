@@ -244,6 +244,68 @@ export class Studieplanlegger {
   }
 
   /**
+   * Attach event listeners for all filter dropdowns (trinn, program, fremmedsprak)
+   */
+  attachFilterDropdownListeners() {
+    const dropdowns = this.container.querySelectorAll('.sp-filter-dropdown');
+
+    dropdowns.forEach(dropdown => {
+      const btn = dropdown.querySelector('.sp-filter-dropdown-btn');
+      const menu = dropdown.querySelector('.sp-filter-dropdown-menu');
+
+      if (!btn || !menu) return;
+
+      // Toggle dropdown on button click
+      btn.addEventListener('click', (e) => {
+        e.stopPropagation();
+
+        // Close all other dropdowns first
+        dropdowns.forEach(other => {
+          if (other !== dropdown) {
+            other.querySelector('.sp-filter-dropdown-menu')?.classList.add('hidden');
+            other.querySelector('.sp-filter-dropdown-btn')?.setAttribute('aria-expanded', 'false');
+          }
+        });
+
+        const isOpen = !menu.classList.contains('hidden');
+
+        if (isOpen) {
+          menu.classList.add('hidden');
+          btn.setAttribute('aria-expanded', 'false');
+        } else {
+          menu.classList.remove('hidden');
+          btn.setAttribute('aria-expanded', 'true');
+        }
+      });
+    });
+
+    // Close all dropdowns when clicking outside
+    document.addEventListener('click', (e) => {
+      if (!e.target.closest('.sp-filter-dropdown')) {
+        dropdowns.forEach(dropdown => {
+          dropdown.querySelector('.sp-filter-dropdown-menu')?.classList.add('hidden');
+          dropdown.querySelector('.sp-filter-dropdown-btn')?.setAttribute('aria-expanded', 'false');
+        });
+      }
+    });
+
+    // Close all dropdowns on Escape key
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') {
+        dropdowns.forEach(dropdown => {
+          const menu = dropdown.querySelector('.sp-filter-dropdown-menu');
+          const btn = dropdown.querySelector('.sp-filter-dropdown-btn');
+          if (menu && !menu.classList.contains('hidden')) {
+            menu.classList.add('hidden');
+            btn?.setAttribute('aria-expanded', 'false');
+            btn?.focus();
+          }
+        });
+      }
+    });
+  }
+
+  /**
    * Initialize the widget
    */
   async init() {
@@ -279,11 +341,148 @@ export class Studieplanlegger {
         this.onStateChange(state);
       });
 
+      // Check if onboarding should be shown
+      this.checkAndShowOnboarding();
+
       console.log('Studieplanlegger initialized');
     } catch (error) {
       console.error('Failed to initialize Studieplanlegger:', error);
       this.container.innerHTML = '<p>Feil ved lasting av studieplanlegger. Prøv igjen senere.</p>';
     }
+  }
+
+  /**
+   * Check if onboarding modal should be shown
+   */
+  checkAndShowOnboarding() {
+    const onboardingCompleted = localStorage.getItem('studieplanlegger_onboarding_completed');
+    if (!onboardingCompleted) {
+      this.showOnboardingModal();
+    }
+  }
+
+  /**
+   * Show onboarding modal
+   */
+  showOnboardingModal() {
+    const modal = this.container.querySelector('.sp-modal-onboarding');
+    if (!modal) return;
+
+    // Reset any previous selections
+    modal.querySelectorAll('.sp-onboarding-option').forEach(opt => {
+      opt.classList.remove('selected');
+    });
+
+    // Reset state
+    this.onboardingSelections = {
+      trinn: null,
+      programomrade: null,
+      fremmedsprak: null
+    };
+
+    // Update progress
+    this.updateOnboardingProgress(modal);
+
+    modal.style.display = 'flex';
+
+    // Setup event listeners if not already done
+    this.setupOnboardingModal();
+  }
+
+  /**
+   * Setup onboarding modal interactions
+   */
+  setupOnboardingModal() {
+    const modal = this.container.querySelector('.sp-modal-onboarding');
+    if (!modal) return;
+
+    // Prevent closing by clicking outside (modal is mandatory)
+    // Note: No close button - user must complete onboarding
+
+    // Option selection
+    modal.querySelectorAll('.sp-onboarding-option').forEach(option => {
+      option.addEventListener('click', (e) => {
+        const optionsGroup = e.currentTarget.closest('.sp-onboarding-options');
+        const question = optionsGroup.dataset.question;
+        const value = e.currentTarget.dataset.value;
+
+        // Deselect other options in this group
+        optionsGroup.querySelectorAll('.sp-onboarding-option').forEach(opt => {
+          opt.classList.remove('selected');
+        });
+
+        // Select this option
+        e.currentTarget.classList.add('selected');
+
+        // Store selection
+        this.onboardingSelections[question] = value;
+
+        // Update progress
+        this.updateOnboardingProgress(modal);
+      });
+    });
+
+    // Submit button
+    const submitBtn = modal.querySelector('.sp-onboarding-submit');
+    submitBtn.addEventListener('click', () => {
+      this.completeOnboarding();
+    });
+  }
+
+  /**
+   * Update onboarding progress display
+   */
+  updateOnboardingProgress(modal) {
+    const selections = this.onboardingSelections || {};
+    const count = [selections.trinn, selections.programomrade, selections.fremmedsprak]
+      .filter(v => v !== null && v !== undefined).length;
+
+    const progressText = modal.querySelector('.sp-onboarding-progress');
+    if (progressText) {
+      progressText.textContent = `${count} av 3 valgt`;
+    }
+
+    const submitBtn = modal.querySelector('.sp-onboarding-submit');
+    if (submitBtn) {
+      submitBtn.disabled = count < 3;
+    }
+  }
+
+  /**
+   * Complete onboarding and apply selections
+   */
+  completeOnboarding() {
+    const selections = this.onboardingSelections;
+
+    if (!selections.trinn || !selections.programomrade || selections.fremmedsprak === null) {
+      return; // Should not happen if button is disabled correctly
+    }
+
+    // Close modal FIRST - before state changes trigger re-render
+    // This is important because onStateChange() checks if modal is open
+    // and skips re-render if it is. By closing first, the re-render happens.
+    const modal = this.container.querySelector('.sp-modal-onboarding');
+    if (modal) {
+      modal.style.display = 'none';
+    }
+
+    // Mark onboarding as completed
+    localStorage.setItem('studieplanlegger_onboarding_completed', 'true');
+
+    // Apply selections to state (now triggers proper re-render since modal is closed)
+    this.state.setTrinn(selections.trinn);
+    this.state.setProgramomrade(selections.programomrade);
+    this.state.setHarFremmedsprak(selections.fremmedsprak === 'true');
+
+    // Handle fremmedsprak auto-selection (same logic as filter button)
+    if (selections.fremmedsprak === 'false') {
+      const spanskData = this.dataHandler.getVG1Fremmedsprak(false);
+      if (spanskData && spanskData.length > 0) {
+        this.state.setVG1Subject('fremmedsprak', spanskData[0]);
+      }
+    }
+
+    console.log('Onboarding completed:', selections);
   }
 
   /**
@@ -293,16 +492,35 @@ export class Studieplanlegger {
     // Version switcher (if enabled)
     this.attachVersionSwitcherListeners();
 
-    // Filter buttons - Programområde
-    this.container.querySelectorAll('[data-programomrade]').forEach(btn => {
+    // All filter dropdowns (trinn, program, fremmedsprak)
+    this.attachFilterDropdownListeners();
+
+    // Filter dropdown items - Trinn
+    this.container.querySelectorAll('.sp-filter-dropdown-item[data-trinn]').forEach(btn => {
       btn.addEventListener('click', (e) => {
-        const programomrade = e.currentTarget.dataset.programomrade;
-        this.state.setProgramomrade(programomrade);
+        const trinn = e.currentTarget.dataset.trinn;
+        this.state.setTrinn(trinn);
+        // Close dropdown
+        const dropdown = e.currentTarget.closest('.sp-filter-dropdown');
+        dropdown?.querySelector('.sp-filter-dropdown-menu')?.classList.add('hidden');
+        dropdown?.querySelector('.sp-filter-dropdown-btn')?.setAttribute('aria-expanded', 'false');
       });
     });
 
-    // Filter buttons - Fremmedspråk
-    this.container.querySelectorAll('[data-fremmedsprak]').forEach(btn => {
+    // Filter dropdown items - Programområde
+    this.container.querySelectorAll('.sp-filter-dropdown-item[data-programomrade]').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        const programomrade = e.currentTarget.dataset.programomrade;
+        this.state.setProgramomrade(programomrade);
+        // Close dropdown
+        const dropdown = e.currentTarget.closest('.sp-filter-dropdown');
+        dropdown?.querySelector('.sp-filter-dropdown-menu')?.classList.add('hidden');
+        dropdown?.querySelector('.sp-filter-dropdown-btn')?.setAttribute('aria-expanded', 'false');
+      });
+    });
+
+    // Filter dropdown items - Fremmedspråk
+    this.container.querySelectorAll('.sp-filter-dropdown-item[data-fremmedsprak]').forEach(btn => {
       btn.addEventListener('click', (e) => {
         const harFremmedsprak = e.currentTarget.dataset.fremmedsprak === 'true';
         this.state.setHarFremmedsprak(harFremmedsprak);
@@ -318,6 +536,11 @@ export class Studieplanlegger {
           // Clear the auto-populated Spansk I+II when switching back to "JA"
           this.state.setVG1Subject('fremmedsprak', null);
         }
+
+        // Close dropdown
+        const dropdown = e.currentTarget.closest('.sp-filter-dropdown');
+        dropdown?.querySelector('.sp-filter-dropdown-menu')?.classList.add('hidden');
+        dropdown?.querySelector('.sp-filter-dropdown-btn')?.setAttribute('aria-expanded', 'false');
       });
     });
 
@@ -336,25 +559,16 @@ export class Studieplanlegger {
       }
     });
 
-    // Fjern alle valg button
+    // Nullstill button - clear everything and show onboarding
     this.container.querySelector('.sp-fjern-valg-btn')?.addEventListener('click', () => {
       // Clear all selections
       this.state.clearAllSelections();
 
-      // Check if Spansk I+II was selected in VG1 or VG3
-      const currentState = this.state.getState();
+      // Remove onboarding completed flag so modal shows again
+      localStorage.removeItem('studieplanlegger_onboarding_completed');
 
-      // If Spansk I+II was removed but harFremmedsprak is false, reset filter to true
-      // (Spansk is only needed when harFremmedsprak = false, so removing it means user has fremmedspråk)
-      if (currentState.harFremmedsprak === false) {
-        this.state.setHarFremmedsprak(true);
-
-        // Update UI filter toggle
-        const filterToggle = this.container.querySelector('.sp-toggle-input[value="fremmedsprak"]');
-        if (filterToggle) {
-          filterToggle.checked = true;
-        }
-      }
+      // Show onboarding modal
+      this.showOnboardingModal();
     });
 
     // VG1 slots - open modals
@@ -414,6 +628,11 @@ export class Studieplanlegger {
     // Catalog button - open catalog modal
     this.container.querySelector('.sp-catalog-btn')?.addEventListener('click', () => {
       this.openCatalogModal();
+    });
+
+    // Print button - print/save studieplan
+    this.container.querySelector('.sp-print-btn')?.addEventListener('click', () => {
+      window.print();
     });
   }
 
@@ -649,8 +868,9 @@ export class Studieplanlegger {
     // FIXED (2024-11-24): Exclude matematikk from getting fordypning colors
     // matematikk-r1, matematikk-s1 etc. should NOT get blue/green fordypning styling
     const getFordypningLevel = (fagId) => {
-      // Skip matematikk - these are not fordypningsfag
-      if (fagId.startsWith('matematikk')) return null;
+      // Skip matematikk (including Statistikk and Matematikk for økonomifag) - these are not fordypningsfag
+      const matematikkIds = ['statistikk', 'matematikk-for-okonomifag'];
+      if (fagId.startsWith('matematikk') || matematikkIds.includes(fagId)) return null;
       // Skip historie - fellesfag, not fordypning
       if (fagId.startsWith('historie')) return null;
       // Skip spansk - obligatorisk for non-fremmedspråk students
@@ -659,6 +879,25 @@ export class Studieplanlegger {
       if (fagId.endsWith('-1')) return '1';
       if (fagId.endsWith('-2')) return '2';
       return null;
+    };
+
+    // Helper to check if fag is a matematikk-fag
+    const isMatematikkFag = (fagId) => {
+      const matematikkIds = [
+        'matematikk-r1', 'matematikk-r2',
+        'matematikk-s1', 'matematikk-s2',
+        'matematikk-2p', 'matematikk-x',
+        'statistikk', 'matematikk-for-okonomifag'
+      ];
+      return matematikkIds.includes(fagId) || fagId.startsWith('matematikk-');
+    };
+
+    // Helper to check if fag is a fremmedspråk-fag
+    const isFremmedsprakFag = (fagId) => {
+      return fagId.startsWith('spansk') ||
+             fagId.startsWith('tysk') ||
+             fagId.startsWith('fransk') ||
+             fagId.includes('fremmedsprak');
     };
 
     const blocksHTML = Object.entries(fagPerBlokk).map(([blokkId, blokk]) => {
@@ -679,9 +918,13 @@ export class Studieplanlegger {
             const shouldBlockSpansk = isSpansk && currentState.harFremmedsprak === true;
             const isObligatorisk = f.obligatorisk === true;
             const fordypningLevel = getFordypningLevel(f.id);
+            const isMatematikk = isMatematikkFag(f.id);
+            const isFremmedsprak = isFremmedsprakFag(f.id);
             const classes = ['sp-blokk-fag-item'];
             if (isObligatorisk) classes.push('obligatorisk');
             if (fordypningLevel) classes.push(`fordypning-${fordypningLevel}`);
+            if (isMatematikk) classes.push('matematikk');
+            if (isFremmedsprak) classes.push('fremmedsprak');
             if (shouldBlockSpansk) classes.push('blocked');
 
             // Sanitize user-facing strings to prevent XSS
@@ -934,9 +1177,13 @@ export class Studieplanlegger {
       if (trinn && this.selectedBlokkskjemaFag.length > 0) {
         // STEP 1: VALIDATE
         if (trinn === 'vg2') {
-          const matematikkFag = this.selectedBlokkskjemaFag.find(f =>
-            f.fagkode?.startsWith('matematikk') || f.id?.startsWith('matematikk')
-          );
+          // Check for matematikk-fag (includes Statistikk and Matematikk for økonomifag)
+          const matematikkIds = ['statistikk', 'matematikk-for-okonomifag'];
+          const matematikkFag = this.selectedBlokkskjemaFag.find(f => {
+            const id = (f.id || '').toLowerCase();
+            const fagkode = (f.fagkode || '').toLowerCase();
+            return fagkode.startsWith('matematikk') || id.startsWith('matematikk') || matematikkIds.includes(id);
+          });
 
           // Validate: matematikk must be selected for VG2
           if (!matematikkFag) {

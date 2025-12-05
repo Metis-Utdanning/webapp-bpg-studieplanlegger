@@ -11,6 +11,7 @@ export class StudieplanleggerState {
   constructor() {
     this.state = {
       // Filter state
+      trinn: 'vg1',  // Current level: 'vg1' or 'vg2' (determines blokkskjema version)
       programomrade: 'studiespesialisering',
       harFremmedsprak: true,
 
@@ -77,6 +78,17 @@ export class StudieplanleggerState {
   setHarFremmedsprak(harFremmedsprak) {
     this.state.harFremmedsprak = harFremmedsprak;
     this.notify();
+  }
+
+  /**
+   * Set current trinn (VG1 or VG2)
+   * This determines which blokkskjema version is used
+   */
+  setTrinn(trinn) {
+    if (this.state.trinn !== trinn && (trinn === 'vg1' || trinn === 'vg2')) {
+      this.state.trinn = trinn;
+      this.notify();
+    }
   }
 
   // ==========================================================================
@@ -167,7 +179,9 @@ export class StudieplanleggerState {
     const isMath = (fag) => {
       const id = (fag.id || '').toLowerCase();
       const fagkode = (fag.fagkode || '').toUpperCase();
-      return id.startsWith('matematikk') || fagkode.startsWith('MAT');
+      // Include all matematikk-programfag: R1, R2, S1, S2, 2P, Statistikk, Matematikk for økonomifag
+      const matematikkIds = ['statistikk', 'matematikk-for-okonomifag'];
+      return id.startsWith('matematikk') || fagkode.startsWith('MAT') || matematikkIds.includes(id);
     };
 
     const isHistorie = (fag) => {
@@ -383,6 +397,7 @@ export class StudieplanleggerState {
   getState() {
     // Deep copy to prevent consumers from mutating internal state
     return {
+      trinn: this.state.trinn,
       programomrade: this.state.programomrade,
       harFremmedsprak: this.state.harFremmedsprak,
       vg1: {
