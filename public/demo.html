@@ -43,11 +43,19 @@
   <script type="module">
     import { Studieplanlegger } from '../src/studieplanlegger.js';
 
+    // Use local API for development, production API otherwise
+    const isLocalDev = window.location.hostname === 'localhost';
+    const apiBaseUrl = isLocalDev
+      ? 'http://localhost:8001/api/v2'
+      : 'https://fredeids-metis.github.io/school-data/api/v2';
+
+    console.log(`🔧 Using API: ${apiBaseUrl}`);
+
     const app = new Studieplanlegger(
       document.getElementById('studieplanlegger'),
       {
         schoolId: 'bergen-private-gymnas',
-        apiBaseUrl: 'https://fredeids-metis.github.io/school-data/api/v2',
+        apiBaseUrl: apiBaseUrl,
         apiVersion: 'v2',
         useMockData: false
       }

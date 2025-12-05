@@ -1,7 +1,7 @@
 # CLAUDE.md - Studieplanlegger
 
 > **Kontekst for Claude Code**
-> **Sist oppdatert:** 2025-12-05
+> **Sist oppdatert:** 2025-12-05 (vg1Valg, fremmedspråk-filtrering, fellesProgramfag)
 
 ## Prosjektbeskrivelse
 
@@ -65,6 +65,35 @@ https://fredeids-metis.github.io/school-data/api/v2/schools/{skole}/studieplanle
     vg1: { totalt: 842, fag: [...] },  // NB: { fag: [...] } ikke direkte array
     vg2: { totalt: 477, fag: [...] },
     vg3: { totalt: 393, fag: [...] }
+  },
+
+  // VG1-valg: Matematikk og fremmedspråk som velges i blokkskjema
+  vg1Valg: {
+    matematikk: [
+      { id: "matematikk-1p", title: "Matematikk 1P", timer: 140 },
+      { id: "matematikk-1t", title: "Matematikk 1T", timer: 140 }
+    ],
+    fremmedsprak: {
+      // Filtrert basert på skolens tilbud.yml -> fremmedsprakTilbud
+      harFremmedsprak: [
+        { id: "spansk-1", title: "Spansk I", timer: 113 },
+        { id: "spansk-2", title: "Spansk II", timer: 113 },
+        // ... andre språk skolen tilbyr
+      ],
+      ikkeHarFremmedsprak: [
+        { id: "spansk-1-2", title: "Spansk I+II", timer: 225 }
+      ]
+    }
+  },
+
+  // Obligatoriske programfag (for Musikk, Medier etc.)
+  fellesProgramfag: {
+    "musikk-dans-drama": {
+      vg1: { fag: [...] },
+      vg2: { fag: [...] },
+      vg3: { fag: [...] }
+    },
+    "medier-kommunikasjon": { ... }
   },
 
   regler: {
@@ -147,10 +176,26 @@ UDIR deler formelt i "Realfag" og "Språk, samfunnsfag og økonomi", men vi beha
 ### Matematikk
 - R-linja og S-linja kan **IKKE** kombineres
 - R1 i VG2 + S2 i VG3 = **BLOKKERT**
+- **VG1:** Velger mellom 1P og 1T
+- **VG2:** 2P er standard, MEN R1/S1 erstatter 2P (velges i blokkskjema)
+
+### VG1-valg (matematikk og fremmedspråk)
+Disse fagene er "fellesfag" men velges aktivt i blokkskjema:
+- **Matematikk:** 1P eller 1T
+- **Fremmedspråk:** Avhengig av om eleven har hatt fremmedspråk på ungdomsskolen
+
+### Fremmedspråk (UDIR-regler)
+- **HAR fremmedspråk fra ungdomsskolen:** Kan velge Nivå I (nytt språk) ELLER Nivå II (fortsette)
+- **IKKE fremmedspråk fra ungdomsskolen:** MÅ ta Nivå I+II over 3 år
+- **Skolefiltrering:** Hvilke språk tilgjengelig styres av `tilbud.yml -> fremmedsprakTilbud`
+
+### Fellesfag som IKKE vises i fellesfag-listen
+Disse velges i blokkskjema og skal IKKE vises i "automatisk fellesfag"-listen:
+- VG1: matematikk (1P/1T), fremmedspråk
+- VG2: matematikk 2P (kan erstattes av R1/S1)
 
 ### Obligatoriske fag
 - **VG3:** Historie er obligatorisk
-- **Fremmedspråk NEI:** Må ta Spansk I+II
 
 ---
 

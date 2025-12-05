@@ -579,11 +579,18 @@ export class DataHandler {
       const trinnData = this.fellesfagData[programomrade][trinn];
       const fagArray = trinnData.fag || [];
 
-      // Filter out VG1 valg-fag (matematikk og fremmedspråk) - these are handled separately
-      const valgFagIds = ['matematikk-vg1', 'fremmedsprak-vg1'];
+      // Filter out fag that are selected in blokkskjema (not shown in fellesfag list):
+      // - VG1: matematikk (1P/1T) og fremmedspråk
+      // - VG2: matematikk (2P kan byttes ut med R1/S1)
+      // - VG3: historie (velges i blokkskjema)
+      const blokkskjemaFagIds = [
+        'matematikk-vg1', 'fremmedsprak-vg1',  // VG1
+        'matematikk-2p', 'matematikk-vg2',     // VG2 (both possible IDs)
+        'historie-vg3'                          // VG3
+      ];
 
       return fagArray
-        .filter(fag => !valgFagIds.includes(fag.id))
+        .filter(fag => !blokkskjemaFagIds.includes(fag.id))
         .map(fag => ({
           id: fag.id,
           navn: fag.title || fag.id,
@@ -661,14 +668,18 @@ export class DataHandler {
    */
   getFellesProgramfag(programomrade, trinn) {
     if (this.fellesProgramfagData && this.fellesProgramfagData[programomrade]) {
-      const programData = this.fellesProgramfagData[programomrade][trinn];
-      if (programData && programData.length > 0) {
-        return programData.map(fag => ({
-          id: fag.id,
-          navn: fag.title || fag.id,
-          timer: fag.timer,
-          fagkode: fag.fagkode || fag.id
-        }));
+      const trinnData = this.fellesProgramfagData[programomrade][trinn];
+      if (trinnData) {
+        // Handle both formats: { fag: [...] } or direct array [...]
+        const fagArray = Array.isArray(trinnData) ? trinnData : (trinnData.fag || []);
+        if (fagArray.length > 0) {
+          return fagArray.map(fag => ({
+            id: fag.id,
+            navn: fag.title || fag.id,
+            timer: fag.timer,
+            fagkode: fag.fagkode || fag.id
+          }));
+        }
       }
     }
     return [];
