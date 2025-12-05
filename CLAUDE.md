@@ -5,153 +5,223 @@
 
 ## Prosjektbeskrivelse
 
-Interaktiv studieplanlegger-widget for Bergen Private Gymnas. Elevene velger programfag for VG2 og VG3 via blokkskjema, og får automatisk validering av fordypningskrav.
+Interaktiv studieplanlegger-widget for videregående skoler. Elevene velger programfag for VG2/VG3 via blokkskjema, med automatisk validering av fordypningskrav og regelsjekk.
 
 **GitHub:** https://github.com/fredeids-metis/studieplanlegger
 
-## API-arkitektur
+---
 
-### Datakilder
-Appen henter data fra **school-data** prosjektet via GitHub Pages API:
+## KRITISK: Dataflyt og Arkitektur
 
-```
-Base URL: https://fredeids-metis.github.io/school-data/api/
-Endepunkt: /v2/schools/{skole}/studieplanlegger.json
-```
-
-### Dataflyt
-```
-school-data/data/udir/          → Nasjonale regler (eksklusjoner, forutsetninger, fordypning)
-school-data/data/skoler/{skole}/ → Skolespesifikk config (blokkskjema, tilbud)
-           ↓
-school-data/scripts/build-api-v2.js  → Bygger komplett JSON
-           ↓
-Studieplanlegger (data-handler.js)   → Henter og cacher data
-```
-
-### Blokkskjema-versjoner
-- Versjoner navngis: `{skoleår}_{variant}.yml` (f.eks. `26-27_flex.yml`)
-- Flere versjoner kan eksistere samtidig
-- Aktiv versjon settes i `school-config.yml`
-- Runtime-veksling via URL: `?blokkskjema=26-27_flex` eller `?admin=true`
-
-## Viktige Regler
-
-### Studiespesialisering = ÉTT programområde
-Selv om UDIR formelt deler studiespesialisering i "Realfag" og "Språk, samfunnsfag og økonomi", behandler vi det som ETT område. Grunnen er at UDIR har foreslått å slå disse sammen.
-
-### Fordypningskrav
-- **1 fordypning = 2 fag fra samme fagområde**
-- **Krav: 2 fordypninger totalt** (VG2 + VG3 kombinert)
-- Eksempel: Fysikk 1 + Fysikk 2 = 1 fordypning
-- Eksempel: Kjemi 1 + Kjemi 2 = 1 fordypning
-
-### Matematikk
-- R-linja og S-linja kan IKKE kombineres
-- R1 → R2 eller S1 → S2 er OK
-- R1 i VG2 + S2 i VG3 = BLOKKERT
-
-### Obligatoriske fag
-- **VG3:** Historie er obligatorisk fellesfag
-- **Fremmedspråk:** Elever uten fremmedspråk fra ungdomsskolen MÅ ta Spansk I+II
-
-## Prosjektstruktur
+### School-data er master for ALL data
 
 ```
-studieplanlegger/
-├── src/
-│   ├── studieplanlegger.js     # Hovedinngang, modal-håndtering
-│   ├── core/
-│   │   ├── state.js            # State management (unified selections[])
-│   │   ├── validation-service.js
-│   │   └── data-handler.js     # API-henting og caching
-│   └── ui/
-│       └── ui-renderer.js      # UI-rendering
-├── public/
-│   ├── demo.html               # Lokal testing
-│   ├── embed.html              # Squarespace embed-kode
-│   └── images/fag/             # Fagbilder (fysikk-1.jpg, etc.)
-├── styles/
-│   └── studieplanlegger.css
-├── docs/                       # Dokumentasjon
-│   └── CHANGELOG.md
-└── dist/                       # Bygget output
+┌─────────────────────────────────────────────────────────────────┐
+│  SCHOOL-DATA (separat repo)         /Users/fredrik/.../school-data
+│  ═══════════════════════════════════════════════════════════════
+│
+│  data/udir/           → Nasjonale regler, fag, timefordeling
+│  data/skoler/{skole}/ → Blokkskjema, tilbud, school-config
+│
+│  scripts/build-api-v2.js → Bygger komplett JSON
+│  docs/api/v2/...         → Generert output → GitHub Pages
+└─────────────────────────────────────────────────────────────────┘
+                              ↓ fetch()
+┌─────────────────────────────────────────────────────────────────┐
+│  STUDIEPLANLEGGER (dette repo)                                  │
+│  ═══════════════════════════════════════════════════════════════
+│
+│  data-handler.js  → Henter fra API, cacher i minne
+│  state.js         → Brukervalg (VG1/VG2/VG3 selections)
+│  validation-service.js → Validerer mot regler fra API
+│  ui-renderer.js   → Tegner UI basert på data + state
+└─────────────────────────────────────────────────────────────────┘
 ```
 
-## State Struktur
+### API-endepunkt
+
+```
+https://fredeids-metis.github.io/school-data/api/v2/schools/{skole}/studieplanlegger.json
+```
+
+### Datastruktur fra API (forenklet)
 
 ```javascript
-state = {
-  programomrade: 'studiespesialisering',
-  harFremmedsprak: true/false,
-
-  vg2: {
-    selections: [
-      { id, navn, timer, fagkode, type, slot: 'matematikk', blokkId },
-      { id, navn, timer, fagkode, type, slot: 'programfag-1', blokkId },
-      { id, navn, timer, fagkode, type, slot: 'programfag-2', blokkId },
-      { id, navn, timer, fagkode, type, slot: 'programfag-3', blokkId }
-    ]
+{
+  blokkskjema: {
+    activeVersion: "26-27_flex",
+    descriptions: { "26-27_flex": "Beskrivelse..." },
+    versions: {
+      "26-27_flex": {
+        blokker: {
+          blokk1: { navn, fag: [{ id, timer, trinn, tilgjengeligFor }] },
+          blokk2: { ... }
+        }
+      }
+    }
   },
 
-  vg3: {
-    selections: [
-      { id, navn, timer, fagkode, type, slot: 'historie', blokkId },
-      { id, navn, timer, fagkode, type, slot: 'programfag-1', blokkId },
-      { id, navn, timer, fagkode, type, slot: 'programfag-2', blokkId },
-      { id, navn, timer, fagkode, type, slot: 'programfag-3', blokkId }
-    ]
+  fellesfag: {
+    vg1: { totalt: 842, fag: [...] },  // NB: { fag: [...] } ikke direkte array
+    vg2: { totalt: 477, fag: [...] },
+    vg3: { totalt: 393, fag: [...] }
+  },
+
+  regler: {
+    eksklusjoner: [...],    // Fag som ikke kan kombineres
+    forutsetninger: [...],  // Fag som krever andre fag først
+    fagomrader: {...},      // For fordypningsberegning
+    fordypning: {...}       // Krav per program
+  },
+
+  curriculum: {
+    valgfrieProgramfag: [...],
+    obligatoriskeProgramfag: [...],
+    fellesfag: [...]
   }
 }
 ```
 
-**Viktig:** Bruk `setTrinnSelections(trinn, selections)` for å lagre fag - denne håndterer automatisk slot-tildeling.
+### Når endres data?
 
-## Vanlige Kommandoer
+| Endring | Hvor | Rebuild |
+|---------|------|---------|
+| Fag-beskrivelse | school-data/data/udir/fag/ | `npm run build:v2` i school-data |
+| Blokkskjema | school-data/data/skoler/{skole}/blokkskjema/ | `npm run build:v2` i school-data |
+| Regler | school-data/data/udir/regler/ | `npm run build:v2` i school-data |
+| UI/logikk | studieplanlegger/src/ | Automatisk (dev server) |
+
+**Full dokumentasjon av datastrukturer:** Se `/Users/fredrik/Documents/school-data/CLAUDE.md`
+
+---
+
+## Lokal Testing - Hurtigreferanse
+
+### Start utviklingsmiljø
 
 ```bash
-npm run dev      # Start dev server (http://localhost:8000/public/demo.html)
-npm run build    # Rebuild API fra YAML/markdown
+# Terminal 1: Studieplanlegger (port 8000)
+cd /Users/fredrik/Documents/studieplanlegger
+npm run dev
+
+# Terminal 2: School-data API (port 8001) - kun ved lokal API-testing
+cd /Users/fredrik/Documents/school-data
+python3 -m http.server 8001 --directory docs
 ```
 
-## Testing
+### Test-URL
 
-Test disse scenarioene:
+```
+http://localhost:8000/public/demo.html              # Normal
+http://localhost:8000/public/demo.html?admin=true   # Med versjonsbytter
+```
 
-1. **VG2 Studiespesialisering:** Velg 4 fag (1 matematikk + 3 programfag)
-2. **VG3 Studiespesialisering:** Velg 4 fag (Historie + 3 programfag)
-3. **Fordypning:** Velg 2 fag fra samme fagområde → se fordypning telle opp
-4. **Matematikk-konflikt:** R1 i VG2, prøv S2 i VG3 → skal blokkeres
-5. **Fremmedspråk NEI:** Spansk I+II skal auto-velges i VG3
-6. **Versjonsbytting:** `?admin=true` → bytt mellom blokkskjema-versjoner
+### Typisk arbeidsflyt
 
-## Filer å Lese Ved Endringer
+1. **Start servere** (Claude gjør dette automatisk ved behov)
+2. **Åpne nettleser** på demo.html
+3. **Gi tilbakemelding** - beskriv hva som skjer vs. forventet
+4. **Claude fikser** - committer og sier "refresh"
+5. **Hard refresh** (Ctrl+Shift+R) og test igjen
 
-- `src/core/data-handler.js` - API-henting og datastrukturer
-- `src/core/state.js` - State og setTrinnSelections()
-- `src/core/validation-service.js` - Fordypning og konflikter
-- `src/studieplanlegger.js` - Modal-håndtering
-
-## Debugging
+### Ved feil: Sjekkliste
 
 ```javascript
 // I browser console:
-window.studieplanlegger.state.getState()      // Se state
-window.studieplanlegger.validator             // Se validator
-window.studieplanlegger.dataHandler           // Se data-handler
-window.studieplanlegger.dataHandler.getAvailableVersions()  // Liste versjoner
+window.studieplanlegger.dataHandler.data    // Se rå API-data
+window.studieplanlegger.state.getState()    // Se brukervalg
+window.studieplanlegger.validator           // Se valideringsregler
 ```
 
-## Innbygging
+---
 
-Se `public/embed.html` for Squarespace embed-kode. Filer serveres via jsDelivr CDN direkte fra GitHub.
+## Viktige Regler (Domenelogikk)
 
-## Relaterte Prosjekter
+### Studiespesialisering = ÉTT programområde
+UDIR deler formelt i "Realfag" og "Språk, samfunnsfag og økonomi", men vi behandler det som ETT område.
 
-- **school-data**: Masterdata og API - `/Users/fredrik/Documents/school-data/`
-  - Se `CLAUDE.md` i school-data for full dokumentasjon av datastrukturer
+### Fordypningskrav
+- **1 fordypning = 2 fag fra samme fagområde** (f.eks. Fysikk 1 + Fysikk 2)
+- **Krav: 2 fordypninger totalt** (VG2 + VG3 kombinert)
 
-## Masterdata-kilder (UDIR)
+### Matematikk
+- R-linja og S-linja kan **IKKE** kombineres
+- R1 i VG2 + S2 i VG3 = **BLOKKERT**
 
-- https://www.udir.no/regelverkstolkninger/opplaring/Innhold-i-opplaringen/udir-1-2025/
-- https://www.udir.no/eksamen-og-prover/dokumentasjon/vitnemal-og-kompetansebevis/foring-vitnemal-kompetansebevis-vgs-25/
+### Obligatoriske fag
+- **VG3:** Historie er obligatorisk
+- **Fremmedspråk NEI:** Må ta Spansk I+II
+
+---
+
+## Prosjektstruktur
+
+```
+src/
+├── studieplanlegger.js     # Hovedklasse, modal-håndtering
+├── core/
+│   ├── data-handler.js     # API-henting, data-tilgang
+│   ├── state.js            # Brukervalg, selections[]
+│   └── validation-service.js
+└── ui/
+    └── ui-renderer.js      # HTML-generering
+
+public/
+├── demo.html               # Lokal testing
+└── embed.html              # Squarespace embed
+
+styles/
+└── studieplanlegger.css
+```
+
+---
+
+## State-struktur
+
+```javascript
+state = {
+  programomrade: 'studiespesialisering',
+  harFremmedsprak: true,
+
+  vg1: { selections: [{ id, navn, timer, fagkode, slot }] },
+  vg2: { selections: [{ id, navn, timer, fagkode, slot, blokkId }] },
+  vg3: { selections: [{ id, navn, timer, fagkode, slot, blokkId }] }
+}
+```
+
+**Viktig:** Bruk `state.setTrinnSelections(trinn, selections)` - håndterer slot-tildeling automatisk.
+
+---
+
+## Vanlige Feil og Løsninger
+
+### "Cannot read property 'filter' of undefined"
+**Årsak:** API-strukturendring. Sjekk at koden håndterer begge formater:
+```javascript
+// Ny: { fag: [...] }  |  Gammel: [...]
+const fagArray = Array.isArray(data) ? data : (data.fag || []);
+```
+
+### Fag vises ikke i modal
+**Sjekk:**
+1. Faget har riktig `trinn` og `tilgjengeligFor` i blokkskjema
+2. Programområde-filter matcher
+
+### Fordypning teller ikke
+**Sjekk:** Faget er lagt til i riktig `fagomrade` i `regler/fordypning.yml`
+
+---
+
+## Commit-konvensjon
+
+```
+Type: Kort beskrivelse
+
+- Detaljer
+- Detaljer
+
+🤖 Generated with [Claude Code](https://claude.com/claude-code)
+Co-Authored-By: Claude <noreply@anthropic.com>
+```
+
+Typer: `Fix:`, `Feature:`, `Refactor:`, `Docs:`, `Style:`
