@@ -560,9 +560,14 @@ export class DataHandler {
   getFellesfag(programomrade, trinn) {
     // v2: Use fellesfagData from timefordeling.yml (preferred)
     if (this.fellesfagData && this.fellesfagData[trinn]) {
-      const filtered = this.fellesfagData[trinn].filter(fag => {
+      // Handle both formats: { fag: [...] } (new) or direct array (old)
+      const trinnData = this.fellesfagData[trinn];
+      const fagArray = Array.isArray(trinnData) ? trinnData : (trinnData.fag || []);
+
+      const filtered = fagArray.filter(fag => {
         const fagTilgjengelig = fag.tilgjengeligFor || [];
-        return fagTilgjengelig.includes(programomrade);
+        // If tilgjengeligFor is empty, assume available for all programs
+        return fagTilgjengelig.length === 0 || fagTilgjengelig.includes(programomrade);
       }).map(fag => ({
         id: fag.id,
         navn: fag.title || fag.id,
