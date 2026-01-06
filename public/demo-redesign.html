@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="no">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Studieplanlegger v2 - Redesign Demo</title>
+
+  <!-- CSS - Will be replaced with new design -->
+  <link rel="stylesheet" href="../styles/base.css">
+  <link rel="stylesheet" href="../styles/brand.css">
+  <link rel="stylesheet" href="../styles/components/modal.css">
+  <link rel="stylesheet" href="../styles/studieplanlegger.css">
+  <link rel="stylesheet" href="../styles/print.css">
+
+  <!-- New v2 styles will override -->
+  <link rel="stylesheet" href="../styles/v2/redesign.css">
+
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: linear-gradient(135deg, #f8faf8 0%, #e8f0e8 100%);
+      min-height: 100vh;
+    }
+
+    .demo-header {
+      background: linear-gradient(135deg, #1F4739 0%, #2d5a48 100%);
+      color: white;
+      padding: 24px 32px;
+      margin-bottom: 0;
+    }
+
+    .demo-header h1 {
+      margin: 0 0 4px 0;
+      font-size: 1.5rem;
+      font-weight: 600;
+    }
+
+    .demo-header p {
+      margin: 0;
+      opacity: 0.85;
+      font-size: 0.95rem;
+    }
+
+    .demo-badge {
+      display: inline-block;
+      background: rgba(232, 245, 163, 0.9);
+      color: #1F4739;
+      padding: 4px 12px;
+      border-radius: 12px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      margin-left: 12px;
+      vertical-align: middle;
+    }
+
+    #studieplanlegger {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 24px;
+    }
+
+    /* Version toggle for A/B comparison */
+    .version-toggle {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background: white;
+      padding: 12px 16px;
+      border-radius: 12px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+      z-index: 9999;
+      font-size: 0.85rem;
+    }
+
+    .version-toggle a {
+      color: #1F4739;
+      text-decoration: none;
+      font-weight: 500;
+    }
+
+    .version-toggle a:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+  <div class="demo-header">
+    <h1>Studieplanlegger <span class="demo-badge">v2 Redesign</span></h1>
+    <p>Bergen Private Gymnas - Prototype</p>
+  </div>
+
+  <div id="studieplanlegger"></div>
+
+  <div class="version-toggle">
+    <a href="demo.html">← Tilbake til v1</a>
+  </div>
+
+  <script type="module">
+    import { StudieplanleggerV2 } from '../src/studieplanlegger-v2.js';
+
+    // Use production API
+    const apiBaseUrl = 'https://fredeids-metis.github.io/school-data/api/v2';
+
+    console.log(`🎨 Redesign v2 - Using API: ${apiBaseUrl}`);
+
+    const app = new StudieplanleggerV2(
+      document.getElementById('studieplanlegger'),
+      {
+        schoolId: 'bergen-private-gymnas',
+        apiBaseUrl: apiBaseUrl,
+        apiVersion: 'v2',
+        useMockData: false,
+        defaultBlokkskjemaVersion: '26-27_flex'
+      }
+    );
+
+    window.studieplanlegger = app;
+    console.log('Studieplanlegger V2 loaded:', app);
+  </script>
+</body>
+</html>
