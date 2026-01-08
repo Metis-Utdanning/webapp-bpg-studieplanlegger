@@ -567,19 +567,26 @@ export class ValidationService {
   /**
    * Valider at du har minst 2 fordypninger fra samme STREA/STSSA-gruppe
    * Ekstra fordypninger fra andre grupper er tillatt (bonus)
+   * MAT (matematikk R/S) er nøytral og kan "adoptere" én gruppe
    *
    * Eksempler:
    * - Fysikk 1+2 + Kjemi 1+2 = gyldig STREA (2 STREA fordypninger)
    * - Rettslære 1+2 + Entreprenørskap 1+2 = gyldig STSSA (2 STSSA fordypninger)
    * - Rettslære 1+2 + Entreprenørskap 1+2 + Biologi 1+2 = gyldig STSSA (2 STSSA + 1 bonus STREA)
-   * - Fysikk 1+2 + Rettslære 1+2 = UGYLDIG (kun 1 fra hver gruppe)
+   * - R1+R2 + Fysikk 1+2 = gyldig STREA (MAT adopterer STREA)
+   * - S1+S2 + Rettslære 1+2 = gyldig STSSA (MAT adopterer STSSA)
+   * - S1+S2 + Rettslære 1+2 + Fysikk 1+2 = gyldig (MAT+RET=2 STSSA, FYS=bonus)
+   * - Fysikk 1+2 + Rettslære 1+2 (uten MAT) = UGYLDIG (kun 1 fra hver gruppe)
    *
    * @param {Array} oppfylteOmrader - Array av fagområdekoder som har oppfylt fordypning (2+ fag)
    * @returns {Object} { valid: boolean, gruppe: string|null, message: string|null }
    * @private
    */
   _validateFordypningSammeGruppe(oppfylteOmrader) {
-    // Filtrer ut nøytrale fagområder
+    // Sjekk om MAT (matematikk) er blant fordypningene
+    const harMatematikk = oppfylteOmrader.includes('MAT');
+
+    // Filtrer ut nøytrale fagområder (MAT)
     const ikkeNoytraleOmrader = oppfylteOmrader.filter(o => !NEUTRAL_OMRADER.includes(o));
 
     if (ikkeNoytraleOmrader.length === 0) {
@@ -587,27 +594,49 @@ export class ValidationService {
       return { valid: true, gruppe: null, message: null };
     }
 
-    // Tell STREA og STSSA fordypninger
+    // Tell STREA og STSSA fordypninger (uten MAT)
     const streaOmrader = ikkeNoytraleOmrader.filter(o => STREA_OMRADER.includes(o));
     const stssaOmrader = ikkeNoytraleOmrader.filter(o => STSSA_OMRADER.includes(o));
 
     // Krav: Minst 2 fordypninger fra SAMME gruppe
     // Ekstra fordypninger fra andre grupper er tillatt (bonus)
+    // MAT kan "adoptere" én gruppe og telle med i den
+
+    // Beregn antall med MAT som kan adoptere
+    const streaAntallMedMat = streaOmrader.length + (harMatematikk ? 1 : 0);
+    const stssaAntallMedMat = stssaOmrader.length + (harMatematikk ? 1 : 0);
+
+    // Sjekk om vi har nok fra én gruppe (med eller uten MAT-adopsjon)
     const harNokStrea = streaOmrader.length >= 2;
     const harNokStssa = stssaOmrader.length >= 2;
+    const harNokStreaMedMat = streaAntallMedMat >= 2 && harMatematikk;
+    const harNokStssaMedMat = stssaAntallMedMat >= 2 && harMatematikk;
 
     if (harNokStrea) {
-      // Har 2+ STREA fordypninger - gyldig, eventuelle STSSA er bonus
+      // Har 2+ STREA fordypninger uten MAT - gyldig
       return { valid: true, gruppe: 'STREA', message: null };
     }
     if (harNokStssa) {
-      // Har 2+ STSSA fordypninger - gyldig, eventuelle STREA er bonus
+      // Har 2+ STSSA fordypninger uten MAT - gyldig
       return { valid: true, gruppe: 'STSSA', message: null };
     }
 
-    // Ikke nok fordypninger fra én gruppe
-    // Sjekk om det er en blandet situasjon (1 STREA + 1 STSSA)
-    if (streaOmrader.length >= 1 && stssaOmrader.length >= 1) {
+    // Hvis MAT er tilstede, kan den adoptere én gruppe for å nå kravet
+    if (harMatematikk) {
+      // MAT + minst 1 fra én gruppe = 2 fordypninger fra den gruppen
+      if (harNokStreaMedMat && streaOmrader.length >= 1) {
+        // MAT adopterer STREA: MAT + STREA-fag = 2+ STREA, eventuelle STSSA er bonus
+        return { valid: true, gruppe: 'STREA', message: null };
+      }
+      if (harNokStssaMedMat && stssaOmrader.length >= 1) {
+        // MAT adopterer STSSA: MAT + STSSA-fag = 2+ STSSA, eventuelle STREA er bonus
+        return { valid: true, gruppe: 'STSSA', message: null };
+      }
+    }
+
+    // Ikke nok fordypninger fra én gruppe, og MAT kan ikke hjelpe
+    // Sjekk om det er en blandet situasjon (1 STREA + 1 STSSA uten MAT)
+    if (streaOmrader.length >= 1 && stssaOmrader.length >= 1 && !harMatematikk) {
       const streaNavnListe = streaOmrader.map(o => this.fagomradeNavn[o] || o).join(', ');
       const stssaNavnListe = stssaOmrader.map(o => this.fagomradeNavn[o] || o).join(', ');
 

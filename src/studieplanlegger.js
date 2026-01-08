@@ -1617,8 +1617,20 @@ export class Studieplanlegger {
 
           // Determine color class based on fagomrade group
           // STREA = realfag (green), STSSA = samfunn (yellow)
+          // MAT (matematikk R/S) = gradient (kan telle for begge)
           let gruppeKlasse = 'default';
-          if (STREA_OMRADER.includes(omrade)) {
+
+          // Special handling for MAT - check if it contains R or S fag
+          if (omrade === 'MAT') {
+            const fagNavn = data.fag.join(' ').toLowerCase();
+            const hasR = fagNavn.includes(' r1') || fagNavn.includes(' r2');
+            const hasS = fagNavn.includes(' s1') || fagNavn.includes(' s2');
+            if (hasR || hasS) {
+              gruppeKlasse = 'matematikk-rs';  // Special gradient class
+            } else {
+              gruppeKlasse = 'fellesfag';  // Gray for 1P, 1T, 2P
+            }
+          } else if (STREA_OMRADER.includes(omrade)) {
             gruppeKlasse = 'realfag';
           } else if (STSSA_OMRADER.includes(omrade)) {
             gruppeKlasse = 'samfunn';

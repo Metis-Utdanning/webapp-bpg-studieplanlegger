@@ -655,10 +655,11 @@
   border-color: #1976d2;
 }
 
-/* Matematikk-fag farge når valgt (mørkegrønn) */
+/* Matematikk fellesfag (1P, 1T, 2P) - grå (ikke del av fordypning) */
 .sp-fag-item.matematikk.selected {
-  background: #a5d6a7;
-  border-color: #2e7d32;
+  background: var(--fag-matematikk-2p-bg);
+  border-color: var(--fag-matematikk-2p);
+  border-left: 4px solid var(--fag-matematikk-2p);
 }
 
 /* Historie-fag farge når valgt (gul) */
@@ -1170,10 +1171,10 @@
   border-color: #1976d2;
 }
 
-/* VG1-modal: Matematikk selected - mørkegrønn */
+/* VG1-modal: Matematikk fellesfag (1P, 1T) - grå */
 .sp-vg1-fag-item.matematikk.selected {
-  background: #a5d6a7;
-  border-color: #2e7d32;
+  background: var(--fag-matematikk-2p-bg);
+  border-color: var(--fag-matematikk-2p);
 }
 
 /* VG1-modal: Fremmedspråk selected - mørk oransje */
@@ -1462,10 +1463,26 @@
   opacity: 0.6;
 }
 
-/* Matematikk-fag farge når valgt i blokkskjema (mørkegrønn) */
+/* Matematikk fellesfag (2P) - grå, R/S har egne regler */
 .sp-blokk-fag-item.matematikk.selected {
-  background: #a5d6a7;
-  border-color: #2e7d32;
+  background: var(--fag-matematikk-2p-bg);
+  border-color: var(--fag-matematikk-2p);
+}
+
+/* Matematikk R - valgt (gradient grønn-gul) - høyere spesifisitet enn .matematikk */
+.sp-blokk-fag-item.matematikk.selected.fag-matematikk-r {
+  background: linear-gradient(135deg, var(--fagomrade-realfag-bg) 0%, var(--fagomrade-samfunn-bg) 100%);
+  border-color: var(--fagomrade-realfag);
+  border-left: 4px solid var(--fagomrade-realfag);
+  opacity: 1;
+}
+
+/* Matematikk S - valgt (gradient gul-grønn) - høyere spesifisitet enn .matematikk */
+.sp-blokk-fag-item.matematikk.selected.fag-matematikk-s {
+  background: linear-gradient(135deg, var(--fagomrade-samfunn-bg) 0%, var(--fagomrade-realfag-bg) 100%);
+  border-color: var(--fagomrade-samfunn);
+  border-left: 4px solid var(--fagomrade-samfunn);
+  opacity: 1;
 }
 
 /* Fremmedspråk-fag farge når valgt i blokkskjema (mørk oransje) */
@@ -1927,6 +1944,12 @@
   border-left: 4px solid var(--fag-matematikk-2p-light);
 }
 
+/* Matematikk R/S - gradient (kan telle for både STREA og STSSA) */
+.sp-fordypning-blokk.fagomrade-matematikk-rs {
+  border-left: 4px solid;
+  border-image: linear-gradient(to bottom, var(--fagomrade-realfag) 0%, var(--fagomrade-samfunn) 100%) 1;
+}
+
 /* Fordypning blokk - Fullført (2+ fag) - full farge */
 .sp-fordypning-blokk.complete.fagomrade-realfag {
   border-color: var(--fagomrade-realfag);
@@ -1950,6 +1973,15 @@
   border-color: var(--fagomrade-medier);
   border-left: 4px solid var(--fagomrade-medier);
   background: linear-gradient(to bottom, white 0%, var(--fagomrade-medier-bg) 100%);
+}
+
+/* Matematikk R/S - fullført fordypning med diagonal gradient */
+.sp-fordypning-blokk.complete.fagomrade-matematikk-rs {
+  border: 2px solid;
+  border-image: linear-gradient(135deg, var(--fagomrade-realfag) 0%, var(--fagomrade-samfunn) 100%) 1;
+  border-left: 4px solid;
+  border-left-color: var(--fagomrade-realfag);
+  background: linear-gradient(135deg, var(--fagomrade-realfag-bg) 0%, var(--fagomrade-samfunn-bg) 100%);
 }
 
 /* Fallback for default/unknown fagomrade (grønn) */
@@ -1994,6 +2026,14 @@
   background: var(--fagomrade-medier-bg);
   color: var(--fagomrade-medier);
   border-bottom-color: var(--fagomrade-medier);
+}
+
+/* Header styling for Matematikk R/S (gradient) */
+.sp-fordypning-blokk.complete.fagomrade-matematikk-rs .sp-fordypning-blokk-header {
+  background: linear-gradient(135deg, var(--fagomrade-realfag-bg) 0%, var(--fagomrade-samfunn-bg) 100%);
+  color: var(--fagomrade-realfag);
+  border-bottom: 1px solid;
+  border-image: linear-gradient(90deg, var(--fagomrade-realfag) 0%, var(--fagomrade-samfunn) 100%) 1;
 }
 
 /* Fallback header styling */
