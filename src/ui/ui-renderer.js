@@ -510,7 +510,7 @@ export class UIRenderer {
 
     return `
       <div class="sp-fag-section sp-programfag-gruppe" data-trinn="vg2">
-        <div class="sp-fag-section-title">Programfag og matematikk (klikk for a velge)</div>
+        <div class="sp-fag-section-title">Programfag og matematikk (klikk for å velge)</div>
         ${slots.join('')}
       </div>
     `;
@@ -669,7 +669,7 @@ export class UIRenderer {
 
     return `
       <div class="sp-fag-section sp-programfag-gruppe" data-trinn="vg3">
-        <div class="sp-fag-section-title">Valgfrie programfag (klikk for a velge)</div>
+        <div class="sp-fag-section-title">Valgfrie programfag (klikk for å velge)</div>
         ${slots.join('')}
       </div>
     `;
