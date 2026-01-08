@@ -9,6 +9,40 @@
  */
 
 /* ============================================
+   PROGRAMOMRÅDE FARGER (STREA/STSSA)
+   ============================================ */
+:root {
+  /* STREA - Realfag (grønn) */
+  --fagomrade-realfag: #2E7D32;
+  --fagomrade-realfag-light: #66BB6A;
+  --fagomrade-realfag-bg: #E8F5E9;
+
+  /* STSSA - Samfunn/økonomi (gul) */
+  --fagomrade-samfunn: #F9A825;
+  --fagomrade-samfunn-light: #FFCA28;
+  --fagomrade-samfunn-bg: #FFFDE7;
+
+  /* MDD - Musikk, dans og drama (rød) */
+  --fagomrade-musikk: #C62828;
+  --fagomrade-musikk-light: #EF5350;
+  --fagomrade-musikk-bg: #FFEBEE;
+
+  /* MK - Medier og kommunikasjon (blå) */
+  --fagomrade-medier: #1565C0;
+  --fagomrade-medier-light: #42A5F5;
+  --fagomrade-medier-bg: #E3F2FD;
+
+  /* Matematikk 2P - mørkegrå (dead-end, ikke fordypning) */
+  --fag-matematikk-2p: #616161;
+  --fag-matematikk-2p-light: #757575;
+  --fag-matematikk-2p-bg: #EEEEEE;
+
+  /* Fremmedspråk (oransje) */
+  --fag-fremmedsprak: #ef6c00;
+  --fag-fremmedsprak-bg: #ffcc80;
+}
+
+/* ============================================
    MAIN CONTAINER
    ============================================ */
 #studieplanlegger-widget {
@@ -635,8 +669,229 @@
 
 /* Fremmedspråk-fag farge når valgt (mørk oransje) */
 .sp-fag-item.fremmedsprak.selected {
-  background: #ffcc80;
-  border-color: #ef6c00;
+  background: var(--fag-fremmedsprak-bg);
+  border-color: var(--fag-fremmedsprak);
+}
+
+/* ============================================
+   FAGOMRÅDE-FARGER PÅ FAG-KORT (STREA/STSSA)
+   ============================================ */
+
+/* Realfag (grønn) - STREA */
+.sp-fag-item.selected.fagomrade-realfag {
+  background: var(--fagomrade-realfag-bg);
+  border-color: var(--fagomrade-realfag);
+  border-left: 4px solid var(--fagomrade-realfag);
+}
+
+/* Samfunnsfag (gul) - STSSA */
+.sp-fag-item.selected.fagomrade-samfunn {
+  background: var(--fagomrade-samfunn-bg);
+  border-color: var(--fagomrade-samfunn);
+  border-left: 4px solid var(--fagomrade-samfunn);
+}
+
+/* Musikkfag (rød) - MDD */
+.sp-fag-item.selected.fagomrade-musikk {
+  background: var(--fagomrade-musikk-bg);
+  border-color: var(--fagomrade-musikk);
+  border-left: 4px solid var(--fagomrade-musikk);
+}
+
+/* Mediefag (blå) - MK */
+.sp-fag-item.selected.fagomrade-medier {
+  background: var(--fagomrade-medier-bg);
+  border-color: var(--fagomrade-medier);
+  border-left: 4px solid var(--fagomrade-medier);
+}
+
+/* Matematikk R - grønn-gul gradient (brukes av både STREA og STSSA) */
+.sp-fag-item.selected.fag-matematikk-r {
+  background: linear-gradient(135deg, var(--fagomrade-realfag-bg) 0%, var(--fagomrade-samfunn-bg) 100%);
+  border-color: var(--fagomrade-realfag);
+  border-left: 4px solid var(--fagomrade-realfag);
+}
+
+/* Matematikk S - gul-grønn gradient (primært STSSA) */
+.sp-fag-item.selected.fag-matematikk-s {
+  background: linear-gradient(135deg, var(--fagomrade-samfunn-bg) 0%, var(--fagomrade-realfag-bg) 100%);
+  border-color: var(--fagomrade-samfunn);
+  border-left: 4px solid var(--fagomrade-samfunn);
+}
+
+/* Matematikk 2P - mørkegrå (dead-end, ikke fordypning) */
+.sp-fag-item.selected.fag-matematikk-2p {
+  background: var(--fag-matematikk-2p-bg);
+  border-color: var(--fag-matematikk-2p);
+  border-left: 4px solid var(--fag-matematikk-2p);
+}
+
+/* Blokkskjema modal - fagområde-farger på fag-kort */
+.sp-blokk-fag-item.selected.fagomrade-realfag {
+  background: var(--fagomrade-realfag-bg);
+  border-color: var(--fagomrade-realfag);
+}
+
+.sp-blokk-fag-item.selected.fagomrade-samfunn {
+  background: var(--fagomrade-samfunn-bg);
+  border-color: var(--fagomrade-samfunn);
+}
+
+.sp-blokk-fag-item.selected.fagomrade-musikk {
+  background: var(--fagomrade-musikk-bg);
+  border-color: var(--fagomrade-musikk);
+}
+
+.sp-blokk-fag-item.selected.fagomrade-medier {
+  background: var(--fagomrade-medier-bg);
+  border-color: var(--fagomrade-medier);
+}
+
+/* Matematikk 2P i blokkskjema - mørkegrå */
+.sp-blokk-fag-item.selected.matematikk.fag-matematikk-2p {
+  background: var(--fag-matematikk-2p-bg);
+  border-color: var(--fag-matematikk-2p);
+  border-left: 4px solid var(--fag-matematikk-2p);
+  opacity: 1;
+}
+
+/* ============================================
+   FAGOMRÅDE-FARGER I BLOKKSKJEMA (uvalgte items)
+   Viser kant-farge for å indikere fagområde
+   ============================================ */
+
+/* Realfag (grønn) - uvalgt */
+.sp-blokk-fag-item:not(.selected):not(.disabled).fagomrade-realfag {
+  border-left: 3px solid var(--fagomrade-realfag);
+}
+.sp-blokk-fag-item:not(.selected):not(.disabled).fagomrade-realfag:hover {
+  background: var(--fagomrade-realfag-bg);
+}
+
+/* Samfunn (gul) - uvalgt */
+.sp-blokk-fag-item:not(.selected):not(.disabled).fagomrade-samfunn {
+  border-left: 3px solid var(--fagomrade-samfunn);
+}
+.sp-blokk-fag-item:not(.selected):not(.disabled).fagomrade-samfunn:hover {
+  background: var(--fagomrade-samfunn-bg);
+}
+
+/* Musikk (rød) - uvalgt */
+.sp-blokk-fag-item:not(.selected):not(.disabled).fagomrade-musikk {
+  border-left: 3px solid var(--fagomrade-musikk);
+}
+.sp-blokk-fag-item:not(.selected):not(.disabled).fagomrade-musikk:hover {
+  background: var(--fagomrade-musikk-bg);
+}
+
+/* Medier (blå) - uvalgt */
+.sp-blokk-fag-item:not(.selected):not(.disabled).fagomrade-medier {
+  border-left: 3px solid var(--fagomrade-medier);
+}
+.sp-blokk-fag-item:not(.selected):not(.disabled).fagomrade-medier:hover {
+  background: var(--fagomrade-medier-bg);
+}
+
+/* Matematikk R - uvalgt */
+.sp-blokk-fag-item:not(.selected):not(.disabled).fag-matematikk-r {
+  border-left: 3px solid var(--fagomrade-realfag);
+}
+.sp-blokk-fag-item:not(.selected):not(.disabled).fag-matematikk-r:hover {
+  background: linear-gradient(135deg, var(--fagomrade-realfag-bg) 0%, var(--fagomrade-samfunn-bg) 100%);
+}
+
+/* Matematikk S - uvalgt */
+.sp-blokk-fag-item:not(.selected):not(.disabled).fag-matematikk-s {
+  border-left: 3px solid var(--fagomrade-samfunn);
+}
+.sp-blokk-fag-item:not(.selected):not(.disabled).fag-matematikk-s:hover {
+  background: linear-gradient(135deg, var(--fagomrade-samfunn-bg) 0%, var(--fagomrade-realfag-bg) 100%);
+}
+
+/* Matematikk 2P - uvalgt (mørkegrå) */
+.sp-blokk-fag-item:not(.selected):not(.disabled).fag-matematikk-2p {
+  border-left: 3px solid var(--fag-matematikk-2p);
+}
+.sp-blokk-fag-item:not(.selected):not(.disabled).fag-matematikk-2p:hover {
+  background: var(--fag-matematikk-2p-bg);
+}
+
+/* ============================================
+   FORDYPNINGSPROFIL BADGE
+   ============================================ */
+.sp-fordypning-profil-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 12px;
+  border-radius: 16px;
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+.sp-fordypning-profil-badge.realfag {
+  background: var(--fagomrade-realfag);
+  color: white;
+}
+
+.sp-fordypning-profil-badge.samfunn {
+  background: var(--fagomrade-samfunn);
+  color: #1a1a1a;
+}
+
+.sp-fordypning-profil-badge.blandet {
+  background: linear-gradient(90deg, var(--fagomrade-realfag) 50%, var(--fagomrade-samfunn) 50%);
+  color: white;
+}
+
+.sp-fordypning-profil-badge.default {
+  background: #9e9e9e;
+  color: white;
+}
+
+/* ============================================
+   LÅSTE FELLESFAG (automatisk inkludert)
+   ============================================ */
+.sp-fag-item.fellesfag-locked {
+  background: linear-gradient(135deg, #f5f5f5 0%, #eeeeee 100%);
+  border: 2px solid var(--border-medium);
+  cursor: default;
+  position: relative;
+}
+
+.sp-fag-item.fellesfag-locked .sp-fag-item-title {
+  color: var(--text-dark);
+}
+
+.sp-fag-item.fellesfag-locked::after {
+  content: 'Obligatorisk';
+  position: absolute;
+  right: 8px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 0.65rem;
+  color: var(--text-medium);
+  background: rgba(0,0,0,0.06);
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-weight: 500;
+}
+
+/* Historie VG3 - spesialstyling som låst fellesfag */
+.sp-fag-item.historie-locked {
+  background: var(--background-light);
+  border-color: var(--primary-color);
+  cursor: default;
+  opacity: 0.85;
+}
+
+.sp-fag-item.historie-locked:hover {
+  background: #e8e8e8;
+}
+
+.sp-fag-item.historie-locked .sp-fag-item-title {
+  color: var(--text-dark);
+  font-weight: 600;
 }
 
 /* Divider between sections */
@@ -922,8 +1177,8 @@
 
 /* VG1-modal: Fremmedspråk selected - mørk oransje */
 .sp-vg1-fag-item.fremmedsprak.selected {
-  background: #ffcc80;
-  border-color: #ef6c00;
+  background: var(--fag-fremmedsprak-bg);
+  border-color: var(--fag-fremmedsprak);
 }
 
 .sp-vg1-fag-item-title {
@@ -1214,8 +1469,8 @@
 
 /* Fremmedspråk-fag farge når valgt i blokkskjema (mørk oransje) */
 .sp-blokk-fag-item.fremmedsprak.selected {
-  background: #ffcc80;
-  border-color: #ef6c00;
+  background: var(--fag-fremmedsprak-bg);
+  border-color: var(--fag-fremmedsprak);
 }
 
 .sp-blokk-fag-item.disabled {
@@ -1233,11 +1488,11 @@
 /* Removed star icon - takes too much space */
 /* .sp-blokk-fag-item.obligatorisk::before { content: '★ '; } */
 
-/* When obligatorisk fag (historie) IS SELECTED - show yellow highlight */
+/* When obligatorisk fag (historie) IS SELECTED - show grey highlight */
 .sp-blokk-fag-item.obligatorisk.selected {
-  background: #fff9c4;
-  border-color: #f9a825;
-  border-left: 4px solid #f9a825;
+  background: var(--background-light);
+  border-color: var(--border-medium);
+  border-left: 4px solid var(--border-medium);
 }
 
 /* Fordypning nivå - bruker nå samme blå farge som andre programfag */
@@ -2655,4 +2910,42 @@
   .sp-onboarding-label {
     font-size: 1rem;
   }
+}
+
+/* ============================================
+   PLACEHOLDER BLOKKER (tomme blokker)
+   For MK og Musikk programområder der blokker
+   ikke har valgbare fag
+   ============================================ */
+.sp-blokk-placeholder {
+  opacity: 0.6;
+}
+
+.sp-blokk-placeholder .sp-blokk-header {
+  background: linear-gradient(135deg, #d0d0d0 0%, #c0c0c0 100%);
+}
+
+.sp-blokk-placeholder .sp-blokk-fag-liste {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100px;
+  background: #f5f5f5;
+}
+
+.sp-blokk-placeholder-message {
+  text-align: center;
+  color: #999;
+  font-size: 0.9rem;
+}
+
+.sp-placeholder-icon {
+  display: block;
+  font-size: 1.5rem;
+  margin-bottom: 0.5rem;
+  opacity: 0.5;
+}
+
+.sp-placeholder-text {
+  display: block;
 }
