@@ -769,7 +769,7 @@ export class UIRenderer {
         <div class="sp-modal-content sp-modal-onboarding-content">
           <div class="sp-modal-header">
             <h2 class="sp-modal-title">Velkommen til Studieplanleggeren</h2>
-            <p class="sp-modal-subtitle">Svar pa to korte sporsmal for a komme i gang</p>
+            <p class="sp-modal-subtitle">Svar på to korte spørsmål for å komme i gang</p>
           </div>
 
           <div class="sp-onboarding-form">
