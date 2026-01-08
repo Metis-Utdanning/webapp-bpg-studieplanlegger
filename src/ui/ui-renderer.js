@@ -774,7 +774,7 @@ export class UIRenderer {
 
           <div class="sp-onboarding-form">
             <div class="sp-onboarding-question">
-              <label class="sp-onboarding-label">1. Hvilket programomrade gar du pa?</label>
+              <label class="sp-onboarding-label">1. Hvilket programområde går du på?</label>
               <div class="sp-onboarding-options" data-question="programomrade">
                 ${programs.map(program => `
                   <button class="sp-onboarding-option" data-value="${sanitizeHTML(program.id)}">
@@ -785,7 +785,7 @@ export class UIRenderer {
             </div>
 
             <div class="sp-onboarding-question">
-              <label class="sp-onboarding-label">2. Hadde du fremmedsprak pa ungdomsskolen?</label>
+              <label class="sp-onboarding-label">2. Hadde du fremmedspråk på ungdomsskolen?</label>
               <div class="sp-onboarding-options" data-question="fremmedsprak">
                 <button class="sp-onboarding-option" data-value="true">Ja</button>
                 <button class="sp-onboarding-option" data-value="false">Nei</button>
