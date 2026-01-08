@@ -685,12 +685,15 @@ export class UIRenderer {
 
     const id = fagId.toLowerCase();
 
-    // Matematikk 2P - mørkegrå (dead-end, ikke fordypning)
-    if (id.includes('matematikk-2p') || id.includes('matematikk_2p') || id === '2p') {
-      return 'fag-matematikk-2p';
+    // Matematikk fellesfag (1P, 1T, 2P) - grå (ikke del av fordypning)
+    if (id.includes('matematikk-1p') || id.includes('matematikk_1p') ||
+        id.includes('matematikk-1t') || id.includes('matematikk_1t') ||
+        id.includes('matematikk-2p') || id.includes('matematikk_2p') ||
+        id === '1p' || id === '1t' || id === '2p') {
+      return 'fag-matematikk-2p';  // Reuse 2P gray styling for all fellesfag math
     }
 
-    // Spesialhåndtering for matematikk R/S
+    // Matematikk programfag R/S - har gradient (kan telle for STREA eller STSSA)
     if (id.includes('matematikk-r') || id.includes('matematikk_r')) {
       return 'fag-matematikk-r';
     }
@@ -699,6 +702,7 @@ export class UIRenderer {
     }
 
     // Map fag-ID til fagområde basert på prefiks
+    // NB: 'matematikk' er IKKE med her - håndteres separat over
     const fagomradeMap = {
       'fysikk': 'realfag',
       'kjemi': 'realfag',
@@ -707,7 +711,6 @@ export class UIRenderer {
       'informasjonsteknologi': 'realfag',
       'it': 'realfag',
       'teknologi': 'realfag',
-      'matematikk': 'realfag',
       'psykologi': 'samfunn',
       'rettslare': 'samfunn',
       'rettslaere': 'samfunn',

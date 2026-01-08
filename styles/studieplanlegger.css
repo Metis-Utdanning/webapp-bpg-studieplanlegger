@@ -1906,7 +1906,55 @@
   transform: translateY(-2px);
 }
 
-.sp-fordypning-blokk.complete {
+/* Fordypning blokk - Påbegynt (1 fag) - svak farge på venstre kant */
+.sp-fordypning-blokk.fagomrade-realfag {
+  border-left: 4px solid var(--fagomrade-realfag-light);
+}
+
+.sp-fordypning-blokk.fagomrade-samfunn {
+  border-left: 4px solid var(--fagomrade-samfunn-light);
+}
+
+.sp-fordypning-blokk.fagomrade-musikk {
+  border-left: 4px solid var(--fagomrade-musikk-light);
+}
+
+.sp-fordypning-blokk.fagomrade-medier {
+  border-left: 4px solid var(--fagomrade-medier-light);
+}
+
+.sp-fordypning-blokk.fagomrade-fellesfag {
+  border-left: 4px solid var(--fag-matematikk-2p-light);
+}
+
+/* Fordypning blokk - Fullført (2+ fag) - full farge */
+.sp-fordypning-blokk.complete.fagomrade-realfag {
+  border-color: var(--fagomrade-realfag);
+  border-left: 4px solid var(--fagomrade-realfag);
+  background: linear-gradient(to bottom, white 0%, var(--fagomrade-realfag-bg) 100%);
+}
+
+.sp-fordypning-blokk.complete.fagomrade-samfunn {
+  border-color: var(--fagomrade-samfunn);
+  border-left: 4px solid var(--fagomrade-samfunn);
+  background: linear-gradient(to bottom, white 0%, var(--fagomrade-samfunn-bg) 100%);
+}
+
+.sp-fordypning-blokk.complete.fagomrade-musikk {
+  border-color: var(--fagomrade-musikk);
+  border-left: 4px solid var(--fagomrade-musikk);
+  background: linear-gradient(to bottom, white 0%, var(--fagomrade-musikk-bg) 100%);
+}
+
+.sp-fordypning-blokk.complete.fagomrade-medier {
+  border-color: var(--fagomrade-medier);
+  border-left: 4px solid var(--fagomrade-medier);
+  background: linear-gradient(to bottom, white 0%, var(--fagomrade-medier-bg) 100%);
+}
+
+/* Fallback for default/unknown fagomrade (grønn) */
+.sp-fordypning-blokk.complete.fagomrade-default,
+.sp-fordypning-blokk.complete:not([class*="fagomrade-"]) {
   border-color: #4CAF50;
   background: linear-gradient(to bottom, white 0%, #f1f8f4 100%);
 }
@@ -1920,7 +1968,37 @@
   border-bottom: 1px solid var(--border-light);
 }
 
-.sp-fordypning-blokk.complete .sp-fordypning-blokk-header {
+/* Header styling for fullførte fordypninger - STREA (realfag/grønn) */
+.sp-fordypning-blokk.complete.fagomrade-realfag .sp-fordypning-blokk-header {
+  background: var(--fagomrade-realfag-bg);
+  color: var(--fagomrade-realfag);
+  border-bottom-color: var(--fagomrade-realfag);
+}
+
+/* Header styling for fullførte fordypninger - STSSA (samfunn/gul) */
+.sp-fordypning-blokk.complete.fagomrade-samfunn .sp-fordypning-blokk-header {
+  background: var(--fagomrade-samfunn-bg);
+  color: #b57b00;  /* Darker yellow for text readability */
+  border-bottom-color: var(--fagomrade-samfunn);
+}
+
+/* Header styling for MDD (musikk/rød) */
+.sp-fordypning-blokk.complete.fagomrade-musikk .sp-fordypning-blokk-header {
+  background: var(--fagomrade-musikk-bg);
+  color: var(--fagomrade-musikk);
+  border-bottom-color: var(--fagomrade-musikk);
+}
+
+/* Header styling for MK (medier/blå) */
+.sp-fordypning-blokk.complete.fagomrade-medier .sp-fordypning-blokk-header {
+  background: var(--fagomrade-medier-bg);
+  color: var(--fagomrade-medier);
+  border-bottom-color: var(--fagomrade-medier);
+}
+
+/* Fallback header styling */
+.sp-fordypning-blokk.complete.fagomrade-default .sp-fordypning-blokk-header,
+.sp-fordypning-blokk.complete:not([class*="fagomrade-"]) .sp-fordypning-blokk-header {
   background: #e8f5e9;
   color: #2e7d32;
   border-bottom-color: #4CAF50;

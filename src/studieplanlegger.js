@@ -5,7 +5,7 @@
 import { DataHandler } from './core/data-handler.js';
 import { StudieplanleggerState } from './core/state.js';
 import { UIRenderer } from './ui/ui-renderer.js';
-import { ValidationService } from './core/validation-service.js';
+import { ValidationService, STREA_OMRADER, STSSA_OMRADER, FAGOMRADE_FARGER } from './core/validation-service.js';
 import { NoticeService } from './core/notice-service.js';
 
 /**
@@ -1610,16 +1610,26 @@ export class Studieplanlegger {
       const progressColor = fordypningData.isMet ? '#4CAF50' : (progress > 50 ? '#ff9800' : '#d32f2f');
 
       // Show cross-trinn fordypning as fag blocks (2 side by side)
+      // Color based on STREA (green) or STSSA (yellow) classification
       const fagomraderBlokker = Object.entries(fordypningData.fagomrader || {})
         .map(([omrade, data], index) => {
           const isFordypning = data.fag.length >= 2;  // 2+ fag = fordypning
-          // Different green shades for each fordypning område
-          const greenShades = ['#4CAF50', '#66BB6A', '#81C784', '#A5D6A7'];
-          const color = greenShades[index % greenShades.length];
+
+          // Determine color class based on fagomrade group
+          // STREA = realfag (green), STSSA = samfunn (yellow)
+          let gruppeKlasse = 'default';
+          if (STREA_OMRADER.includes(omrade)) {
+            gruppeKlasse = 'realfag';
+          } else if (STSSA_OMRADER.includes(omrade)) {
+            gruppeKlasse = 'samfunn';
+          } else {
+            // Fallback to FAGOMRADE_FARGER mapping
+            gruppeKlasse = FAGOMRADE_FARGER[omrade] || 'default';
+          }
 
           return `
-            <div class="sp-fordypning-blokk ${isFordypning ? 'complete' : ''}" style="border-left-color: ${color};">
-              <div class="sp-fordypning-blokk-header" style="${isFordypning ? `background: ${color}20; color: ${color}; border-bottom-color: ${color};` : ''}">
+            <div class="sp-fordypning-blokk ${isFordypning ? 'complete' : ''} fagomrade-${gruppeKlasse}">
+              <div class="sp-fordypning-blokk-header">
                 ${isFordypning ? '✓' : ''} ${data.displayName || omrade} (${data.fag.length} fag)
               </div>
               <div class="sp-fordypning-blokk-fag">

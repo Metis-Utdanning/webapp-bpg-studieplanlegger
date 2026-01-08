@@ -22,8 +22,11 @@ const NEUTRAL_OMRADER = ['MAT'];
 
 // Fargeklassifisering for UI basert på fagområde
 const FAGOMRADE_FARGER = {
+  // MAT (grå) - Fellesfag, ikke del av fordypning (1P, 1T, 2P)
+  // R1/R2 og S1/S2 er programfag og håndteres separat i UI
+  MAT: 'fellesfag',
   // STREA (grønn) - Realfag
-  MAT: 'realfag', FYS: 'realfag', KJE: 'realfag',
+  FYS: 'realfag', KJE: 'realfag',
   BIO: 'realfag', GEO: 'realfag', IT: 'realfag', TOF: 'realfag',
   // STSSA (gul) - Språk, samfunn, økonomi
   SOK: 'samfunn', OKO: 'samfunn', MOL: 'samfunn', ENT: 'samfunn',
@@ -562,14 +565,14 @@ export class ValidationService {
   }
 
   /**
-   * Valider at alle ikke-nøytrale fordypninger er fra samme STREA/STSSA-gruppe
-   * Matematikk (MAT) er nøytral og "adopterer" gruppen til de andre fordypningene
+   * Valider at du har minst 2 fordypninger fra samme STREA/STSSA-gruppe
+   * Ekstra fordypninger fra andre grupper er tillatt (bonus)
    *
    * Eksempler:
-   * - R1+R2 + Fysikk 1+2 = gyldig STREA
-   * - R1+R2 + Rettslære 1+2 = gyldig STSSA (matematikk adopterer STSSA)
-   * - S1+S2 + Fysikk 1+2 = gyldig STREA
-   * - Fysikk 1+2 + Rettslære 1+2 = UGYLDIG (blandet STREA og STSSA)
+   * - Fysikk 1+2 + Kjemi 1+2 = gyldig STREA (2 STREA fordypninger)
+   * - Rettslære 1+2 + Entreprenørskap 1+2 = gyldig STSSA (2 STSSA fordypninger)
+   * - Rettslære 1+2 + Entreprenørskap 1+2 + Biologi 1+2 = gyldig STSSA (2 STSSA + 1 bonus STREA)
+   * - Fysikk 1+2 + Rettslære 1+2 = UGYLDIG (kun 1 fra hver gruppe)
    *
    * @param {Array} oppfylteOmrader - Array av fagområdekoder som har oppfylt fordypning (2+ fag)
    * @returns {Object} { valid: boolean, gruppe: string|null, message: string|null }
@@ -584,31 +587,46 @@ export class ValidationService {
       return { valid: true, gruppe: null, message: null };
     }
 
-    // Tell STREA og STSSA
+    // Tell STREA og STSSA fordypninger
     const streaOmrader = ikkeNoytraleOmrader.filter(o => STREA_OMRADER.includes(o));
     const stssaOmrader = ikkeNoytraleOmrader.filter(o => STSSA_OMRADER.includes(o));
 
-    // Alle ikke-nøytrale må være fra SAMME gruppe
-    const erKunStrea = streaOmrader.length > 0 && stssaOmrader.length === 0;
-    const erKunStssa = stssaOmrader.length > 0 && streaOmrader.length === 0;
+    // Krav: Minst 2 fordypninger fra SAMME gruppe
+    // Ekstra fordypninger fra andre grupper er tillatt (bonus)
+    const harNokStrea = streaOmrader.length >= 2;
+    const harNokStssa = stssaOmrader.length >= 2;
 
-    if (erKunStrea) {
+    if (harNokStrea) {
+      // Har 2+ STREA fordypninger - gyldig, eventuelle STSSA er bonus
       return { valid: true, gruppe: 'STREA', message: null };
     }
-    if (erKunStssa) {
+    if (harNokStssa) {
+      // Har 2+ STSSA fordypninger - gyldig, eventuelle STREA er bonus
       return { valid: true, gruppe: 'STSSA', message: null };
     }
 
-    // Blandet - ugyldig
-    // Lag lesbare navn for feilmeldingen
-    const streaNavnListe = streaOmrader.map(o => this.fagomradeNavn[o] || o).join(', ');
-    const stssaNavnListe = stssaOmrader.map(o => this.fagomradeNavn[o] || o).join(', ');
+    // Ikke nok fordypninger fra én gruppe
+    // Sjekk om det er en blandet situasjon (1 STREA + 1 STSSA)
+    if (streaOmrader.length >= 1 && stssaOmrader.length >= 1) {
+      const streaNavnListe = streaOmrader.map(o => this.fagomradeNavn[o] || o).join(', ');
+      const stssaNavnListe = stssaOmrader.map(o => this.fagomradeNavn[o] || o).join(', ');
 
-    return {
-      valid: false,
-      gruppe: null,
-      message: `Fordypning må være fra samme programområde. Du har fordypning fra både realfag (${streaNavnListe}) og samfunn/språk (${stssaNavnListe}). Velg fag fra kun én gruppe.`
-    };
+      return {
+        valid: false,
+        gruppe: null,
+        message: `Du trenger 2 fordypninger fra samme gruppe. Du har 1 fra realfag (${streaNavnListe}) og 1 fra samfunn/språk (${stssaNavnListe}). Velg én til fra samme gruppe.`
+      };
+    }
+
+    // Kun én gruppe, men ikke nok fordypninger ennå
+    if (streaOmrader.length === 1) {
+      return { valid: true, gruppe: 'STREA', message: null };  // På vei, men ikke fullført
+    }
+    if (stssaOmrader.length === 1) {
+      return { valid: true, gruppe: 'STSSA', message: null };  // På vei, men ikke fullført
+    }
+
+    return { valid: true, gruppe: null, message: null };
   }
 
   /**
