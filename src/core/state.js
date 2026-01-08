@@ -456,30 +456,29 @@ export class StudieplanleggerState {
     // VG2 validation
     const vg2Math = this.getSelection('vg2', 'matematikk');
     const vg2Programfag = this.state.vg2.selections.filter(s => s.slot.startsWith('programfag-'));
+    const vg2Required = this.getRequiredProgramfagCount('vg2');
 
-    if (vg2Math && vg2Programfag.length === 3) {
+    if (vg2Math && vg2Programfag.length === vg2Required) {
       validation.vg2Complete = true;
     } else {
       if (!vg2Math) {
         validation.errors.push('VG2: Matematikk ikke valgt');
       }
-      if (vg2Programfag.length !== 3) {
-        validation.errors.push(`VG2: ${vg2Programfag.length}/3 programfag valgt`);
+      if (vg2Programfag.length !== vg2Required) {
+        validation.errors.push(`VG2: ${vg2Programfag.length}/${vg2Required} programfag valgt`);
       }
     }
 
     // VG3 validation
-    const vg3Historie = this.getSelection('vg3', 'historie');
+    // Historie er nå automatisk fellesfag (ikke en valgbar slot)
     const vg3Programfag = this.state.vg3.selections.filter(s => s.slot.startsWith('programfag-'));
+    const vg3Required = this.getRequiredProgramfagCount('vg3');
 
-    if (vg3Historie && vg3Programfag.length === 3) {
+    if (vg3Programfag.length === vg3Required) {
       validation.vg3Complete = true;
     } else {
-      if (!vg3Historie) {
-        validation.errors.push('VG3: Historie må velges');
-      }
-      if (vg3Programfag.length !== 3) {
-        validation.errors.push(`VG3: ${vg3Programfag.length}/3 programfag valgt`);
+      if (vg3Programfag.length !== vg3Required) {
+        validation.errors.push(`VG3: ${vg3Programfag.length}/${vg3Required} programfag valgt`);
       }
     }
 
@@ -489,17 +488,18 @@ export class StudieplanleggerState {
   }
 
   /**
-   * Get required number of programfag for a trinn
+   * Get required number of valgfrie programfag for a trinn
+   * (excludes matematikk and historie which have special slots)
    */
   getRequiredProgramfagCount(trinn) {
-    // Studiespesialisering VG2: 4 fag total (1 matematikk + 3 programfag)
-    // Studiespesialisering VG3: 4 fag total (1 historie + 3 programfag)
-    if (this.state.programomrade === 'studiespesialisering') {
-      if (trinn === 'vg2' || trinn === 'vg3') {
-        return 4; // User selects 4 fag from blokkskjema
-      }
+    const programomrade = this.state.programomrade;
+
+    if (programomrade === 'musikk-dans-drama') {
+      return 1; // VG2 og VG3: 1 valgfritt programfag
+    } else if (programomrade === 'medier-kommunikasjon') {
+      return trinn === 'vg2' ? 1 : 2; // VG2: 1, VG3: 2
     }
-    return 3; // Default for now
+    return 3; // Studiespesialisering: 3 valgfrie programfag
   }
 
   /**

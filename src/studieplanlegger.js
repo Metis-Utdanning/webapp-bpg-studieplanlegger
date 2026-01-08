@@ -6,6 +6,7 @@ import { DataHandler } from './core/data-handler.js';
 import { StudieplanleggerState } from './core/state.js';
 import { UIRenderer } from './ui/ui-renderer.js';
 import { ValidationService } from './core/validation-service.js';
+import { NoticeService } from './core/notice-service.js';
 
 /**
  * Sanitize string for safe HTML insertion (XSS protection)
@@ -39,6 +40,7 @@ export class Studieplanlegger {
     });
     this.state = new StudieplanleggerState();
     this.validator = new ValidationService();
+    this.noticeService = new NoticeService();
     this.renderer = new UIRenderer(container, this.state, this.dataHandler, this.options);
 
     // Track selected fag in blokkskjema modal
@@ -375,7 +377,6 @@ export class Studieplanlegger {
 
     // Reset state
     this.onboardingSelections = {
-      trinn: null,
       programomrade: null,
       fremmedsprak: null
     };
@@ -434,17 +435,17 @@ export class Studieplanlegger {
    */
   updateOnboardingProgress(modal) {
     const selections = this.onboardingSelections || {};
-    const count = [selections.trinn, selections.programomrade, selections.fremmedsprak]
+    const count = [selections.programomrade, selections.fremmedsprak]
       .filter(v => v !== null && v !== undefined).length;
 
     const progressText = modal.querySelector('.sp-onboarding-progress');
     if (progressText) {
-      progressText.textContent = `${count} av 3 valgt`;
+      progressText.textContent = `${count} av 2 valgt`;
     }
 
     const submitBtn = modal.querySelector('.sp-onboarding-submit');
     if (submitBtn) {
-      submitBtn.disabled = count < 3;
+      submitBtn.disabled = count < 2;
     }
   }
 
@@ -454,7 +455,7 @@ export class Studieplanlegger {
   completeOnboarding() {
     const selections = this.onboardingSelections;
 
-    if (!selections.trinn || !selections.programomrade || selections.fremmedsprak === null) {
+    if (!selections.programomrade || selections.fremmedsprak === null) {
       return; // Should not happen if button is disabled correctly
     }
 
@@ -470,7 +471,6 @@ export class Studieplanlegger {
     localStorage.setItem('studieplanlegger_onboarding_completed', 'true');
 
     // Apply selections to state (now triggers proper re-render since modal is closed)
-    this.state.setTrinn(selections.trinn);
     this.state.setProgramomrade(selections.programomrade);
     this.state.setHarFremmedsprak(selections.fremmedsprak === 'true');
 
@@ -492,20 +492,9 @@ export class Studieplanlegger {
     // Version switcher (if enabled)
     this.attachVersionSwitcherListeners();
 
-    // All filter dropdowns (trinn, program, fremmedsprak)
+    // All filter dropdowns (program, fremmedsprak)
+    // Trinn-filter er fjernet - brukeren ser alltid hele VG1-VG3 løpet
     this.attachFilterDropdownListeners();
-
-    // Filter dropdown items - Trinn
-    this.container.querySelectorAll('.sp-filter-dropdown-item[data-trinn]').forEach(btn => {
-      btn.addEventListener('click', (e) => {
-        const trinn = e.currentTarget.dataset.trinn;
-        this.state.setTrinn(trinn);
-        // Close dropdown
-        const dropdown = e.currentTarget.closest('.sp-filter-dropdown');
-        dropdown?.querySelector('.sp-filter-dropdown-menu')?.classList.add('hidden');
-        dropdown?.querySelector('.sp-filter-dropdown-btn')?.setAttribute('aria-expanded', 'false');
-      });
-    });
 
     // Filter dropdown items - Programområde
     this.container.querySelectorAll('.sp-filter-dropdown-item[data-programomrade]').forEach(btn => {
@@ -609,14 +598,8 @@ export class Studieplanlegger {
       this.openBlokkskjemaModal('vg2');
     });
 
-    // VG3 Historie section - opens blokkskjema modal for VG3
-    this.container.querySelector('.sp-vg3-historie-gruppe')?.addEventListener('click', (e) => {
-      // Don't open modal if clicking on info button
-      if (e.target.closest('.sp-fag-item-info')) {
-        return;
-      }
-      this.openBlokkskjemaModal('vg3');
-    });
+    // VG3 Historie er nå et låst fellesfag - ikke lenger klikkbar
+    // (Fjernet VG3 Historie gruppe listener)
 
     // VG1 modals
     this.setupVG1Modal('matematikk');
@@ -720,6 +703,7 @@ export class Studieplanlegger {
         // Select this item
         item.classList.add('selected');
         selectedFag = {
+          id: item.dataset.id,
           navn: item.querySelector('.sp-vg1-fag-item-title').textContent,
           timer: item.dataset.timer,
           fagkode: item.dataset.fagkode,
@@ -833,6 +817,15 @@ export class Studieplanlegger {
       modalTitle.setAttribute('tabindex', '-1');
       modalTitle.focus();
     }
+
+    // Sjekk for proaktive merknader ved modal-åpning
+    if (trinn === 'vg2' && currentState.harFremmedsprak === false) {
+      // Vis fremmedspråk-advarsel proaktivt
+      const fremmedsprakNotice = this.noticeService.notices.find(n => n.id === 'fremmedsprak-fordypning-blokk3');
+      if (fremmedsprakNotice) {
+        this.showConditionalNotice(modal, fremmedsprakNotice);
+      }
+    }
   }
 
   /**
@@ -852,6 +845,44 @@ export class Studieplanlegger {
         this.modalTriggerElement = null;
       }
     }
+  }
+
+  /**
+   * Vis betinget merknad i modal
+   */
+  showConditionalNotice(modal, notice) {
+    // Fjern eksisterende merknad
+    const existing = modal.querySelector('.sp-conditional-notice');
+    if (existing) existing.remove();
+
+    // Opprett ny merknad-banner
+    const noticeEl = document.createElement('div');
+    noticeEl.className = `sp-conditional-notice sp-conditional-notice--${notice.type}`;
+    noticeEl.innerHTML = `
+      <span class="sp-conditional-notice__icon">${notice.type === 'warning' ? '⚠️' : 'ℹ️'}</span>
+      <span class="sp-conditional-notice__text">${notice.message}</span>
+      <button class="sp-conditional-notice__close" aria-label="Lukk merknad">×</button>
+    `;
+
+    // Sett inn etter modal-header
+    const blokkContent = modal.querySelector('#blokkskjema-content');
+    if (blokkContent) {
+      blokkContent.parentNode.insertBefore(noticeEl, blokkContent);
+    }
+
+    // Auto-fjern etter 15 sekunder
+    const autoRemoveTimeout = setTimeout(() => {
+      if (noticeEl.parentNode) {
+        noticeEl.classList.add('sp-conditional-notice--fading');
+        setTimeout(() => noticeEl.remove(), 300);
+      }
+    }, 15000);
+
+    // Lukk-knapp
+    noticeEl.querySelector('.sp-conditional-notice__close').addEventListener('click', () => {
+      clearTimeout(autoRemoveTimeout);
+      noticeEl.remove();
+    });
   }
 
   /**
@@ -900,32 +931,52 @@ export class Studieplanlegger {
              fagId.includes('fremmedsprak');
     };
 
+    // Get harFremmedsprak state for filtering I+II fag
+    const harFremmedsprak = currentState.harFremmedsprak;
+
     const blocksHTML = Object.entries(fagPerBlokk).map(([blokkId, blokk]) => {
+      // Filter out I+II fag if student has fremmedspråk from ungdomsskolen
+      // UDIR rule: Only students WITHOUT fremmedspråk can choose I+II courses
+      const filteredFag = blokk.fag.filter(f => {
+        if (harFremmedsprak && f.id && f.id.includes('-i-ii')) {
+          return false; // Hide spansk-i-ii, tysk-i-ii, etc.
+        }
+        return true;
+      });
+
+      // Check if this block has no selectable fag (placeholder block)
+      const isEmptyBlokk = filteredFag.length === 0;
+
       // Sort fag: Historie VG3 first, then rest
-      const sortedFag = [...blokk.fag].sort((a, b) => {
+      const sortedFag = [...filteredFag].sort((a, b) => {
         if (a.id === 'historie-vg3') return -1;
         if (b.id === 'historie-vg3') return 1;
         return 0;
       });
 
       return `
-      <div class="sp-blokk" data-blokk-id="${blokkId}">
+      <div class="sp-blokk${isEmptyBlokk ? ' sp-blokk-placeholder' : ''}" data-blokk-id="${blokkId}">
         <div class="sp-blokk-header">${blokk.navn}</div>
         <div class="sp-blokk-fag-liste">
-          ${sortedFag.map(f => {
-            // Check if Spansk I+II should be blocked
-            const isSpansk = f.id === 'spansk-i-ii' || f.fagkode === 'FSP6237';
-            const shouldBlockSpansk = isSpansk && currentState.harFremmedsprak === true;
+          ${isEmptyBlokk ? `
+            <div class="sp-blokk-placeholder-message">
+              <span class="sp-placeholder-icon">&#9675;</span>
+              <span class="sp-placeholder-text">Ingen valgbare fag</span>
+            </div>
+          ` : sortedFag.map(f => {
+            // Note: I+II fag (spansk-i-ii, etc.) are already filtered out above
+            // if harFremmedsprak is true, so no need to check here
             const isObligatorisk = f.obligatorisk === true;
             const fordypningLevel = getFordypningLevel(f.id);
             const isMatematikk = isMatematikkFag(f.id);
             const isFremmedsprak = isFremmedsprakFag(f.id);
+            const fargeKlasse = this.renderer.getFagomradeFargeKlasse(f.id);
             const classes = ['sp-blokk-fag-item'];
             if (isObligatorisk) classes.push('obligatorisk');
             if (fordypningLevel) classes.push(`fordypning-${fordypningLevel}`);
             if (isMatematikk) classes.push('matematikk');
             if (isFremmedsprak) classes.push('fremmedsprak');
-            if (shouldBlockSpansk) classes.push('blocked');
+            if (fargeKlasse) classes.push(fargeKlasse);
 
             // Sanitize user-facing strings to prevent XSS
             const safeName = sanitizeHTML(f.title || f.id);
@@ -934,7 +985,6 @@ export class Studieplanlegger {
             const safeMerknad = f.merknad ? sanitizeHTML(f.merknad) : '';
 
             // ARIA: role="checkbox" for selectable items, tabindex for keyboard nav
-            const isBlocked = shouldBlockSpansk;
             return `
             <div class="${classes.join(' ')}"
                  data-id="${safeId}"
@@ -945,7 +995,7 @@ export class Studieplanlegger {
                  role="checkbox"
                  aria-checked="false"
                  aria-label="${safeName}, ${f.timer} timer${fordypningLevel ? ', fordypning nivå ' + fordypningLevel : ''}"
-                 tabindex="${isBlocked ? '-1' : '0'}">
+                 tabindex="0">
               <div class="sp-blokk-fag-row">
                 <span class="sp-blokk-fag-navn">${safeName}</span>
                 <div class="sp-blokk-fag-right">
@@ -1147,6 +1197,19 @@ export class Studieplanlegger {
           blokkId,
           lareplan: fagLareplan
         });
+
+        // Sjekk for betingede merknader
+        const noticeState = this.state.getState();
+        const notices = this.noticeService.getActiveNotices({
+          state: noticeState,
+          currentTrinn: currentTrinn,
+          selectingFag: fagId,
+          selectingBlokk: blokkId
+        });
+
+        if (notices.length > 0) {
+          this.showConditionalNotice(modal, notices[0]);
+        }
       }
 
       // Check for auto-fill opportunities
@@ -1191,16 +1254,8 @@ export class Studieplanlegger {
             return;
           }
         } else if (trinn === 'vg3') {
-          // For VG3, validate minimum requirements
-          const historieFag = this.selectedBlokkskjemaFag.find(f =>
-            f.fagkode === 'HIS1010' || f.id === 'historie-vg3' || f.id?.includes('historie')
-          );
-
-          // Validate: historie must be selected for VG3
-          if (!historieFag) {
-            this.showModalValidationError(modal, 'Du må velge Historie for VG3!');
-            return;
-          }
+          // For VG3: Historie er nå automatisk fellesfag (ikke valgbar)
+          // Validerer kun fremmedspråk-krav
 
           // Validate: Spansk I+II required if harFremmedsprak=false
           const currentState = this.state.getState();

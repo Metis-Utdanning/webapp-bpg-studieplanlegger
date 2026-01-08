@@ -11,6 +11,33 @@
  * - Real-time validation feedback
  */
 
+// STREA/STSSA-klassifisering for visuell gruppering
+const STREA_OMRADER = ['MAT', 'FYS', 'KJE', 'BIO', 'GEO', 'IT', 'TOF'];
+const STSSA_OMRADER = ['SOK', 'OKO', 'MOL', 'ENT', 'POS', 'PSY', 'RET', 'HIF', 'ENG', 'FSP'];
+
+// Matematikk er nøytral og kan telle for begge grupper
+// R1+R2 + Fysikk 1+2 = gyldig STREA
+// R1+R2 + Rettslære 1+2 = gyldig STSSA (matematikk "adopterer" STSSA)
+const NEUTRAL_OMRADER = ['MAT'];
+
+// Fargeklassifisering for UI basert på fagområde
+const FAGOMRADE_FARGER = {
+  // STREA (grønn) - Realfag
+  MAT: 'realfag', FYS: 'realfag', KJE: 'realfag',
+  BIO: 'realfag', GEO: 'realfag', IT: 'realfag', TOF: 'realfag',
+  // STSSA (gul) - Språk, samfunn, økonomi
+  SOK: 'samfunn', OKO: 'samfunn', MOL: 'samfunn', ENT: 'samfunn',
+  POS: 'samfunn', PSY: 'samfunn', RET: 'samfunn', HIF: 'samfunn',
+  ENG: 'samfunn', FSP: 'samfunn',
+  // MDD (rød) - Musikk, dans og drama
+  MUS: 'musikk', DAN: 'musikk', DRA: 'musikk',
+  // MK (blå) - Medier og kommunikasjon
+  KUN: 'medier', MED: 'medier'
+};
+
+// Eksporter konstantene for bruk i andre moduler
+export { STREA_OMRADER, STSSA_OMRADER, NEUTRAL_OMRADER, FAGOMRADE_FARGER };
+
 export class ValidationService {
   constructor() {
     // Will be loaded from API
@@ -473,9 +500,22 @@ export class ValidationService {
     // Calculate total timer from all fordypninger
     const totalFordypningTimer = fordypninger.reduce((sum, a) => sum + a.timer, 0);
 
-    // Valid if meets minOmrader requirement (from regler.yml)
-    const isValid = antallFordypninger >= krav.minOmrader;
+    // Klassifiser oppfylte områder etter STREA/STSSA
+    const oppfylteOmrader = fordypninger.map(f => f.code);
+    const streaOmrader = oppfylteOmrader.filter(o => STREA_OMRADER.includes(o));
+    const stssaOmrader = oppfylteOmrader.filter(o => STSSA_OMRADER.includes(o));
+
+    // Sjekk at alle fordypninger er fra samme STREA/STSSA-gruppe
+    // Matematikk (MAT) er nøytral og "adopterer" gruppen til de andre fordypningene
+    const gruppeValidering = this._validateFordypningSammeGruppe(oppfylteOmrader);
+
+    // Valid if meets minOmrader requirement AND all fordypninger are from same gruppe
+    const isValid = antallFordypninger >= krav.minOmrader && gruppeValidering.valid;
     const progress = Math.min(100, Math.round((antallFordypninger / krav.minOmrader) * 100));
+
+    // Beregn profil basert på fordypninger
+    const profil = this._getProfil(streaOmrader, stssaOmrader);
+    const profilFarge = this._getProfilFarge(streaOmrader, stssaOmrader);
 
     return {
       areas,
@@ -487,8 +527,99 @@ export class ValidationService {
       isValid,
       progress,
       missingFordypninger: Math.max(0, krav.minOmrader - antallFordypninger),
-      missingTimer: Math.max(0, krav.minTimer - totalFordypningTimer)  // Keep for legacy
+      missingTimer: Math.max(0, krav.minTimer - totalFordypningTimer),  // Keep for legacy
+      // Ny: STREA/STSSA-klassifisering
+      streaCount: streaOmrader.length,
+      stssaCount: stssaOmrader.length,
+      profil,
+      profilFarge,
+      // Ny: Gruppe-validering (alle fordypninger må være fra samme STREA/STSSA-gruppe)
+      gruppeValidering: gruppeValidering,
+      gruppeError: gruppeValidering.message
     };
+  }
+
+  /**
+   * Beregn fordypningsprofil basert på STREA/STSSA-fordeling
+   * @private
+   */
+  _getProfil(streaOmrader, stssaOmrader) {
+    if (streaOmrader.length >= 2 && stssaOmrader.length === 0) return 'Realfagsprofil';
+    if (stssaOmrader.length >= 2 && streaOmrader.length === 0) return 'Samfunnsprofil';
+    if (streaOmrader.length >= 1 && stssaOmrader.length >= 1) return 'Kombinert profil';
+    return null;
+  }
+
+  /**
+   * Beregn profilfarge for UI-visning
+   * @private
+   */
+  _getProfilFarge(streaOmrader, stssaOmrader) {
+    if (streaOmrader.length >= 2 && stssaOmrader.length === 0) return 'realfag'; // grønn
+    if (stssaOmrader.length >= 2 && streaOmrader.length === 0) return 'samfunn'; // gul
+    if (streaOmrader.length >= 1 && stssaOmrader.length >= 1) return 'blandet'; // gradient
+    return 'default';
+  }
+
+  /**
+   * Valider at alle ikke-nøytrale fordypninger er fra samme STREA/STSSA-gruppe
+   * Matematikk (MAT) er nøytral og "adopterer" gruppen til de andre fordypningene
+   *
+   * Eksempler:
+   * - R1+R2 + Fysikk 1+2 = gyldig STREA
+   * - R1+R2 + Rettslære 1+2 = gyldig STSSA (matematikk adopterer STSSA)
+   * - S1+S2 + Fysikk 1+2 = gyldig STREA
+   * - Fysikk 1+2 + Rettslære 1+2 = UGYLDIG (blandet STREA og STSSA)
+   *
+   * @param {Array} oppfylteOmrader - Array av fagområdekoder som har oppfylt fordypning (2+ fag)
+   * @returns {Object} { valid: boolean, gruppe: string|null, message: string|null }
+   * @private
+   */
+  _validateFordypningSammeGruppe(oppfylteOmrader) {
+    // Filtrer ut nøytrale fagområder
+    const ikkeNoytraleOmrader = oppfylteOmrader.filter(o => !NEUTRAL_OMRADER.includes(o));
+
+    if (ikkeNoytraleOmrader.length === 0) {
+      // Kun nøytrale fordypninger (f.eks. bare matematikk) - alltid gyldig
+      return { valid: true, gruppe: null, message: null };
+    }
+
+    // Tell STREA og STSSA
+    const streaOmrader = ikkeNoytraleOmrader.filter(o => STREA_OMRADER.includes(o));
+    const stssaOmrader = ikkeNoytraleOmrader.filter(o => STSSA_OMRADER.includes(o));
+
+    // Alle ikke-nøytrale må være fra SAMME gruppe
+    const erKunStrea = streaOmrader.length > 0 && stssaOmrader.length === 0;
+    const erKunStssa = stssaOmrader.length > 0 && streaOmrader.length === 0;
+
+    if (erKunStrea) {
+      return { valid: true, gruppe: 'STREA', message: null };
+    }
+    if (erKunStssa) {
+      return { valid: true, gruppe: 'STSSA', message: null };
+    }
+
+    // Blandet - ugyldig
+    // Lag lesbare navn for feilmeldingen
+    const streaNavnListe = streaOmrader.map(o => this.fagomradeNavn[o] || o).join(', ');
+    const stssaNavnListe = stssaOmrader.map(o => this.fagomradeNavn[o] || o).join(', ');
+
+    return {
+      valid: false,
+      gruppe: null,
+      message: `Fordypning må være fra samme programområde. Du har fordypning fra både realfag (${streaNavnListe}) og samfunn/språk (${stssaNavnListe}). Velg fag fra kun én gruppe.`
+    };
+  }
+
+  /**
+   * Hent fargeklasse for et fag basert på fagområde
+   * @param {string} fagId - Fag-ID
+   * @returns {string} CSS-klasse for farge (realfag, samfunn, musikk, medier, default)
+   */
+  getFagFargeKlasse(fagId) {
+    const fagomrade = this.fagomradeMap[fagId?.toLowerCase()];
+    if (!fagomrade) return 'default';
+    return FAGOMRADE_FARGER[fagomrade] || 'default';
   }
 
   /**
@@ -831,32 +962,53 @@ export class ValidationService {
       // Count fordypninger (fagområder with 2+ fag)
       let fordypninger = 0;
       let totalFordypningTimer = 0;
+      const oppfylteOmrader = [];
 
       Object.entries(fagomraderMap).forEach(([fagomrade, data]) => {
         if (data.fag.length >= 2) {
           fordypninger++;
           totalFordypningTimer += data.timer;
+          oppfylteOmrader.push(fagomrade);
         }
       });
 
+      // Valider at alle fordypninger er fra samme STREA/STSSA-gruppe
+      // Matematikk (MAT) er nøytral og "adopterer" gruppen til de andre fordypningene
+      const gruppeValidering = this._validateFordypningSammeGruppe(oppfylteOmrader);
+
       // Check if fordypning requirement is met (use minOmrader from regler.yml)
-      const fordypningMet = fordypninger >= fordypningKrav.minOmrader;
+      // Must also pass gruppe validation (all fordypninger from same STREA/STSSA group)
+      const fordypningMet = fordypninger >= fordypningKrav.minOmrader && gruppeValidering.valid;
 
       result.fordypning = {
         totalTimer: totalFordypningTimer,
         fagomrader: fagomraderMap,
         fordypninger: fordypninger,
         requiredFordypninger: fordypningKrav.minOmrader,
-        isMet: fordypningMet
+        isMet: fordypningMet,
+        gruppeValidering: gruppeValidering,
+        gruppeError: gruppeValidering.message
       };
 
-      // Add error if fordypning not met
-      if (!fordypningMet) {
+      // Add error if fordypning not met (insufficient count)
+      if (fordypninger < fordypningKrav.minOmrader) {
         result.errors.push({
           type: 'fordypning-insufficient',
           message: `Fordypning: Du har ${fordypninger} fordypning(er), men trenger minst ${fordypningKrav.minOmrader} fordypninger`,
           details: `En fordypning = 2 fag fra samme fagområde. Du har fag fra ${Object.keys(fagomraderMap).length} fagområde(r).`,
           suggestion: 'Velg 2 fag fra samme fagområde for å oppnå en fordypning'
+        });
+
+        result.valid = false;
+      }
+
+      // Add error if fordypninger are from mixed STREA/STSSA groups
+      if (!gruppeValidering.valid) {
+        result.errors.push({
+          type: 'fordypning-mixed-groups',
+          message: gruppeValidering.message,
+          details: 'Alle fordypninger må være fra samme programområde (enten realfag ELLER samfunn/språk). Matematikk er nøytral og kan kombineres med begge.',
+          suggestion: 'Fjern fag fra én av gruppene, eller erstatt dem med fag fra den andre gruppen'
         });
 
         result.valid = false;

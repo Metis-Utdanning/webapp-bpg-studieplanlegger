@@ -296,13 +296,13 @@ export class DataHandler {
         return fagTrinn === trinn && fagTilgjengelig.includes(programId);
       });
 
-      if (fagForTrinn.length > 0) {
-        result[blokkId] = {
-          navn: blokk.navn,
-          beskrivelse: blokk.beskrivelse,
-          fag: fagForTrinn
-        };
-      }
+      // Include the block EVEN if it has no selectable fag
+      // This allows rendering placeholder blocks for MK/Musikk programs
+      result[blokkId] = {
+        navn: blokk.navn,
+        beskrivelse: blokk.beskrivelse,
+        fag: fagForTrinn  // Can be empty array
+      };
     });
 
     return result;
@@ -582,11 +582,10 @@ export class DataHandler {
       // Filter out fag that are selected in blokkskjema (not shown in fellesfag list):
       // - VG1: matematikk (1P/1T) og fremmedspråk
       // - VG2: matematikk (2P kan byttes ut med R1/S1)
-      // - VG3: historie (velges i blokkskjema)
+      // Note: historie-vg3 er IKKE her - den er obligatorisk fellesfag, ikke blokkskjema-valg
       const blokkskjemaFagIds = [
         'matematikk-vg1', 'fremmedsprak-vg1',  // VG1
-        'matematikk-2p', 'matematikk-vg2',     // VG2 (both possible IDs)
-        'historie-vg3'                          // VG3
+        'matematikk-2p', 'matematikk-vg2'      // VG2 (both possible IDs)
       ];
 
       return fagArray

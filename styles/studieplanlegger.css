@@ -667,12 +667,6 @@
   border-color: #f9a825;
 }
 
-/* Fremmedspråk-fag farge når valgt (mørk oransje) */
-.sp-fag-item.fremmedsprak.selected {
-  background: var(--fag-fremmedsprak-bg);
-  border-color: var(--fag-fremmedsprak);
-}
-
 /* ============================================
    FAGOMRÅDE-FARGER PÅ FAG-KORT (STREA/STSSA)
    ============================================ */
@@ -724,6 +718,13 @@
   background: var(--fag-matematikk-2p-bg);
   border-color: var(--fag-matematikk-2p);
   border-left: 4px solid var(--fag-matematikk-2p);
+}
+
+/* Fremmedspråk-fag farge når valgt (oransje) - MÅ komme ETTER fagomrade-regler for å overstyre */
+.sp-fag-item.fremmedsprak.selected {
+  background: var(--fag-fremmedsprak-bg);
+  border-color: var(--fag-fremmedsprak);
+  border-left: 4px solid var(--fag-fremmedsprak);
 }
 
 /* Blokkskjema modal - fagområde-farger på fag-kort */
@@ -2948,4 +2949,92 @@
 
 .sp-placeholder-text {
   display: block;
+}
+
+/* ============================================
+   CONDITIONAL NOTICES (Betingede merknader)
+   ============================================ */
+
+.sp-conditional-notice {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--spacing-sm, 8px);
+  padding: var(--spacing-md, 12px);
+  border-radius: var(--radius-sm, 4px);
+  margin: var(--spacing-md, 12px);
+  animation: noticeSlideIn 0.3s ease-out;
+  position: relative;
+}
+
+.sp-conditional-notice--warning {
+  background: #fff4e5;
+  border: 2px solid #ffcc80;
+  border-left-width: 4px;
+}
+
+.sp-conditional-notice--info {
+  background: #e3f2fd;
+  border: 2px solid #90caf9;
+  border-left-width: 4px;
+}
+
+.sp-conditional-notice__icon {
+  font-size: 1.25rem;
+  flex-shrink: 0;
+  line-height: 1;
+}
+
+.sp-conditional-notice__text {
+  font-size: 0.9rem;
+  line-height: 1.5;
+  flex: 1;
+}
+
+.sp-conditional-notice--warning .sp-conditional-notice__text {
+  color: #c67600;
+}
+
+.sp-conditional-notice--info .sp-conditional-notice__text {
+  color: #1565c0;
+}
+
+.sp-conditional-notice__close {
+  background: none;
+  border: none;
+  font-size: 1.25rem;
+  cursor: pointer;
+  padding: 0;
+  line-height: 1;
+  opacity: 0.6;
+  transition: opacity 0.2s;
+}
+
+.sp-conditional-notice__close:hover {
+  opacity: 1;
+}
+
+.sp-conditional-notice--fading {
+  animation: noticeFadeOut 0.3s ease-out forwards;
+}
+
+@keyframes noticeSlideIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes noticeFadeOut {
+  from {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
 }

@@ -882,7 +882,7 @@ export class UIRenderer {
 
           <div class="sp-vg1-fag-liste">
             ${fag.map(f => `
-              <div class="sp-vg1-fag-item ${type}" data-fagkode="${f.fagkode}" data-timer="${f.timer}"${f.lareplan ? ` data-lareplan="${f.lareplan}"` : ''}>
+              <div class="sp-vg1-fag-item ${type}" data-id="${f.id}" data-fagkode="${f.fagkode}" data-timer="${f.timer}"${f.lareplan ? ` data-lareplan="${f.lareplan}"` : ''}>
                 <div class="sp-vg1-fag-item-title">${f.navn}</div>
                 <div class="sp-vg1-fag-item-timer">${f.timer} timer</div>
               </div>
