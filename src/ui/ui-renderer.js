@@ -110,19 +110,13 @@ export class UIRenderer {
 
   /**
    * Render filter section
+   * Trinn-filter er fjernet - brukeren ser alltid hele VG1-VG3 løpet
    */
   renderFilter() {
     const currentState = this.state.getState();
     // Get programs from API (school.programs) or fallback to defaults
     const programs = this.dataHandler.getSchoolPrograms();
     const selectedProgram = programs.find(p => p.id === currentState.programomrade) || programs[0];
-
-    // Trinn options
-    const trinnOptions = [
-      { id: 'vg1', name: 'VG1' },
-      { id: 'vg2', name: 'VG2' }
-    ];
-    const selectedTrinn = trinnOptions.find(t => t.id === currentState.trinn) || trinnOptions[0];
 
     // Fremmedsprak options
     const fremmedsprakOptions = [
@@ -134,24 +128,6 @@ export class UIRenderer {
     return `
       <div class="sp-filter-section">
         <div class="sp-filter-row">
-          <div class="sp-filter-dropdown" data-dropdown="trinn">
-            <button class="sp-filter-dropdown-btn" aria-haspopup="listbox" aria-expanded="false">
-              <span class="sp-filter-dropdown-label">Trinn:</span>
-              <span class="sp-filter-dropdown-value">${sanitizeHTML(selectedTrinn.name)}</span>
-              <span class="sp-filter-dropdown-arrow">▾</span>
-            </button>
-            <div class="sp-filter-dropdown-menu hidden" role="listbox">
-              ${trinnOptions.map(trinn => `
-                <button class="sp-filter-dropdown-item ${currentState.trinn === trinn.id ? 'selected' : ''}"
-                        data-trinn="${sanitizeHTML(trinn.id)}"
-                        role="option"
-                        aria-selected="${currentState.trinn === trinn.id}">
-                  ${sanitizeHTML(trinn.name)}
-                </button>
-              `).join('')}
-            </div>
-          </div>
-          <span class="sp-filter-divider"></span>
           <div class="sp-filter-dropdown" data-dropdown="program">
             <button class="sp-filter-dropdown-btn" aria-haspopup="listbox" aria-expanded="false">
               <span class="sp-filter-dropdown-label">Program:</span>
@@ -480,8 +456,12 @@ export class UIRenderer {
     // Add programfag slots (antall varierer per programomrade)
     for (let i = 0; i < programfagSlots; i++) {
       if (programfag[i]) {
+        // Hent fagområde-farge for valgt fag
+        const fagId = programfag[i].id || '';
+        const fargeKlasse = this.getFagomradeFargeKlasse(fagId);
+
         slots.push(`
-          <div class="sp-fag-item selected">
+          <div class="sp-fag-item selected ${fargeKlasse}">
             <div class="sp-fag-item-title">${sanitizeHTML(programfag[i].navn)}</div>
             <div class="sp-fag-item-meta">
               <div class="sp-fag-item-timer">${programfag[i].timer}t</div>
@@ -503,10 +483,11 @@ export class UIRenderer {
       }
     }
 
-    // Add matematikk slot (with matematikk class for purple color)
+    // Add matematikk slot (med spesiell fargekoding for R/S)
     if (matematikk) {
+      const matFargeKlasse = this.getFagomradeFargeKlasse(matematikk.id);
       slots.push(`
-        <div class="sp-fag-item selected matematikk">
+        <div class="sp-fag-item selected matematikk ${matFargeKlasse}">
           <div class="sp-fag-item-title">${sanitizeHTML(matematikk.navn)}</div>
           <div class="sp-fag-item-meta">
             <div class="sp-fag-item-timer">${matematikk.timer}t</div>
@@ -537,6 +518,7 @@ export class UIRenderer {
 
   /**
    * Render VG3 column
+   * Historie VG3 vises nå som obligatorisk fellesfag (ikke valgbar)
    */
   renderVG3() {
     const currentState = this.state.getState();
@@ -544,8 +526,11 @@ export class UIRenderer {
     const fellesProgramfag = this.dataHandler.getFellesProgramfag(currentState.programomrade, 'vg3');
     const validation = this.state.validate();
 
-    // Filter out Historie from fellesfag (it will be in the combined section)
-    const fellesfag = allFellesfag.filter(f => f.fagkode !== 'HIS1010' && f.navn !== 'Historie');
+    // Filtrer ut Historie - den vises separat som obligatorisk fellesfag
+    const fellesfagUtenHistorie = allFellesfag.filter(f => f.fagkode !== 'HIS1010' && f.navn !== 'Historie');
+
+    // Finn Historie-faget
+    const historieFag = allFellesfag.find(f => f.fagkode === 'HIS1010' || f.navn === 'Historie');
 
     return `
       <div class="sp-vg-column">
@@ -555,7 +540,7 @@ export class UIRenderer {
         <div class="sp-vg-content">
           <div class="sp-fag-section">
             <div class="sp-fag-section-title">Fellesfag</div>
-            ${fellesfag.map(fag => `
+            ${fellesfagUtenHistorie.map(fag => `
               <div class="sp-fag-item fellesfag">
                 <div class="sp-fag-item-title">${sanitizeHTML(fag.navn)}</div>
                 <div class="sp-fag-item-meta">
@@ -569,6 +554,20 @@ export class UIRenderer {
                 </div>
               </div>
             `).join('')}
+            ${historieFag ? `
+              <div class="sp-fag-item historie-locked">
+                <div class="sp-fag-item-title">${sanitizeHTML(historieFag.navn)}</div>
+                <div class="sp-fag-item-meta">
+                  <div class="sp-fag-item-timer">${historieFag.timer}t</div>
+                  <button class="sp-fag-item-info" data-fag-id="${sanitizeHTML(historieFag.id || 'historie-vg3')}" title="Se fagdetaljer" aria-label="Se detaljer for ${sanitizeHTML(historieFag.navn)}">
+                    <svg width="14" height="14" viewBox="0 0 16 16">
+                      <circle cx="8" cy="8" r="7" stroke="currentColor" stroke-width="1.5" fill="none"/>
+                      <text x="8" y="12" text-anchor="middle" font-size="11" font-weight="600" fill="currentColor">i</text>
+                    </svg>
+                  </button>
+                </div>
+              </div>
+            ` : ''}
           </div>
 
           ${fellesProgramfag.length > 0 ? `
@@ -603,27 +602,16 @@ export class UIRenderer {
   }
 
   /**
-   * Render VG3 programfag og historie combined section
-   * Studiespesialisering: 4 bokser (3 programfag + 1 historie)
-   * Musikk: 2 bokser (1 programfag + 1 historie)
-   * Medier: 3 bokser (2 programfag + 1 historie)
+   * Render VG3 programfag section (Historie er nå automatisk fellesfag)
+   * Studiespesialisering: 3 programfag-bokser
+   * Musikk: 1 programfag-boks
+   * Medier: 2 programfag-bokser
    */
   renderVG3ProgramfagOgHistorie() {
     const currentState = this.state.getState();
     const programomrade = currentState.programomrade;
-    const allFellesfag = this.dataHandler.getFellesfag(programomrade, 'vg3');
 
-    // Get historie info from fellesfag
-    const historieInfo = allFellesfag.find(f => f.fagkode === 'HIS1010' || f.navn === 'Historie');
-
-    // Check if historie has been selected in blokkskjema
-    const selectedHistorie = currentState.vg3.selections
-      ? currentState.vg3.selections.find(f =>
-          f.fagkode === 'HIS1010' || f.id === 'historie-vg3' || f.slot === 'historie'
-        )
-      : null;
-
-    // Get programfag selections (excluding historie slot)
+    // Get programfag selections (excluding historie - no longer a slot)
     let programfag = [];
     if (currentState.vg3 && currentState.vg3.selections) {
       programfag = currentState.vg3.selections.filter(s => {
@@ -632,9 +620,7 @@ export class UIRenderer {
     }
 
     // Calculate number of programfag slots based on program
-    // Studiespesialisering: 4 total (3 programfag + 1 historie)
-    // Musikk: 2 total (1 programfag + 1 historie)
-    // Medier: 3 total (2 programfag + 1 historie)
+    // Historie er IKKE lenger en slot - den vises som fellesfag
     let programfagSlots;
     if (programomrade === 'studiespesialisering') {
       programfagSlots = 3;
@@ -651,8 +637,15 @@ export class UIRenderer {
     // Add programfag slots
     for (let i = 0; i < programfagSlots; i++) {
       if (programfag[i]) {
+        // Hent fagområde-farge for valgt fag
+        const fagId = programfag[i].id || '';
+        const fargeKlasse = this.getFagomradeFargeKlasse(fagId);
+        // Detekter fremmedspråk for konsistent oransje farge
+        const isFremmedsprak = /^(spansk|tysk|fransk|kinesisk|italiensk)/i.test(fagId.toLowerCase());
+        const fremmedsprakKlasse = isFremmedsprak ? ' fremmedsprak' : '';
+
         slots.push(`
-          <div class="sp-fag-item selected">
+          <div class="sp-fag-item selected ${fargeKlasse}${fremmedsprakKlasse}">
             <div class="sp-fag-item-title">${sanitizeHTML(programfag[i].navn)}</div>
             <div class="sp-fag-item-meta">
               <div class="sp-fag-item-timer">${programfag[i].timer}t</div>
@@ -674,37 +667,78 @@ export class UIRenderer {
       }
     }
 
-    // Add historie slot (with historie class for orange color)
-    if (selectedHistorie) {
-      const timer = historieInfo?.timer || 113;
-      slots.push(`
-        <div class="sp-fag-item selected historie">
-          <div class="sp-fag-item-title">Historie</div>
-          <div class="sp-fag-item-meta">
-            <div class="sp-fag-item-timer">${timer}t</div>
-            <button class="sp-fag-item-info" data-fag-id="${historieInfo?.id || 'historie-vg3'}" title="Se fagdetaljer" aria-label="Se detaljer for Historie">
-              <svg width="14" height="14" viewBox="0 0 16 16">
-                <circle cx="8" cy="8" r="7" stroke="currentColor" stroke-width="1.5" fill="none"/>
-                <text x="8" y="12" text-anchor="middle" font-size="11" font-weight="600" fill="currentColor">i</text>
-              </svg>
-            </button>
-          </div>
-        </div>
-      `);
-    } else {
-      slots.push(`
-        <div class="sp-fag-item empty-slot historie-obligatorisk">
-          <div class="sp-fag-item-title">Klikk for a velge historie</div>
-        </div>
-      `);
-    }
-
     return `
       <div class="sp-fag-section sp-programfag-gruppe" data-trinn="vg3">
-        <div class="sp-fag-section-title">Programfag og historie (klikk for a velge)</div>
+        <div class="sp-fag-section-title">Valgfrie programfag (klikk for a velge)</div>
         ${slots.join('')}
       </div>
     `;
+  }
+
+  /**
+   * Hent CSS-klasse for fagområde-farge basert på fag-ID
+   * @param {string} fagId - Fag-ID (f.eks. 'fysikk-1', 'matematikk-r1')
+   * @returns {string} CSS-klasse (f.eks. 'fagomrade-realfag', 'fag-matematikk-r')
+   */
+  getFagomradeFargeKlasse(fagId) {
+    if (!fagId) return '';
+
+    const id = fagId.toLowerCase();
+
+    // Matematikk 2P - mørkegrå (dead-end, ikke fordypning)
+    if (id.includes('matematikk-2p') || id.includes('matematikk_2p') || id === '2p') {
+      return 'fag-matematikk-2p';
+    }
+
+    // Spesialhåndtering for matematikk R/S
+    if (id.includes('matematikk-r') || id.includes('matematikk_r')) {
+      return 'fag-matematikk-r';
+    }
+    if (id.includes('matematikk-s') || id.includes('matematikk_s')) {
+      return 'fag-matematikk-s';
+    }
+
+    // Map fag-ID til fagområde basert på prefiks
+    const fagomradeMap = {
+      'fysikk': 'realfag',
+      'kjemi': 'realfag',
+      'biologi': 'realfag',
+      'geofag': 'realfag',
+      'informasjonsteknologi': 'realfag',
+      'it': 'realfag',
+      'teknologi': 'realfag',
+      'matematikk': 'realfag',
+      'psykologi': 'samfunn',
+      'rettslare': 'samfunn',
+      'rettslaere': 'samfunn',
+      'sosialkunnskap': 'samfunn',
+      'sosiologi': 'samfunn',
+      'okonomi': 'samfunn',
+      'samfunnsokonomi': 'samfunn',  // Samfunnsøkonomi 1 & 2
+      'markedsforing': 'samfunn',    // Markedsføring og ledelse 1 & 2
+      'entreprenorskap': 'samfunn',
+      'politikk': 'samfunn',
+      'historie': 'samfunn',
+      'engelsk': 'samfunn',
+      'spansk': 'samfunn',
+      'tysk': 'samfunn',
+      'fransk': 'samfunn',
+      'kinesisk': 'samfunn',
+      'musikk': 'musikk',
+      'dans': 'musikk',
+      'drama': 'musikk',
+      'bilde': 'medier',
+      'grafisk': 'medier',
+      'medie': 'medier'
+    };
+
+    for (const [prefix, fagomrade] of Object.entries(fagomradeMap)) {
+      if (id.startsWith(prefix)) {
+        return `fagomrade-${fagomrade}`;
+      }
+    }
+
+    return '';
   }
 
   /**
@@ -732,20 +766,12 @@ export class UIRenderer {
         <div class="sp-modal-content sp-modal-onboarding-content">
           <div class="sp-modal-header">
             <h2 class="sp-modal-title">Velkommen til Studieplanleggeren</h2>
-            <p class="sp-modal-subtitle">Svar pa tre korte sporsmal for a komme i gang</p>
+            <p class="sp-modal-subtitle">Svar pa to korte sporsmal for a komme i gang</p>
           </div>
 
           <div class="sp-onboarding-form">
             <div class="sp-onboarding-question">
-              <label class="sp-onboarding-label">1. Hvilket trinn gar du pa i dag?</label>
-              <div class="sp-onboarding-options" data-question="trinn">
-                <button class="sp-onboarding-option" data-value="vg1">VG1</button>
-                <button class="sp-onboarding-option" data-value="vg2">VG2</button>
-              </div>
-            </div>
-
-            <div class="sp-onboarding-question">
-              <label class="sp-onboarding-label">2. Hvilket programomrade gar du pa?</label>
+              <label class="sp-onboarding-label">1. Hvilket programomrade gar du pa?</label>
               <div class="sp-onboarding-options" data-question="programomrade">
                 ${programs.map(program => `
                   <button class="sp-onboarding-option" data-value="${sanitizeHTML(program.id)}">
@@ -756,7 +782,7 @@ export class UIRenderer {
             </div>
 
             <div class="sp-onboarding-question">
-              <label class="sp-onboarding-label">3. Hadde du fremmedsprak pa ungdomsskolen?</label>
+              <label class="sp-onboarding-label">2. Hadde du fremmedsprak pa ungdomsskolen?</label>
               <div class="sp-onboarding-options" data-question="fremmedsprak">
                 <button class="sp-onboarding-option" data-value="true">Ja</button>
                 <button class="sp-onboarding-option" data-value="false">Nei</button>
@@ -766,7 +792,7 @@ export class UIRenderer {
 
           <div class="sp-modal-footer">
             <div class="sp-onboarding-status">
-              <span class="sp-onboarding-progress">0 av 3 valgt</span>
+              <span class="sp-onboarding-progress">0 av 2 valgt</span>
             </div>
             <div class="sp-modal-actions">
               <button class="sp-btn sp-btn-primary sp-onboarding-submit" disabled>Kom i gang</button>
