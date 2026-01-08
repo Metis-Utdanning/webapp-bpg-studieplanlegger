@@ -148,7 +148,7 @@ export class UIRenderer {
           <span class="sp-filter-divider"></span>
           <div class="sp-filter-dropdown" data-dropdown="fremmedsprak">
             <button class="sp-filter-dropdown-btn" aria-haspopup="listbox" aria-expanded="false">
-              <span class="sp-filter-dropdown-label">Fremmedsprak pa ungdomsskolen:</span>
+              <span class="sp-filter-dropdown-label">Fremmedspråk på ungdomsskolen:</span>
               <span class="sp-filter-dropdown-value">${sanitizeHTML(selectedFremmedsprak.name)}</span>
               <span class="sp-filter-dropdown-arrow">▾</span>
             </button>
