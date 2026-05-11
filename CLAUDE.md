@@ -1,7 +1,6 @@
 # CLAUDE.md - Studieplanlegger
 
-> **Kontekst for Claude Code**
-> **Sist oppdatert:** 2025-12-05 (vg1Valg, fremmedspråk-filtrering, fellesProgramfag)
+> Kontekst for Claude Code. Personlig prosjekt under `fredeids-metis/studieplanlegger`, ikke i Metis-Utdanning-org.
 
 ## Prosjektbeskrivelse
 
@@ -257,16 +256,3 @@ const fagArray = Array.isArray(data) ? data : (data.fag || []);
 
 ---
 
-## Commit-konvensjon
-
-```
-Type: Kort beskrivelse
-
-- Detaljer
-- Detaljer
-
-🤖 Generated with [Claude Code](https://claude.com/claude-code)
-Co-Authored-By: Claude <noreply@anthropic.com>
-```
-
-Typer: `Fix:`, `Feature:`, `Refactor:`, `Docs:`, `Style:`
